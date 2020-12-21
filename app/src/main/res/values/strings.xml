@@ -1,0 +1,45 @@
+<resources>
+    <!-- Default -->
+    <string name="app_name">KNP</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="dialog_ok">확인</string>
+    <string name="dialog_ng">취소</string>
+    <string name="button_retrieve">조회</string>
+
+    <!-- Login -->
+    <string name="prompt_id">아이디</string>
+    <string name="prompt_password">비밀번호</string>
+    <string name="prompt_Login">로그인</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="denied_login">로그인 거부</string>
+    <string name="failed_login">로그인 실패</string>
+    <string name="invalid_login">아이디 또는 패스워드가 올바르지 않습니다.</string>
+    <string name="message_denied_login">퇴사자이므로 권한이 없습니다.</string>
+    <string name="message_login_failed">아이디 또는 패스워드가 올바르지 않습니다.</string>
+    <string name="network_failed">네트워크 연결 상태를 확인하세요.</string>
+
+
+    <string name="menu_home">Home</string>
+    <string name="menu_ship">상차관리</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+
+    <!-- Ship -->
+    <string name="ship_no">상차지시번호</string>
+    <string name="sell_cust_cd">수요가</string>
+    <string name="name_cd">품명</string>
+    <string name="size_cd">Size</string>
+    <string name="stan_cd">재질</string>
+    <string name="quantitiy">수량</string>
+    <string name="weight">중량</string>
+
+
+
+
+</resources>
