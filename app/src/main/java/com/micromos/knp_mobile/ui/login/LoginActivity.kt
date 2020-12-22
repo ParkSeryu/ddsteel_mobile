@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         })
 
         LoginViewModel.loginDeniedEvent.observe(this, Observer {
-            CustomDialog(this, R.layout.dialog_incorrect_login)
+            CustomDialog(this, R.layout.dialog_incorrect)
                 .setTitle(R.string.denied_login)
                 .setMessage(R.string.message_denied_login)
                 .setPositiveButton(R.string.dialog_ok) {
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
         })
 
         LoginViewModel.loginFailedEvent.observe(this, Observer {
-            CustomDialog(this, R.layout.dialog_incorrect_login)
+            CustomDialog(this, R.layout.dialog_incorrect)
                 .setTitle(R.string.failed_login)
                 .setMessage(R.string.message_login_failed)
                 .setPositiveButton(R.string.dialog_ok) {

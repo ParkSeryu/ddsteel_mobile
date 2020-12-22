@@ -46,7 +46,6 @@ class LoginViewModel : ViewModelBase() {
         })
         _id.value = ""
         _password.value = ""
-
     }
 
     fun onClickLogin() {

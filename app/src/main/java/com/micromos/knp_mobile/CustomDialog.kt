@@ -11,7 +11,7 @@ import androidx.annotation.StringRes
 import kotlinx.android.synthetic.main.dialog_app_finish.view.*
 import kotlinx.android.synthetic.main.dialog_app_finish.view.messageTextView
 import kotlinx.android.synthetic.main.dialog_app_finish.view.positiveButton
-import kotlinx.android.synthetic.main.dialog_incorrect_login.view.*
+import kotlinx.android.synthetic.main.dialog_incorrect.view.*
 
 class CustomDialog(private val context: Context, private val dialogName : Int) {
 
