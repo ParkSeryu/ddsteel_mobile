@@ -2,10 +2,7 @@ package com.micromos.knp_mobile.network
 
 import android.util.Log
 import com.google.gson.GsonBuilder
-import com.micromos.knp_mobile.dto.CoilIn
-import com.micromos.knp_mobile.dto.CoilInFeed
-import com.micromos.knp_mobile.dto.GetCustCd
-import com.micromos.knp_mobile.dto.User
+import com.micromos.knp_mobile.dto.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,37 +14,44 @@ import java.util.concurrent.TimeUnit
 
 interface KNPApi {
 
- /*   @GET("product/check")
-    fun getProductCheck(@Query("product_no") productNo: String): Call<ProductCheckData>
+    /*   @GET("product/check")
+       fun getProductCheck(@Query("product_no") productNo: String): Call<ProductCheckData>
 
-    @GET("product/check_master")
-    fun getProductCheckMaster(@Query("product_no") productNo: String):Call<CheckDataWithSpec>
+       @GET("product/check_master")
+       fun getProductCheckMaster(@Query("product_no") productNo: String):Call<CheckDataWithSpec>
 
-  */
+     */
 
-
-
-    @GET("product/coil_in")
-    fun coilIn(
-        @Query("ship_no") shipNo : String,
-    ): Call<CoilInFeed>
 
     @GET("product/get_cust")
     fun getCustCd(
-        @Query("ship_no") shipNo : String,
+        @Query("ship_no") shipNo: String,
     ): Call<GetCustCd>
+
+    @GET("product/coil_in")
+    fun coilIn(
+        @Query("ship_no") shipNo: String,
+    ): Call<CoilInFeed>
+
+    @GET("product/update_PDA")
+    fun updatePDA(
+        @Query("label_no") labelNo: String,
+    ): Call<Unit>
+
 
     @GET("login/test_server")
     fun testServer(): Call<Unit>
 
     @GET("login")
-    fun login(@Query("user_id") userId: String,
-              @Query("password") password: String): Call<User>
+    fun login(
+        @Query("user_id") userId: String,
+        @Query("password") password: String
+    ): Call<User>
 
 
-    companion object Factory{
-        fun create() : KNPApi {
-            val uri = "http://192.168.0.137/index.php/"
+    companion object Factory {
+        fun create(): KNPApi {
+            val uri = "http://192.168.25.55/index.php/"
 
             val okHttpClient = OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
@@ -65,7 +69,7 @@ interface KNPApi {
         }
 
         private fun httpLoggingInterceptor(): Interceptor {
-            val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger{ message ->
+            val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
                 Log.v("HTTP", message)
             })
             return interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)

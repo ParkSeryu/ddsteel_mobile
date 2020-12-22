@@ -1,5 +1,7 @@
 package com.micromos.knp_mobile
 
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,5 +12,9 @@ open class ViewModelBase : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
     init {
         _isLoading.value = false
+    }
+
+    fun loadingVisibilityConverter(loading: Boolean): Int {
+        return if(loading) View.VISIBLE else View.INVISIBLE
     }
 }

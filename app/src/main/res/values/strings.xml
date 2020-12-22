@@ -10,6 +10,7 @@
     <string name="dialog_ok">확인</string>
     <string name="dialog_ng">취소</string>
     <string name="button_retrieve">조회</string>
+    <string name="prompt_error">오류</string>
 
     <!-- Login -->
     <string name="prompt_id">아이디</string>
@@ -31,13 +32,16 @@
 
 
     <!-- Ship -->
+    <string name="prompt_no_retrieve">검색결과가 없습니다.</string>
+    <string name="product_no">제품번호 : %s-%s</string>
+    <string name="label_no">라벨번호 : %s</string>
     <string name="ship_no">상차지시번호</string>
-    <string name="sell_cust_cd">수요가</string>
-    <string name="name_cd">품명</string>
-    <string name="size_cd">Size</string>
-    <string name="stan_cd">재질</string>
-    <string name="quantitiy">수량</string>
-    <string name="weight">중량</string>
+    <string name="sell_cust_cd">수요가 : %s</string>
+    <string name="name_cd">품명 : %s</string>
+    <string name="size_cd">Size : %s</string>
+    <string name="stan_cd">재질 : %s</string>
+    <string name="quantity">수량 : %s</string>
+    <string name="weight">중량 : %,2d</string>
 
 
 

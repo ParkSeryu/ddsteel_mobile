@@ -39,51 +39,81 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/name_cd_tv"
+                    android:id="@+id/product_no_tv"
+                    android:text="@{@string/product_no(shipInItem.coilNo, shipInItem.coilSeq)}"
+                    tools:text="제품번호"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{shipInItem.namecd}"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/name_cd" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/stan_cd_tv"
+                    android:id="@+id/label_no_tv"
+                    android:text="@{@string/label_no(shipInItem.labelNo)}"
+                    tools:text="라벨번호 % s"
+                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{shipInItem.stancd}"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/stan_cd" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/product_no_tv"/>
+
+                <TextView
+                    android:id="@+id/label_ok_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="OK"
+                    app:layout_constraintLeft_toRightOf="@id/label_no_tv"
+                    app:layout_constraintTop_toTopOf="@id/label_no_tv"
+                    android:layout_marginStart="10dp"/>
+
+                <TextView
+                    android:id="@+id/name_nm_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@{@string/name_cd(shipInItem.namenm)}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/label_no_tv"
+                    tools:text="@string/name_cd" />
 
                 <TextView
                     android:id="@+id/size_cd_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@{shipInItem.sizeNo}"
+                    android:text="@{@string/size_cd(shipInItem.sizeNo)}"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/name_cd_tv"
+                    app:layout_constraintTop_toBottomOf="@id/name_nm_tv"
                     tools:text="@string/size_cd" />
+
+                <TextView
+                    android:id="@+id/stan_nm_cd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/stan_cd(shipInItem.stannm)}"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/name_nm_tv"
+                    tools:text="@string/stan_cd" />
 
                 <TextView
                     android:id="@+id/quantity_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@{shipInItem.quantity}"
+                    android:layout_marginRight="10dp"
+                    android:text="@{@string/quantity(shipInItem.quantity)}"
                     app:layout_constraintRight_toLeftOf="@id/weight_tv"
-                    app:layout_constraintTop_toBottomOf="@id/stan_cd_tv"
-                    tools:text="@string/quantitiy" />
+                    app:layout_constraintTop_toBottomOf="@id/stan_nm_cd"
+                    tools:text="@string/quantity" />
 
                 <TextView
                     android:id="@+id/weight_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@{shipInItem.weight}"
-                    app:layout_constraintRight_toRightOf="@id/stan_cd_tv"
-                    app:layout_constraintTop_toBottomOf="@id/stan_cd_tv"
+                    android:text="@{@string/weight(shipInItem.weight)}"
+                    app:layout_constraintRight_toRightOf="@id/stan_nm_cd"
+                    app:layout_constraintTop_toBottomOf="@id/stan_nm_cd"
                     tools:text="@string/weight" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
