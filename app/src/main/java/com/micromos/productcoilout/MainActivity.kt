@@ -1,4 +1,4 @@
-package com.micromos.knp_mobile
+package com.micromos.productcoilout
 
 import android.os.Bundle
 import android.view.KeyEvent
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_ship_detail, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_ship_detail, R.id.nav_ship_out
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

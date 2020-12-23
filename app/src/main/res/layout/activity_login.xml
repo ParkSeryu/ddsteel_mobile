@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.micromos.knp_mobile.ui.login.LoginViewModel" />
+            type="com.micromos.productcoilout.ui.login.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,4 +1,4 @@
-package com.micromos.knp_mobile.ui.home
+package com.micromos.productcoilout.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.micromos.knp_mobile.R
-import com.micromos.knp_mobile.databinding.ActivityLoginBinding
-import com.micromos.knp_mobile.databinding.FragmentHomeBinding
+import com.micromos.productcoilout.R
+import com.micromos.productcoilout.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 

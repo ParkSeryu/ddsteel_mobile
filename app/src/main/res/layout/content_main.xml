@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.micromos.knp_mobile.ViewModelBase" />
+            type="com.micromos.productcoilout.ViewModelBase" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,9 +25,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/mobile_navigation" />
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

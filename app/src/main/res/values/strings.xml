@@ -11,6 +11,7 @@
     <string name="dialog_ng">취소</string>
     <string name="button_retrieve">조회</string>
     <string name="prompt_error">오류</string>
+    <string name="prompt_notification">알림</string>
 
     <!-- Login -->
     <string name="prompt_id">아이디</string>
@@ -27,12 +28,15 @@
 
 
     <string name="menu_home">Home</string>
-    <string name="menu_ship">상차관리</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_ship_in">상차관리</string>
+    <string name="menu_ship_out">출고관리</string>
 
 
-    <!-- Ship -->
-    <string name="prompt_no_retrieve">검색결과가 없습니다.</string>
+    <!-- Ship In-->
+    <string name="prompt_no_retrieve">올바르지 않은 상차번호 입니다.</string>
+    <string name="ok">OK</string>
+    <string name="prompt_no_label">상차지시서에 없는 라벨번호 입니다.</string>
+    <string name="prompt_label_overlap">이미 상차처리된 라벨입니다.</string>
     <string name="product_no">제품번호 : %s-%s</string>
     <string name="label_no">라벨번호 : %s</string>
     <string name="ship_no">상차지시번호</string>
@@ -42,6 +46,8 @@
     <string name="stan_cd">재질 : %s</string>
     <string name="quantity">수량 : %s</string>
     <string name="weight">중량 : %,2d</string>
+
+    <!-- Ship Out-->
 
 
 

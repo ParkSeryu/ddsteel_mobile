@@ -1,7 +1,6 @@
-package com.micromos.knp_mobile.dto
+package com.micromos.productcoilout.dto
 
 import com.google.gson.annotations.SerializedName
-import java.text.DecimalFormat
 
 data class GetCustCd(@SerializedName("CUST_NM") val cust_nm: String)
 
@@ -14,10 +13,11 @@ data class CoilIn(
     @SerializedName("COIL_SEQ") val coilSeq: String,
     @SerializedName("PACK_NO") val packNo: String,
     @SerializedName("LABEL_NO") val labelNo: String,
-    @SerializedName("NAME_CD") val namecd: String,
-    @SerializedName("NAME_NM") val namenm: String,
-    @SerializedName("STAN_CD") val stancd: String,
-    @SerializedName("STAN_NM") val stannm: String,
+    @SerializedName("PDA_DATETIME1") val pdaDateTime: String,
+    @SerializedName("NAME_CD") val nameCd: String,
+    @SerializedName("NAME_NM") val nameNm: String,
+    @SerializedName("STAN_CD") val stanCd: String,
+    @SerializedName("STAN_NM") val stanNm: String,
     @SerializedName("SIZE_NO") val sizeNo: String,
     @SerializedName("QUANTITY") val quantity: String,
     @SerializedName("WEIGHT") val weight: Int,

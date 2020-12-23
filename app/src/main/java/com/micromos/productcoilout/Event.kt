@@ -1,4 +1,4 @@
-package com.micromos.knp_mobile
+package com.micromos.productcoilout
 
 import androidx.lifecycle.Observer
 

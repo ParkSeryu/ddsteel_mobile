@@ -1,13 +1,13 @@
-package com.micromos.knp_mobile.ui.productcoilin
+package com.micromos.productcoilout.ui.productcoilin
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.micromos.knp_mobile.databinding.ShipItemListBinding
-import com.micromos.knp_mobile.dto.CoilIn
+import com.micromos.productcoilout.databinding.ShipItemListBinding
+import com.micromos.productcoilout.dto.CoilIn
 
-class ProductCoilinAdapter(private val context : Context) : RecyclerView.Adapter<ViewHolder>() {
+class ProductCoilinAdapter(val viewModel: ProductCoilInViewModel, val context: Context) : RecyclerView.Adapter<ViewHolder>() {
     var items = listOf<CoilIn>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,12 +21,14 @@ class ProductCoilinAdapter(private val context : Context) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(viewModel, items[position], context)
     }
 }
 
 class ViewHolder(val binding : ShipItemListBinding) : RecyclerView.ViewHolder(binding.root){
-    fun bind(item : CoilIn){
+    fun bind(viewModel: ProductCoilInViewModel, item : CoilIn, context: Context){
+        binding.viewModel = viewModel
         binding.shipInItem = item
+        binding.executePendingBindings()
     }
 }

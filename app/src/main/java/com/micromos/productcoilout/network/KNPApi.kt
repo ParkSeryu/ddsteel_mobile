@@ -1,8 +1,7 @@
-package com.micromos.knp_mobile.network
+package com.micromos.productcoilout.network
 
 import android.util.Log
-import com.google.gson.GsonBuilder
-import com.micromos.knp_mobile.dto.*
+import com.micromos.productcoilout.dto.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -11,10 +11,10 @@
         <item
             android:id="@+id/nav_ship_detail"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_ship" />
+            android:title="@string/menu_ship_in" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_ship_out"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_ship_out" />
     </group>
 </menu>

@@ -1,4 +1,4 @@
-package com.micromos.knp_mobile.dto
+package com.micromos.productcoilout.dto
 
 import com.google.gson.annotations.SerializedName
 

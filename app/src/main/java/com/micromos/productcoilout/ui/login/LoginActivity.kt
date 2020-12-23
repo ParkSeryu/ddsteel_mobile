@@ -1,4 +1,4 @@
-package com.micromos.knp_mobile.ui.login
+package com.micromos.productcoilout.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.micromos.knp_mobile.CustomDialog
-import com.micromos.knp_mobile.MainActivity
-import com.micromos.knp_mobile.R
-import com.micromos.knp_mobile.databinding.ActivityLoginBinding
+import com.micromos.productcoilout.CustomDialog
+import com.micromos.productcoilout.MainActivity
+import com.micromos.productcoilout.R
+import com.micromos.productcoilout.databinding.ActivityLoginBinding
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         // 인스턴스를 설정하고 데이터를 바인딩 할 수 있다.
         LoginViewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         LoginViewModel =
-            ViewModelProvider(this).get(com.micromos.knp_mobile.ui.login.LoginViewModel::class.java)
+            ViewModelProvider(this).get(com.micromos.productcoilout.ui.login.LoginViewModel::class.java)
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.main_color));
         LoginViewDataBinding.viewModel = LoginViewModel
         LoginViewDataBinding.lifecycleOwner = this

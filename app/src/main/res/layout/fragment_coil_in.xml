@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.micromos.knp_mobile.ui.productcoilin.ProductCoilInViewModel" />
+            type="com.micromos.productcoilout.ui.productcoilin.ProductCoilInViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="5dp"
-            android:onClick="@{() -> viewModel.retrieve()}"
+            android:onClick="@{() -> viewModel.shipRetrieve(viewModel._requestNo)}"
             android:text="@string/button_retrieve"
             app:layout_constraintBottom_toTopOf="@+id/sell_cust_cd_tv"
             app:layout_constraintLeft_toRightOf="@id/guideline"

@@ -1,6 +1,5 @@
-package com.micromos.knp_mobile
+package com.micromos.productcoilout
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

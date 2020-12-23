@@ -1,15 +1,15 @@
-package com.micromos.knp_mobile.ui.login
+package com.micromos.productcoilout.ui.login
 
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.micromos.knp_mobile.BuildConfig
-import com.micromos.knp_mobile.SingleLiveEvent
-import com.micromos.knp_mobile.ViewModelBase
-import com.micromos.knp_mobile.dto.User
-import com.micromos.knp_mobile.network.KNPApi
-import com.micromos.knp_mobile.Event
+import com.micromos.productcoilout.BuildConfig
+import com.micromos.productcoilout.SingleLiveEvent
+import com.micromos.productcoilout.ViewModelBase
+import com.micromos.productcoilout.dto.User
+import com.micromos.productcoilout.network.KNPApi
+import com.micromos.productcoilout.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
