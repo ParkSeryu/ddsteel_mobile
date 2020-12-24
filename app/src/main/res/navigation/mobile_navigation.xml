@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.micromos.productcoilout.ui.home.HomeFragment"
+        android:name="com.micromos.knpmobile.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_ship_detail"
-        android:name="com.micromos.productcoilout.ui.productcoilin.ProductCoilInFragment"
+        android:id="@+id/nav_ship_in"
+        android:name="com.micromos.knpmobile.ui.productcoilin.ProductCoilInFragment"
         android:label="@string/menu_ship_in"
         tools:layout="@layout/fragment_coil_in" />
 
     <fragment
         android:id="@+id/nav_ship_out"
-        android:name="com.micromos.productcoilout.ui.productcoilout.SlideshowFragment"
+        android:name="com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment"
         android:label="@string/menu_ship_out"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_coil_out" />
 </navigation>

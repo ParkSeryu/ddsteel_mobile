@@ -35,4 +35,13 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="custCdStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/cust_cd_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="cardViewListStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>
