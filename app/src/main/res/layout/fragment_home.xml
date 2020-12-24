@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.micromos.knp_mobile.ui.home.HomeViewModel" />
+            type="com.micromos.knpmobile.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"

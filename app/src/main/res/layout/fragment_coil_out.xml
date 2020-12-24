@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.productcoilin.ProductCoilInViewModel" />
+            type="com.micromos.knpmobile.ui.productcoilout.ProductCoilOutViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

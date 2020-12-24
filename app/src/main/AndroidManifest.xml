@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.micromos.knp_mobile">
+    package="com.micromos.knpmobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -14,14 +14,14 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.KNP2">
         <activity
-            android:name="com.micromos.knp_mobile.MainActivity"
+            android:name="com.micromos.knpmobile.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.KNP2.NoActionBar">
 
         </activity>
 
         <activity
-            android:name="com.micromos.knp_mobile.ui.login.LoginActivity"
+            android:name="com.micromos.knpmobile.ui.login.LoginActivity"
             android:theme="@style/Theme.KNP2.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
