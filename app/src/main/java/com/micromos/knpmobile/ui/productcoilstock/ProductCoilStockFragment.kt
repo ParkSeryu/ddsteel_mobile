@@ -18,13 +18,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilStockBinding
-import com.micromos.knpmobile.dto.ShipOrder
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.change_stock_auto_tv
@@ -188,9 +186,18 @@ class ProductCoilStockFragment : Fragment() {
         val adapter = ProductCoilStockAdapter(productCoilStockViewModel, requireContext())
         coilStockDataBinding.recyclerView.adapter = adapter
 
-        productCoilStockViewModel.cardItemListData.observe(viewLifecycleOwner, Observer {
+        productCoilStockViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
             if( it != null){
-                adapter.items.add(0, it)
+                it.update = 1
+                adapter.item.add(0, it)
+                adapter.notifyDataSetChanged()
+            }
+        })
+
+        productCoilStockViewModel.cardItemListDataInsert.observe(viewLifecycleOwner, Observer {
+            if( it != null){
+                it.update = 0
+                adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
             }
         })

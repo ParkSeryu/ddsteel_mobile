@@ -99,7 +99,7 @@ interface KNPApi {
 
     companion object Factory {
         fun create(): KNPApi {
-            val uri = "http://192.168.35.147/index.php/"
+            val uri = "http://192.168.25.26/index.php/"
 
             val okHttpClient = OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)

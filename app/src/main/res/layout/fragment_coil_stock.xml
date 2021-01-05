@@ -33,7 +33,7 @@
                 android:layout_marginStart="@dimen/default_text_margin"
                 android:layout_marginTop="@dimen/default_text_margin"
                 android:layout_marginEnd="@dimen/default_text_margin"
-                android:hint="적재위치"
+                android:hint="@string/prompt_pos"
                 app:endIconMode="clear_text"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -103,7 +103,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_layout_label"
-                tools:listitem="@layout/card_item_list" />
+                tools:listitem="@layout/card_item_list_stock_update" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_center"

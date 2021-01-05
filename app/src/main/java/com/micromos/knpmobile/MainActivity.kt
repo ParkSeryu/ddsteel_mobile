@@ -30,6 +30,8 @@ import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         val codeCdList = mutableListOf<String?>() as ArrayList<String>
         val codeNmList = mutableListOf<String?>() as ArrayList<String>
         val codeList = mutableMapOf<String, String>()
-        fun autoCompleteTextViewCustom(AT : AutoCompleteTextView, context : Context) {
+        fun autoCompleteTextViewCustom(AT: AutoCompleteTextView, context: Context) {
             var text = AT.text.toString()
             val rstList = java.util.ArrayList<String>()
 
@@ -90,24 +92,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val header = navView.getHeaderView(0)
-        val navController = findNavController(R.id.nav_host_fragment)
+        //val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        //val navView: NavigationView = findViewById(R.id.nav_view)
+        //val header = navView.getHeaderView(0)
+        //val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_ship_in, R.id.nav_ship_out, R.id.nav_coil_stock, R.id.nav_pos_change
-            ), drawerLayout
-        )
+        /*   appBarConfiguration = AppBarConfiguration(
+               setOf(
+                   R.id.nav_home,
+                   R.id.nav_ship_in,
+                   R.id.nav_ship_out,
+                   R.id.nav_coil_stock,
+                   R.id.nav_pos_change
+               ), drawerLayout
+           )*/
 
         toolbar_name.text = name
-        val headerText = header.findViewById(R.id.headerText) as TextView
-        headerText.text = String.format(getString(R.string.prompt_hello), name)
+        //val headerText = header.findViewById(R.id.headerText) as TextView
+        //headerText.text = String.format(getString(R.string.prompt_hello), name)
         getCodeCd()
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        //setupActionBarWithNavController(navController, appBarConfiguration)
+        //navView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
@@ -116,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun getCodeCd(){
+    private fun getCodeCd() {
         //_isLoading.value = true
         api.getCodeCd(code_kind, use_cls).enqueue(object : Callback<GetCodeCdFeed> {
             override fun onResponse(call: Call<GetCodeCdFeed>, response: Response<GetCodeCdFeed>) {
@@ -136,17 +142,17 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun transToUpperCase(s : Editable?, editText : EditText){
+    fun transToUpperCase(s: Editable?, editText: EditText) {
         var text = s.toString()
-        if(text != text.toUpperCase()){
-            text = text.toUpperCase()
+        if (text != text.toUpperCase(Locale.ROOT)) {
+            text = text.toUpperCase(Locale.ROOT)
             editText.setText(text)
             editText.setSelection(editText.length())
         }
     }
 
-    fun setTextChangedListener(editText: EditText){
-        editText.addTextChangedListener(object : TextWatcher{
+    fun setTextChangedListener(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -173,7 +179,11 @@ class MainActivity : AppCompatActivity() {
         return super.onKeyDown(keyCode, event);
     }
 */
-    fun logout(){
+    fun goHome(){
+
+    }
+
+    fun logout() {
         //back(취소)키가 눌렸을때 종료여부를 묻는 다이얼로그 띄움
         CustomDialog(this, R.layout.dialog_app_finish)
             .setMessage(R.string.prompt_exit)

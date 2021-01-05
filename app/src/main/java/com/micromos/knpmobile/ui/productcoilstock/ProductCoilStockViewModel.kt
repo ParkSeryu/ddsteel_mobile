@@ -50,8 +50,8 @@ class ProductCoilStockViewModel : ViewModelBase() {
     private lateinit var labelNoTrim: String
     private lateinit var codeCd: String
 
-
-    val cardItemListData = MutableLiveData<GetCardInfo>()
+    val cardItemListDataUpdate = MutableLiveData<GetCardInfo>()
+    val cardItemListDataInsert = MutableLiveData<GetCardInfo>()
 
     init {
         getServerTime()
@@ -96,9 +96,9 @@ class ProductCoilStockViewModel : ViewModelBase() {
             }
         }
 
-        if (!posCdTrim.isBlank()) {
+        if (posCdTrim.isNotBlank()) {
             if (posCdTrim in codeNmList) {
-                if (!labelNoTrim.isBlank()) {
+                if (labelNoTrim.isNotBlank()) {
                     _isLoading.value = true
                     api.getLabelNo(stockDate, labelNoTrim)
                         .enqueue(object : Callback<GetLabelNo> {
@@ -145,14 +145,15 @@ class ProductCoilStockViewModel : ViewModelBase() {
                                     response: Response<GetCardInfo>
                                 ) {
                                     if (response.code() == 200) {
-                                        cardItemListData.value = response.body()
-                                        Log.d("testUpdate", "${cardItemListData.value}")
+                                        cardItemListDataUpdate.value = response.body()
+
+                                        Log.d("testUpdate", "${cardItemListDataUpdate.value}")
                                     }
                                     Log.d("testUpdate", "${response.body()}")
                                 }
 
                                 override fun onFailure(call: Call<GetCardInfo>, t: Throwable) {
-                                    Log.d("testFailedUpdateCoilStock", t.message.toString())
+                                    Log.d("testFailedUpdateStock", t.message.toString())
                                     noNetWork()
                                 }
                             })
@@ -162,7 +163,7 @@ class ProductCoilStockViewModel : ViewModelBase() {
                 }
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    Log.d("testFailedUpdateCoilStock", t.message.toString())
+                    Log.d("testFailedUpdateStock", t.message.toString())
                     noNetWork()
                 }
             }
@@ -175,7 +176,7 @@ class ProductCoilStockViewModel : ViewModelBase() {
         api.insertCoilStock(
             inDate = stockDate,
             stockNo = stockDate,
-            userId = user_id ?: "emptys",
+            userId = user_id ?: "empty",
             labelNo = labelNoTrim,
             posCd = codeCd
         ).enqueue(object : Callback<Unit> {
@@ -187,13 +188,12 @@ class ProductCoilStockViewModel : ViewModelBase() {
                             call: Call<GetCardInfo>,
                             response: Response<GetCardInfo>
                         ) {
-
-                            cardItemListData.value = response.body()
-                            Log.d("testInsert", "${cardItemListData.value}")
+                            cardItemListDataInsert.value = response.body()
+                            Log.d("testInsert", "${cardItemListDataInsert.value}")
                         }
 
                         override fun onFailure(call: Call<GetCardInfo>, t: Throwable) {
-                            Log.d("testFailedInsertCoilStock", t.message.toString())
+                            Log.d("testFailedInsertStock", t.message.toString())
                             noNetWork()
                         }
                     })
@@ -202,41 +202,27 @@ class ProductCoilStockViewModel : ViewModelBase() {
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Log.d("testFailedInsertCoilStock", t.message.toString())
+                Log.d("testFailedInsertStock", t.message.toString())
                 noNetWork()
             }
         })
         Log.d("testlabelNo", "insertstock")
     }
 
-    fun setCardViewColor(insertCheckFlag: String?): Int {
-        return if (insertCheckFlag == null)
-            Color.rgb(255, 249, 196)
-        else
-            Color.WHITE
-    }
 
-    fun setCardVisibility(insertCheckFlag: String?): Int {
-        return if (insertCheckFlag == null) {
+    fun setCardVisibility(stockCls: String): Int {
+        return if (stockCls == "I") {
             View.GONE
         } else {
             View.VISIBLE
         }
     }
 
-    fun setText(insertCheckFlag: String?): String {
-        return if (insertCheckFlag == null) {
-            "추가"
+    fun setText(stockCls: String?): String {
+        return if (stockCls == "I") {
+            "신규"
         } else {
             "OK"
-        }
-    }
-
-    fun setTextColor(insertCheckFlag: String?): Int {
-        return if (insertCheckFlag == null) {
-            Color.BLUE
-        } else {
-            Color.RED
         }
     }
 
