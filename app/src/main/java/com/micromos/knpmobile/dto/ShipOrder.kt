@@ -2,6 +2,7 @@ package com.micromos.knpmobile.dto
 
 import com.google.gson.annotations.SerializedName
 
+
 data class GetCustCd(
     @SerializedName("CUST_NM") val custNm: String,
     @SerializedName("VEN_CUST_NM") val venCustNm: String,
@@ -24,7 +25,7 @@ data class ShipOrder(
     @SerializedName("STAN_CD") val stanCd: String,
     @SerializedName("STAN_NM") val stanNm: String,
     @SerializedName("SIZE_NO") val sizeNo: String,
-    @SerializedName("QUANTITY") val quantity: String,
+    @SerializedName("QUANTITY") val quantity: Int,
     @SerializedName("WEIGHT") val weight: Int,
     @SerializedName("MODIFY_CLS") val modifyCLS: String,
 )

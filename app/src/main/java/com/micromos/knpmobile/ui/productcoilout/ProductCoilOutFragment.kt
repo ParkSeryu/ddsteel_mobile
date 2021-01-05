@@ -19,11 +19,23 @@ import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilOutBinding
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
+import kotlinx.android.synthetic.main.fragment_coil_out.*
+import kotlinx.android.synthetic.main.fragment_coil_out.input_layout
+import kotlinx.android.synthetic.main.fragment_coil_out.outer_layout_ship
+import kotlinx.android.synthetic.main.fragment_coil_out.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_out.recyclerView
+import kotlinx.android.synthetic.main.fragment_coil_out.ship_no_edt
 
 class ProductCoilOutFragment : Fragment() {
 
     private lateinit var productCoilOutViewModel: ProductCoilOutViewModel
     private lateinit var coilOutDataBinding: FragmentCoilOutBinding
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        outer_layout_ship.setOnClickListener { hideKeyboard() }
+        (requireActivity() as MainActivity).setTextChangedListener(ship_no_edt)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +54,6 @@ class ProductCoilOutFragment : Fragment() {
             this.viewModel = productCoilOutViewModel
             this.lifecycleOwner = this@ProductCoilOutFragment
         }
-
         setRecyclerView()
 
         productCoilOutViewModel.noRetrieve.observe(viewLifecycleOwner, Observer {
@@ -172,6 +183,7 @@ class ProductCoilOutFragment : Fragment() {
     }
 
     fun setToolbar() {
+        (requireActivity() as MainActivity).toolbar_title.text = getString(R.string.menu_ship_out)
         (requireActivity() as MainActivity).toolbar_numer.text =
             productCoilOutViewModel.numerator.toString()
         (requireActivity() as MainActivity).toolbar_hyphen.text = "/"

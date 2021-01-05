@@ -59,14 +59,14 @@ class ProductCoilInViewModel : ViewModelBase() {
     val _test = MutableLiveData<String>()
     val test: LiveData<String> = _test
 
-    fun shipRetrieve(requestNo: String?) {
-        val requestNo = requestNo?.trim()
+    fun shipRetrieve(_requestNo: String?) {
+        val requestNo = _requestNo?.trim()
         //requestNo?.toUpperCase(Locale.ROOT)
 
         if (requestNo != null) {
             _isLoading.value = true
             if (requestNo.length == 11 && requestNo.substring(0, 2) in shipNoList) {
-                Log.d("tete", "${prevShipNo.value} / ${_requestNo.value}")
+                Log.d("tete", "${prevShipNo.value} / ${this._requestNo.value}")
                 if (prevShipNo.value.equals(null)) {
                     prevShipNo.value = requestNo
                     settings(requestNo)
@@ -75,7 +75,7 @@ class ProductCoilInViewModel : ViewModelBase() {
                 } else {
                     settings(requestNo)
                 }
-                if (_requestNo.value?.trim() == requestNo) {
+                if (this._requestNo.value?.trim() == requestNo) {
                     recyclerViewStateFlag = false
                 }
             } else {
@@ -131,7 +131,6 @@ class ProductCoilInViewModel : ViewModelBase() {
 
                 if (length != null) {
                     denomiator = length
-
                     labelNoList.clear()
                     pdaDateTimeInList.clear()
                     for (i in 0 until length) {
@@ -147,7 +146,7 @@ class ProductCoilInViewModel : ViewModelBase() {
             }
 
             override fun onFailure(call: Call<ShipOrderFeed>, t: Throwable) {
-                Log.d("testfailedCoilIn", t.message.toString())
+                Log.d("testFailedCoilIn", t.message.toString())
                 noNetWork()
             }
         })
@@ -199,7 +198,7 @@ class ProductCoilInViewModel : ViewModelBase() {
         return if (pdaDateTime.isNullOrBlank())
             Color.WHITE
         else
-            Color.rgb(178, 218, 238)
+            Color.rgb(255, 249, 196)
     }
 
     fun setOkTvVisibility(pdaDateTime: String?): Int {
@@ -207,10 +206,6 @@ class ProductCoilInViewModel : ViewModelBase() {
             View.GONE
         else
             View.VISIBLE
-    }
-
-    fun successCall() {
-        _isLoading.value = false
     }
 
     fun noNetWork() {

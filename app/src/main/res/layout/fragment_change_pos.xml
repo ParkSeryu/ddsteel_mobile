@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.micromos.knpmobile.ui.productchangepos.ProductChangePosViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/outer_layout_change_pos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_text_margin"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:hint="@string/prompt_label_no"
+            android:imeOptions="actionSearch"
+            app:endIconMode="clear_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/label_no_edt_pos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapCharacters"
+                android:singleLine="true"
+                android:text="@={viewModel._labelNo}"
+                android:textSize="@dimen/text_view_default_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRetrieve"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="5dp"
+            android:onClick="@{() -> viewModel.retrievePos(viewModel._labelNo)}"
+            android:text="@string/button_retrieve"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input_layout" />
+
+        <TextView
+            android:id="@+id/prompt_current_stock_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/prompt_current_pos"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintLeft_toLeftOf="@id/input_layout"
+            app:layout_constraintTop_toBottomOf="@id/input_layout" />
+
+        <TextView
+            android:id="@+id/current_stock_tv"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="@dimen/default_text_margin"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:background="@drawable/text_view_border"
+            android:enabled="false"
+            android:paddingStart="5dp"
+            android:paddingTop="15dp"
+            android:text="@{viewModel._pos_cd}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintBottom_toBottomOf="@id/prompt_current_stock_tv"
+            app:layout_constraintLeft_toRightOf="@id/prompt_current_stock_tv"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/prompt_current_stock_tv"
+            tools:text="%s" />
+
+        <TextView
+            android:id="@+id/prompt_change_stock_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/prompt_change_pos"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintLeft_toLeftOf="@id/input_layout"
+            app:layout_constraintTop_toBottomOf="@id/current_stock_tv" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_auto_tv"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            app:layout_constraintBottom_toBottomOf="@id/prompt_change_stock_tv"
+            app:layout_constraintLeft_toRightOf="@id/prompt_change_stock_tv"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/prompt_change_stock_tv">
+
+            <com.micromos.knpmobile.CustomAutoCompleteTextView
+                android:id="@+id/change_stock_auto_tv"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="@dimen/default_text_margin"
+                android:layout_marginEnd="@dimen/default_text_margin"
+                android:background="@drawable/edit_text_border"
+                android:completionThreshold="0"
+                android:dropDownWidth="match_parent"
+                android:dropDownHeight="wrap_content"
+                android:dropDownVerticalOffset="1dp"
+                android:inputType="textCapCharacters"
+                android:paddingStart="5dp"
+                android:text="@={viewModel.atText}"
+                android:textSize="@dimen/text_view_default_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="%s" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:onClick="@{() -> viewModel.save()}"
+            android:text="@string/button_save"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input_layout_auto_tv" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#8C000000"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

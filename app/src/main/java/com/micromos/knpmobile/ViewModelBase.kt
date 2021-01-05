@@ -16,4 +16,8 @@ open class ViewModelBase : ViewModel() {
     fun loadingVisibilityConverter(loading: Boolean): Int {
         return if(loading) View.VISIBLE else View.INVISIBLE
     }
+
+    fun successCall(){
+        _isLoading.value = false
+    }
 }

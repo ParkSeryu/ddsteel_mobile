@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.app_bar_main.*
 
 class HomeFragment : Fragment() {
 
@@ -25,6 +27,8 @@ class HomeFragment : Fragment() {
             this.viewModel = homeViewModel
             this.lifecycleOwner = this@HomeFragment
         }
+        (requireActivity() as MainActivity).toolbar_title.text = getString(R.string.menu_home)
+
 
 
         return homeViewDataBinding.root

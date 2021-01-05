@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.micromos.knpmobile.ui.productcoilstock.ProductCoilStockViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/outer_layout_coil_stock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pos_label_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_pos"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_text_margin"
+                android:layout_marginTop="@dimen/default_text_margin"
+                android:layout_marginEnd="@dimen/default_text_margin"
+                android:hint="적재위치"
+                app:endIconMode="clear_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.micromos.knpmobile.CustomAutoCompleteTextView
+                    android:id="@+id/change_stock_auto_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:completionThreshold="0"
+                    android:dropDownWidth="match_parent"
+                    android:dropDownHeight="wrap_content"
+                    android:dropDownVerticalOffset="1dp"
+                    android:inputType="textCapCharacters"
+                    android:text="@={viewModel.posCd}"
+                    android:paddingStart="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/prompt_change_stock_tv"
+                    app:layout_constraintLeft_toRightOf="@id/prompt_change_stock_tv"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/prompt_change_stock_tv"
+                    tools:text="%s" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_label"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_text_margin"
+                android:hint="@string/prompt_label_no"
+                android:imeOptions="actionSend"
+                app:endIconMode="clear_text"
+                app:layout_constraintLeft_toLeftOf="@id/input_layout_pos"
+                app:layout_constraintRight_toRightOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/input_layout_pos">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/label_no_edt_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textCapCharacters"
+                    android:singleLine="true"
+                    android:text="@={viewModel.labelNo}"
+                    android:textSize="@dimen/text_view_default_size" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRetrieveLabel"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="@dimen/default_text_margin"
+                android:text="@string/button_retrieve"
+                android:onClick="@{() -> viewModel.labelRetrieve()}"
+                android:textSize="@dimen/text_view_default_size"
+                app:layout_constraintLeft_toRightOf="@id/guideline"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/input_layout_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_layout_label"
+                tools:listitem="@layout/card_item_list" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#8C000000"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/date_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/input_layout_date"
+                app:layout_constraintStart_toStartOf="@id/input_layout_date"
+                app:layout_constraintEnd_toEndOf="@id/btnOk"
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="재고생성일을 입력해주세요"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_date"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_text_margin"
+                android:layout_marginEnd="@dimen/default_text_margin"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/prompt_date"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+                app:layout_constraintRight_toLeftOf="@id/btnOk"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/date_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:cursorVisible="false"
+                    android:onClick="@{() -> viewModel.showDatePickerDialog()}"
+                    android:singleLine="true"
+                    android:text="@={viewModel.inDate}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOk"
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                android:onClick="@{()-> viewModel.btnDateOk()}"
+                android:text="@string/dialog_ok"
+                android:textSize="@dimen/text_view_default_size"
+                app:layout_constraintLeft_toRightOf="@id/guideline_button"
+                app:layout_constraintRight_toRightOf="@id/guideline_rights"
+                app:layout_constraintTop_toTopOf="@id/input_layout_date" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.7" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_rights"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

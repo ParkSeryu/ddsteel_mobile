@@ -4,6 +4,7 @@ import android.util.Log
 import com.micromos.knpmobile.dto.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -12,6 +13,26 @@ import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 interface KNPApi {
+
+    @GET("code/change_pos")
+    fun changePos(
+        @Query("pos_cd") posCd: String,
+        @Query("user_id") userId: String,
+        @Query("coil_no") coilNo: String,
+        @Query("coil_seq") coilSeq: String,
+        @Query("stk_type") stkType: String,
+    ): Call<Unit>
+
+    @GET("code/get_code_cd")
+    fun getCodeCd(
+        @Query("code_kind") codeKind: String,
+        @Query("use_cls") useCls: String,
+    ): Call<GetCodeCdFeed>
+
+    @GET("code/get_pos_cd")
+    fun getPosCd(
+        @Query("label_no") labelNo: String,
+    ): Call<GetPosCd>
 
     @GET("product/get_cust_cd")
     fun getCustCd(
@@ -33,6 +54,38 @@ interface KNPApi {
         @Query("label_no") labelNo: String,
     ): Call<Unit>
 
+    @GET("stock/get_label_no")
+    fun getLabelNo(
+        @Query("in_date") inDate: String,
+        @Query("label_no") labelNo: String
+    ): Call<GetLabelNo>
+
+    @GET("stock/get_card_Info")
+    fun getCardInfo(
+        @Query("label_no") labelNo: String,
+        @Query("in_date") inDate: String
+    ): Call<GetCardInfo>
+
+    @FormUrlEncoded
+    @POST("stock/insert_coil_stock")
+    fun insertCoilStock(
+        @Field("in_date") inDate: String,
+        @Field("stock_no") stockNo: String,
+        @Field("user_id") userId: String,
+        @Field("label_no") labelNo: String,
+        @Field("pos_cd") posCd: String
+    ): Call<Unit>
+
+    @GET("stock/update_coil_stock")
+    fun updateCoilStock(
+        @Query("pos_cd") posCd: String,
+        @Query("label_no") labelNo: String,
+        @Query("in_date") inDate: String
+    ): Call<Unit>
+
+
+    @GET("version/getTime")
+    fun getDateTime(): Call<ResponseBody>
 
     @GET("login/test_server")
     fun testServer(): Call<Unit>
@@ -46,7 +99,7 @@ interface KNPApi {
 
     companion object Factory {
         fun create(): KNPApi {
-            val uri = "http://192.168.25.55/index.php/"
+            val uri = "http://192.168.35.147/index.php/"
 
             val okHttpClient = OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)

@@ -30,6 +30,11 @@ class LoginViewModel : ViewModelBase() {
     val _id = MutableLiveData<String>()
     val _password = MutableLiveData<String>()
 
+    companion object {
+        var user_id : String? = null
+        var name : String? = null
+    }
+
     init {
         _connectNetwork.value = View.GONE
         api.testServer().enqueue(object : Callback<Unit> {
@@ -51,18 +56,19 @@ class LoginViewModel : ViewModelBase() {
     fun onClickLogin() {
         val id = _id.value ?: ""
         val pw = _password.value ?: ""
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             loginSuccessEvent.call()
-        }else{
+        } else {
             api.login(id, pw).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (response.code() == 200) {
-                        if(response.body()?.retire?.equals("2")!!)
-                        {
+                        if (response.body()?.retire?.equals("2")!!) {
                             _loginDeniedEvent.value = Event(Unit)
-                        }
-                        else
+                        } else {
+                            user_id = response.body()?.id
+                            name = response.body()?.name
                             loginSuccessEvent.call()
+                        }
                     }
                 }
 
@@ -76,6 +82,7 @@ class LoginViewModel : ViewModelBase() {
 
     fun btnEnabled(id: String, pw: String): Boolean {
         return if(BuildConfig.DEBUG) true else id.isNotBlank() && pw.isNotBlank()
+       // return id.isNotBlank() && pw.isNotBlank()
     }
 
 

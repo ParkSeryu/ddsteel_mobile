@@ -17,9 +17,10 @@ import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilInBinding
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.dialog_incorrect.*
-import kotlinx.android.synthetic.main.dialog_incorrect.view.*
+import kotlinx.android.synthetic.main.fragment_change_pos.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
+import kotlinx.android.synthetic.main.fragment_coil_in.input_layout
+import kotlinx.android.synthetic.main.fragment_coil_in.progress_bar
 
 class ProductCoilInFragment : Fragment() {
 
@@ -29,6 +30,7 @@ class ProductCoilInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         outer_layout_ship.setOnClickListener { hideKeyboard() }
+        (requireActivity() as MainActivity).setTextChangedListener(ship_no_edt)
     }
 
     override fun onCreateView(
@@ -48,6 +50,7 @@ class ProductCoilInFragment : Fragment() {
             this.viewModel = productCoilInViewModel
             this.lifecycleOwner = this@ProductCoilInFragment
         }
+
         setRecyclerView()
 
         productCoilInViewModel.noRetrieve.observe(viewLifecycleOwner, Observer {
@@ -165,6 +168,7 @@ class ProductCoilInFragment : Fragment() {
     }
 
     fun setToolbar() {
+        (requireActivity() as MainActivity).toolbar_title.text = getString(R.string.menu_ship_in)
         (requireActivity() as MainActivity).toolbar_numer.text =
             productCoilInViewModel.numerator.toString()
         (requireActivity() as MainActivity).toolbar_hyphen.text = "/"

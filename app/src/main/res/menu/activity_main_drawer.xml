@@ -14,7 +14,15 @@
             android:title="@string/menu_ship_in" />
         <item
             android:id="@+id/nav_ship_out"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_launcher_foreground"
             android:title="@string/menu_ship_out" />
+        <item
+            android:id="@+id/nav_coil_stock"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_coil_stock" />
+        <item
+            android:id="@+id/nav_pos_change"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/menu_change_pos" />
     </group>
 </menu>
