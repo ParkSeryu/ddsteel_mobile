@@ -1,6 +1,5 @@
-package com.micromos.knpmobile.ui.productcoilstock
+package com.micromos.knpmobile.ui.productstockcheck
 
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -18,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProductCoilStockViewModel : ViewModelBase() {
+class ProductStockCheckViewModel : ViewModelBase() {
 
     private val api = KNPApi.create()
 

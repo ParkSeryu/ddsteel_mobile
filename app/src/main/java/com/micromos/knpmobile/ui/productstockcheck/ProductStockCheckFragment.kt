@@ -1,4 +1,4 @@
-package com.micromos.knpmobile.ui.productcoilstock
+package com.micromos.knpmobile.ui.productstockcheck
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -23,15 +23,16 @@ import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilStockBinding
+import com.micromos.knpmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.change_stock_auto_tv
 import kotlinx.android.synthetic.main.fragment_coil_stock.progress_bar
 import java.util.*
 
-class ProductCoilStockFragment : Fragment() {
+class ProductStockCheckFragment : Fragment() {
 
-    private lateinit var productCoilStockViewModel: ProductCoilStockViewModel
+    private lateinit var productStockCheckViewModel: ProductStockCheckViewModel
     private lateinit var coilStockDataBinding: FragmentCoilStockBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -69,8 +70,8 @@ class ProductCoilStockFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         setToolbar()
-        productCoilStockViewModel =
-            ViewModelProvider(this).get(ProductCoilStockViewModel::class.java)
+        productStockCheckViewModel =
+            ViewModelProvider(this).get(ProductStockCheckViewModel::class.java)
 
         coilStockDataBinding = DataBindingUtil.inflate<FragmentCoilStockBinding>(
             inflater,
@@ -78,19 +79,19 @@ class ProductCoilStockFragment : Fragment() {
             container,
             false
         ).apply {
-            this.viewModel = productCoilStockViewModel
-            this.lifecycleOwner = this@ProductCoilStockFragment
+            this.viewModel = productStockCheckViewModel
+            this.lifecycleOwner = this@ProductStockCheckFragment
         }
         setRecyclerView()
 
-        productCoilStockViewModel.showDatePickerDialogEvent.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.showDatePickerDialogEvent.observe(viewLifecycleOwner, Observer {
             val calendar = Calendar.getInstance()
             val Year = calendar.get(Calendar.YEAR)
             val Month = calendar.get(Calendar.MONTH)
             val Day = calendar.get(Calendar.DAY_OF_MONTH)
             val dateListener =
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    productCoilStockViewModel.inDate.value =
+                    productStockCheckViewModel.inDate.value =
                         "$year / ${String.format("%02d", month + 1)} / ${
                             String.format(
                                 "%02d",
@@ -101,7 +102,7 @@ class ProductCoilStockFragment : Fragment() {
             DatePickerDialog(requireContext(), dateListener, Year, Month, Day).show()
         })
 
-        productCoilStockViewModel.noLabelNo.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.noLabelNo.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_notification)
@@ -111,7 +112,7 @@ class ProductCoilStockFragment : Fragment() {
             }
         })
 
-        productCoilStockViewModel.noPosCdNo.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.noPosCdNo.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_notification)
@@ -121,7 +122,7 @@ class ProductCoilStockFragment : Fragment() {
             }
         })
 
-        productCoilStockViewModel.noPosCdMatch.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.noPosCdMatch.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_notification)
@@ -131,7 +132,7 @@ class ProductCoilStockFragment : Fragment() {
             }
         })
 
-        productCoilStockViewModel.noNetWorkConnect.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.noNetWorkConnect.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_error)
@@ -141,23 +142,23 @@ class ProductCoilStockFragment : Fragment() {
             }
         })
 
-        productCoilStockViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
-                Log.d("visibleProgressBarOn", "${productCoilStockViewModel.isLoading.value}")
+                Log.d("visibleProgressBarOn", "${productStockCheckViewModel.isLoading.value}")
                 activity?.window?.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 );
                 progress_bar.visibility = View.VISIBLE
             } else {
-                Log.d("visibleProgressBarOff", "${productCoilStockViewModel.isLoading.value}")
+                Log.d("visibleProgressBarOff", "${productStockCheckViewModel.isLoading.value}")
                 activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 progress_bar.visibility = View.INVISIBLE
                 hideKeyboard()
             }
         })
 
-        productCoilStockViewModel.selectDateEvent.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.selectDateEvent.observe(viewLifecycleOwner, Observer {
             visibility(true)
         })
 
@@ -183,10 +184,10 @@ class ProductCoilStockFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        val adapter = ProductCoilStockAdapter(productCoilStockViewModel, requireContext())
+        val adapter = ProductCoilStockAdapter(productStockCheckViewModel, requireContext())
         coilStockDataBinding.recyclerView.adapter = adapter
 
-        productCoilStockViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
             if( it != null){
                 it.update = 1
                 adapter.item.add(0, it)
@@ -194,7 +195,7 @@ class ProductCoilStockFragment : Fragment() {
             }
         })
 
-        productCoilStockViewModel.cardItemListDataInsert.observe(viewLifecycleOwner, Observer {
+        productStockCheckViewModel.cardItemListDataInsert.observe(viewLifecycleOwner, Observer {
             if( it != null){
                 it.update = 0
                 adapter.item.add(0, it)
@@ -209,7 +210,7 @@ class ProductCoilStockFragment : Fragment() {
             if (pos_label_input_layout.visibility == View.VISIBLE) {
                 visibility(false)
             } else {
-                //(requireActivity() as MainActivity).logout()
+                (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
             }
         }
     }

@@ -1,7 +1,6 @@
-package com.micromos.knpmobile.ui.productcoilstock
+package com.micromos.knpmobile.ui.productstockcheck
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +8,7 @@ import com.micromos.knpmobile.databinding.CardItemListStockInsertBinding
 import com.micromos.knpmobile.databinding.CardItemListStockUpdateBinding
 import com.micromos.knpmobile.dto.GetCardInfo
 
-class ProductCoilStockAdapter(val viewModel: ProductCoilStockViewModel, val context: Context) :
+class ProductCoilStockAdapter(val checkViewModel: ProductStockCheckViewModel, val context: Context) :
     RecyclerView.Adapter<ViewHolder>() {
     var item = mutableListOf<GetCardInfo>()
 
@@ -40,9 +39,9 @@ class ProductCoilStockAdapter(val viewModel: ProductCoilStockViewModel, val cont
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (holder.itemViewType == 1) {
-            holder.bindUpdate(viewModel, item[position], context)
+            holder.bindUpdate(checkViewModel, item[position], context)
         } else {
-            holder.bindInsert(viewModel, item[position], context)
+            holder.bindInsert(checkViewModel, item[position], context)
         }
     }
 
@@ -66,14 +65,14 @@ class ViewHolder : RecyclerView.ViewHolder {
         bindingInsert = binding
     }
 
-    fun bindUpdate(viewModel: ProductCoilStockViewModel, item: GetCardInfo, context: Context) {
-        bindingUpdate.viewModel = viewModel
+    fun bindUpdate(checkViewModel: ProductStockCheckViewModel, item: GetCardInfo, context: Context) {
+        bindingUpdate.viewModel = checkViewModel
         bindingUpdate.cardItem = item
         bindingUpdate.executePendingBindings()
     }
 
-    fun bindInsert(viewModel: ProductCoilStockViewModel, item: GetCardInfo, context: Context) {
-        bindingInsert.viewModel = viewModel
+    fun bindInsert(checkViewModel: ProductStockCheckViewModel, item: GetCardInfo, context: Context) {
+        bindingInsert.viewModel = checkViewModel
         bindingInsert.cardItem = item
         bindingInsert.executePendingBindings()
     }

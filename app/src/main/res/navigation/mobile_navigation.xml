@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/nav_coil_stock"
-        android:name="com.micromos.knpmobile.ui.productcoilstock.ProductCoilStockFragment"
+        android:name="com.micromos.knpmobile.ui.productstockcheck.ProductStockCheckFragment"
         tools:layout="@layout/fragment_coil_stock" />
 
     <fragment

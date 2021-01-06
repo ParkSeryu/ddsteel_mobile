@@ -6,10 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,12 +16,14 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.micromos.knpmobile.dto.GetCodeCd
 import com.micromos.knpmobile.dto.GetCodeCdFeed
 import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.name
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_change_pos.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import retrofit2.Call
@@ -112,6 +111,9 @@ class MainActivity : AppCompatActivity() {
         //val headerText = header.findViewById(R.id.headerText) as TextView
         //headerText.text = String.format(getString(R.string.prompt_hello), name)
         getCodeCd()
+        HomeButton.setOnClickListener {
+            goHome()
+        }
         //setupActionBarWithNavController(navController, appBarConfiguration)
         //navView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -179,8 +181,13 @@ class MainActivity : AppCompatActivity() {
         return super.onKeyDown(keyCode, event);
     }
 */
-    fun goHome(){
+    fun goHome() {
+        Toast.makeText(this, "go Home", Toast.LENGTH_LONG).show()
+    }
 
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment).commit()
     }
 
     fun logout() {

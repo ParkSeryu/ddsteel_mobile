@@ -6,8 +6,16 @@ import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val _menuItemList = MutableLiveData<List<MenuItem>>()
+    val menuItemList: LiveData<List<MenuItem>> = _menuItemList
+
+    init {
+        _menuItemList.value = listOf(
+            MenuItem.ProductCoilIn,
+            MenuItem.ProductCoilOut,
+            MenuItem.ProductStockCheck,
+            MenuItem.ProductChangePos
+        )
     }
-    val text: LiveData<String> = _text
+
 }
