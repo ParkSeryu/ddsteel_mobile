@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilInBinding
+import com.micromos.knpmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_change_pos.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
@@ -26,6 +28,10 @@ class ProductCoilInFragment : Fragment() {
 
     private lateinit var productCoilInViewModel: ProductCoilInViewModel
     private lateinit var coilInDataBinding: FragmentCoilInBinding
+
+    companion object {
+        fun newInstance() = ProductCoilInFragment()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -134,12 +140,15 @@ class ProductCoilInFragment : Fragment() {
             }
         })
 
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+        }
 
         return coilInDataBinding.root
     }
 
     private fun setRecyclerView() {
-        val adapter = ProductCoilinAdapter(productCoilInViewModel, requireContext())
+        val adapter = ProductCoilInAdapter(productCoilInViewModel, requireContext())
         var recyclerViewState: Parcelable? = null
 
         productCoilInViewModel._recyclerViewState.observe(viewLifecycleOwner, Observer {
@@ -167,7 +176,7 @@ class ProductCoilInFragment : Fragment() {
         imm.hideSoftInputFromWindow(input_layout.windowToken, 0)
     }
 
-    fun setToolbar() {
+    private fun setToolbar() {
         (requireActivity() as MainActivity).toolbar_title.text = getString(R.string.menu_ship_in)
         (requireActivity() as MainActivity).toolbar_numer.text =
             productCoilInViewModel.numerator.toString()

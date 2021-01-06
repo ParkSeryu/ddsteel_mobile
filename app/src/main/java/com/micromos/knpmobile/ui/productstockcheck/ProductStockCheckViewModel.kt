@@ -43,7 +43,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
     val inDate = MutableLiveData<String>()
     val posCd = MutableLiveData<String?>()
 
-
     private lateinit var stockDate: String
     private lateinit var posCdTrim: String
     private lateinit var labelNoTrim: String
@@ -95,9 +94,11 @@ class ProductStockCheckViewModel : ViewModelBase() {
             }
         }
 
-        if (posCdTrim.isNotBlank()) {
+        Log.d("test", "$posCdTrim,$labelNoTrim")
+
+        if (posCdTrim != "null") {
             if (posCdTrim in codeNmList) {
-                if (labelNoTrim.isNotBlank()) {
+                if (labelNoTrim != "null") {
                     _isLoading.value = true
                     api.getLabelNo(stockDate, labelNoTrim)
                         .enqueue(object : Callback<GetLabelNo> {
@@ -205,7 +206,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
                 noNetWork()
             }
         })
-        Log.d("testlabelNo", "insertstock")
     }
 
 
@@ -224,7 +224,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
             "OK"
         }
     }
-
 
     fun noNetWork() {
         _noNetworkConnect.value = Event(Unit)

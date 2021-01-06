@@ -2,7 +2,6 @@ package com.micromos.knpmobile.dto
 
 import com.google.gson.annotations.SerializedName
 
-
 data class GetCustCd(
     @SerializedName("CUST_NM") val custNm: String,
     @SerializedName("VEN_CUST_NM") val venCustNm: String,

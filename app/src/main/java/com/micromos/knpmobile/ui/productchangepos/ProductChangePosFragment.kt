@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
 import com.micromos.knpmobile.MainActivity.Companion.codeNmList
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentChangePosBinding
+import com.micromos.knpmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_change_pos.*
 
@@ -29,6 +31,11 @@ class ProductChangePosFragment : Fragment() {
 
     private lateinit var productChangePosViewModel: ProductChangePosViewModel
     private lateinit var coilChangePosDataBinding: FragmentChangePosBinding
+
+    companion object {
+        fun newInstance() = ProductChangePosFragment()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         outer_layout_change_pos.setOnClickListener { hideKeyboard() }
         (requireActivity() as MainActivity).setTextChangedListener(label_no_edt_pos)
@@ -142,6 +149,10 @@ class ProductChangePosFragment : Fragment() {
                     }.show()
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+        }
 
         return coilChangePosDataBinding.root
     }

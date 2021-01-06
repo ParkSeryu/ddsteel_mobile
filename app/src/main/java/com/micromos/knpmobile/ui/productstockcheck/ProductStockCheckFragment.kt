@@ -24,6 +24,7 @@ import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilStockBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
+import com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.change_stock_auto_tv
@@ -34,6 +35,12 @@ class ProductStockCheckFragment : Fragment() {
 
     private lateinit var productStockCheckViewModel: ProductStockCheckViewModel
     private lateinit var coilStockDataBinding: FragmentCoilStockBinding
+
+    companion object {
+        fun newInstance() = ProductStockCheckFragment()
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pos_label_input_layout.visibility = View.INVISIBLE
@@ -162,6 +169,14 @@ class ProductStockCheckFragment : Fragment() {
             visibility(true)
         })
 
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (pos_label_input_layout.visibility == View.VISIBLE) {
+                visibility(false)
+            } else {
+                (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            }
+        }
+
         return coilStockDataBinding.root
     }
 
@@ -188,7 +203,7 @@ class ProductStockCheckFragment : Fragment() {
         coilStockDataBinding.recyclerView.adapter = adapter
 
         productStockCheckViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
-            if( it != null){
+            if (it != null) {
                 it.update = 1
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
@@ -196,23 +211,12 @@ class ProductStockCheckFragment : Fragment() {
         })
 
         productStockCheckViewModel.cardItemListDataInsert.observe(viewLifecycleOwner, Observer {
-            if( it != null){
+            if (it != null) {
                 it.update = 0
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
             }
         })
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (pos_label_input_layout.visibility == View.VISIBLE) {
-                visibility(false)
-            } else {
-                (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
-            }
-        }
     }
 
     private fun hideKeyboard() {

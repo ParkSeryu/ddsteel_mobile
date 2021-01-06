@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.micromos.knpmobile.databinding.MenuItemBinding
-import com.micromos.knpmobile.dto.ShipOrder
-
 
 class HomeAdapterMenu(val viewModel: HomeViewModel, val context: Context) :
     RecyclerView.Adapter<ViewHolder>() {

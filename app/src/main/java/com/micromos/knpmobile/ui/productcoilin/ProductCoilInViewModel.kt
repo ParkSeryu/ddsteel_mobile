@@ -61,7 +61,6 @@ class ProductCoilInViewModel : ViewModelBase() {
 
     fun shipRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
-        //requestNo?.toUpperCase(Locale.ROOT)
 
         if (requestNo != null) {
             _isLoading.value = true

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilOutBinding
+import com.micromos.knpmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_out.*
@@ -30,6 +32,11 @@ class ProductCoilOutFragment : Fragment() {
 
     private lateinit var productCoilOutViewModel: ProductCoilOutViewModel
     private lateinit var coilOutDataBinding: FragmentCoilOutBinding
+
+    companion object {
+        fun newInstance() = ProductCoilOutFragment()
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,14 +86,14 @@ class ProductCoilOutFragment : Fragment() {
 
         productCoilOutViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
-                Log.d("visib", "${productCoilOutViewModel.isLoading.value}")
+                Log.d("visibility", "${productCoilOutViewModel.isLoading.value}")
                 activity?.getWindow()?.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 );
                 progress_bar.visibility = View.VISIBLE
             } else {
-                Log.d("visib", "${productCoilOutViewModel.isLoading.value}")
+                Log.d("visibility", "${productCoilOutViewModel.isLoading.value}")
                 activity?.getWindow()?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 progress_bar.visibility = View.INVISIBLE
                 hideKeyboard()
@@ -148,6 +155,11 @@ class ProductCoilOutFragment : Fragment() {
                 productCoilOutViewModel.shipRetrieve(productCoilOutViewModel._requestNo.value)
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+        }
+
         return coilOutDataBinding.root
     }
 
@@ -160,8 +172,6 @@ class ProductCoilOutFragment : Fragment() {
         })
 
         productCoilOutViewModel.coilInData.observe(viewLifecycleOwner, Observer {
-            Log.d("ttt", "${productCoilOutViewModel.recyclerViewStateFlag}")
-
             if (productCoilOutViewModel.recyclerViewStateFlag)
                 coilOutDataBinding.recyclerView.layoutManager?.onRestoreInstanceState(
                     recyclerViewState

@@ -33,7 +33,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_ship_in">상차관리</string>
     <string name="menu_ship_out">출고관리</string>
-    <string name="menu_coil_stock">재고관리</string>
+    <string name="menu_coil_stock">재고조사</string>
     <string name="menu_change_pos">적재위치변경</string>
 
     <!-- Ship Common -->
@@ -66,6 +66,7 @@
 
     <!-- coil stock -->
     <string name="prompt_date">날짜입력</string>
+    <string name="prompt_date_tv">재고생성일을 입력해주세요</string>
     <string name="prompt_no_pos_cd">적재위치를 입력해주세요.</string>
     <string name="prompt_no_pos_cd_match">적재위치 값이 올바르지 않습니다.</string>
     <string name="prompt_no_label_no">라벨번호를 입력해주세요.</string>

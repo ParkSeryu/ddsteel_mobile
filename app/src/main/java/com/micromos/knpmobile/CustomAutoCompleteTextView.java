@@ -27,7 +27,6 @@ public class CustomAutoCompleteTextView extends androidx.appcompat.widget.AppCom
 
     @Override
     public void onFilterComplete(int count) {
-//        super.onFilterComplete(count);
     }
 
     @Override

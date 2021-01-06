@@ -19,11 +19,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var LoginViewModel: LoginViewModel
     private lateinit var LoginViewDataBinding: ActivityLoginBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Binding 객체를 가져온다, ActivityLoginBinding과 같은 클래스는 자동 생성되므로
-        // 인스턴스를 설정하고 데이터를 바인딩 할 수 있다.
         LoginViewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         LoginViewModel =
             ViewModelProvider(this).get(com.micromos.knpmobile.ui.login.LoginViewModel::class.java)

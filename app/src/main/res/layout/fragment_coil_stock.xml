@@ -164,9 +164,10 @@
                 app:layout_constraintStart_toStartOf="@id/input_layout_date"
                 app:layout_constraintEnd_toEndOf="@id/btnOk"
                 android:layout_marginBottom="10dp"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="재고생성일을 입력해주세요"/>
+                android:text="@string/prompt_date_tv"/>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -176,6 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_text_margin"
                 android:layout_marginEnd="@dimen/default_text_margin"
+                android:layout_marginBottom="20dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:hint="@string/prompt_date"

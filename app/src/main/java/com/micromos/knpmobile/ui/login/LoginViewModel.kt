@@ -40,7 +40,7 @@ class LoginViewModel : ViewModelBase() {
         api.testServer().enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (response.code() == 200) {
-                    Log.d("check", response.body().toString())
+                    Log.d("checkServer", response.body().toString())
                 }
             }
 

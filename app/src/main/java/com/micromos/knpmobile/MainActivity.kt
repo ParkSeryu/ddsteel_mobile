@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import com.micromos.knpmobile.dto.GetCodeCd
 import com.micromos.knpmobile.dto.GetCodeCdFeed
 import com.micromos.knpmobile.network.KNPApi
+import com.micromos.knpmobile.ui.home.HomeFragment
 import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.name
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -91,31 +92,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        //val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        //val navView: NavigationView = findViewById(R.id.nav_view)
-        //val header = navView.getHeaderView(0)
-        //val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        /*   appBarConfiguration = AppBarConfiguration(
-               setOf(
-                   R.id.nav_home,
-                   R.id.nav_ship_in,
-                   R.id.nav_ship_out,
-                   R.id.nav_coil_stock,
-                   R.id.nav_pos_change
-               ), drawerLayout
-           )*/
-
         toolbar_name.text = name
-        //val headerText = header.findViewById(R.id.headerText) as TextView
-        //headerText.text = String.format(getString(R.string.prompt_hello), name)
         getCodeCd()
         HomeButton.setOnClickListener {
             goHome()
         }
-        //setupActionBarWithNavController(navController, appBarConfiguration)
-        //navView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
@@ -125,7 +106,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getCodeCd() {
-        //_isLoading.value = true
         api.getCodeCd(code_kind, use_cls).enqueue(object : Callback<GetCodeCdFeed> {
             override fun onResponse(call: Call<GetCodeCdFeed>, response: Response<GetCodeCdFeed>) {
                 codeCdList.clear()
@@ -167,22 +147,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    /*override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-       //back(취소)키가 눌렸을때 종료여부를 묻는 다이얼로그 띄움
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            CustomDialog(this, R.layout.dialog_app_finish)
-                .setMessage(R.string.prompt_exit)
-                .setPositiveButton("예") {
-                    finish()
-                }.setNegativeButton("아니오") {
-                }.show()
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-*/
-    fun goHome() {
-        Toast.makeText(this, "go Home", Toast.LENGTH_LONG).show()
+    private fun goHome() {
+        replaceFragment(HomeFragment.newInstance())
     }
 
     fun replaceFragment(fragment: Fragment) {
