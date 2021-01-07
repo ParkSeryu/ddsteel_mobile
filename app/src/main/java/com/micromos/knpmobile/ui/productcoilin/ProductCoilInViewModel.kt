@@ -34,6 +34,9 @@ class ProductCoilInViewModel : ViewModelBase() {
     private val _noLabelNo = MutableLiveData<Event<Unit>>()
     val noLabelNo: LiveData<Event<Unit>> = _noLabelNo
 
+    private val _noModifyEvent = MutableLiveData<Event<Unit>>()
+    val noModifyEvent: LiveData<Event<Unit>> = _noModifyEvent
+
     private val _dateTimeOverlap = MutableLiveData<Event<Unit>>()
     val dateTimeOverlap: LiveData<Event<Unit>> = _dateTimeOverlap
 
@@ -42,9 +45,10 @@ class ProductCoilInViewModel : ViewModelBase() {
 
     val _requestNo = MutableLiveData<String?>()
 
-    val coilInData = MutableLiveData<List<ShipOrder>>()
+    val shipOrderList = MutableLiveData<List<ShipOrder>>()
 
     val labelNoList = mutableListOf<String?>()
+    val modifyClsList = mutableListOf<Int?>()
     val pdaDateTimeInList = mutableListOf<String?>()
 
     val _recyclerViewState = MutableLiveData<Event<Unit>>()
@@ -59,7 +63,7 @@ class ProductCoilInViewModel : ViewModelBase() {
     val _test = MutableLiveData<String>()
     val test: LiveData<String> = _test
 
-    fun shipRetrieve(_requestNo: String?) {
+    fun shipNoRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
 
         if (requestNo != null) {
@@ -68,23 +72,23 @@ class ProductCoilInViewModel : ViewModelBase() {
                 Log.d("tete", "${prevShipNo.value} / ${this._requestNo.value}")
                 if (prevShipNo.value.equals(null)) {
                     prevShipNo.value = requestNo
-                    settings(requestNo)
+                    getCommonInfo(requestNo)
                 } else if (prevShipNo.value != requestNo) {
                     _noCompleteAllLabel.value = Event(Unit)
                 } else {
-                    settings(requestNo)
+                    getCommonInfo(requestNo)
                 }
                 if (this._requestNo.value?.trim() == requestNo) {
                     recyclerViewStateFlag = false
                 }
             } else {
                 _recyclerViewState.value = Event(Unit)
-                setShipCoilIn(requestNo)
+                labelRetrieve(requestNo)
             }
         }
     }
 
-    private fun settings(requestNo: String) {
+    private fun getCommonInfo(requestNo: String) {
         getCustCd(requestNo)
         getShipList(requestNo)
         prevShipNo.value = requestNo
@@ -120,7 +124,7 @@ class ProductCoilInViewModel : ViewModelBase() {
             ) {
                 Log.d("testCoilIn", response.body().toString())
 
-                coilInData.value = response.body()?.items
+                shipOrderList.value = response.body()?.items
 
                 numerator = 0
                 denomiator = 0
@@ -131,10 +135,12 @@ class ProductCoilInViewModel : ViewModelBase() {
                 if (length != null) {
                     denomiator = length
                     labelNoList.clear()
+                    modifyClsList.clear()
                     pdaDateTimeInList.clear()
                     for (i in 0 until length) {
-                        labelNoList.add(coilInData.value?.get(i)?.labelNo)
-                        pdaDateTimeInList.add(coilInData.value?.get(i)?.pdaDateTimeIn)
+                        labelNoList.add(shipOrderList.value?.get(i)?.labelNo)
+                        modifyClsList.add(shipOrderList.value?.get(i)?.modifyCLS)
+                        pdaDateTimeInList.add(shipOrderList.value?.get(i)?.pdaDateTimeIn)
                         if (!pdaDateTimeInList[i].isNullOrEmpty()) {
                             numerator++
                         }
@@ -151,45 +157,48 @@ class ProductCoilInViewModel : ViewModelBase() {
         })
     }
 
-    private fun setShipCoilIn(labelNo: String) {
+    private fun labelRetrieve(labelNo: String) {
         var successFlag = "false"
         _isLoading.value = true
         for (i in 0 until labelNoList.size) {
             if (labelNo == labelNoList[i]) {
-                if (pdaDateTimeInList[i].isNullOrEmpty()) {
-                    successFlag = "true"
-                    Log.d("test", successFlag)
-                    break
+                if (modifyClsList[i] == 0) {
+                    if (pdaDateTimeInList[i].isNullOrEmpty()) {
+                        successFlag = "true"
+                        Log.d("test", successFlag)
+                    } else {
+                        successFlag = "overlap"
+                        Log.d("test", successFlag)
+                        successCall()
+                    }
                 } else {
-                    successFlag = "overlap"
-                    Log.d("test", successFlag)
-                    successCall()
+                    successFlag = "noModify"
                 }
+                break
             }
         }
 
-        if (successFlag.equals("true")) {
+        if (successFlag == "true") {
             api.updatePDAin(labelNo).enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("testUpdatePda", response.body().toString())
                     successCall()
                     recyclerViewStateFlag = true
-                    shipRetrieve(shipNo)
+                    shipNoRetrieve(shipNo)
                 }
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    Log.d("testfailedUpdatePDA", t.message.toString())
+                    Log.d("testFailedUpdatePDA", t.message.toString())
                     noNetWork()
                 }
             })
         } else {
             successCall()
-            if (successFlag.equals("overlap"))
-                _dateTimeOverlap.value = Event(Unit)
-            else {
-                _noLabelNo.value = Event(Unit)
+            when (successFlag) {
+                "overlap" -> _dateTimeOverlap.value = Event(Unit)
+                "noModify" -> _noModifyEvent.value = Event(Unit)
+                "false" -> _noLabelNo.value = Event(Unit)
             }
-
         }
     }
 

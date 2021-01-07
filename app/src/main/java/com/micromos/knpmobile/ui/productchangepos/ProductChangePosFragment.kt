@@ -140,6 +140,10 @@ class ProductChangePosFragment : Fragment() {
             }
         })
 
+        productChangePosViewModel.focusChangeEvent.observe(viewLifecycleOwner, Observer {
+            coilChangePosDataBinding.changeStockAutoTv.requestFocus()
+        })
+
         productChangePosViewModel.updateImpossible.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)

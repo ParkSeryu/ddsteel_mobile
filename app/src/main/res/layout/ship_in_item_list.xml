@@ -24,8 +24,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        app:cardBackgroundColor="@{viewModel.setCardViewColor(shipInItem.pdaDateTimeIn)}"
         android:onClick="@{() -> viewModel.test(shipInItem.labelNo)}"
+        app:cardBackgroundColor="@{viewModel.setCardViewColor(shipInItem.pdaDateTimeIn)}"
         app:cardCornerRadius="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -39,7 +39,7 @@
             android:padding="10dp">
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/label_no_tv"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
@@ -49,17 +49,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="라벨번호 % s" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/label_ok_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ok"
-                android:textColor="@color/red"
+                android:textColor="@color/fontRed"
+                android:textSize="15sp"
                 android:visibility="@{viewModel.setOkTvVisibility(shipInItem.pdaDateTimeIn)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/label_no_tv" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/product_no_tv"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
@@ -70,7 +71,7 @@
                 app:layout_constraintTop_toBottomOf="@id/label_no_tv"
                 tools:text="제품번호" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/name_nm_tv"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
                 app:layout_constraintTop_toBottomOf="@id/product_no_tv"
                 tools:text="@string/name_cd" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/size_cd_tv"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
@@ -92,7 +93,7 @@
                 app:layout_constraintTop_toBottomOf="@id/name_nm_tv"
                 tools:text="@string/size_cd" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/stan_nm_cd"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
@@ -102,7 +103,7 @@
                 app:layout_constraintTop_toTopOf="@id/name_nm_tv"
                 tools:text="@string/stan_cd" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/quantity_tv"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
@@ -114,7 +115,7 @@
                 app:layout_constraintTop_toBottomOf="@id/stan_nm_cd"
                 tools:text="@string/quantity" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/weight_tv"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"

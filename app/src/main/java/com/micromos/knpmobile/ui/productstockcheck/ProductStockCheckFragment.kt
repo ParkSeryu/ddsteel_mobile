@@ -1,7 +1,6 @@
 package com.micromos.knpmobile.ui.productstockcheck
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.Selection
@@ -35,7 +34,7 @@ class ProductStockCheckFragment : Fragment() {
 
     private lateinit var productStockCheckViewModel: ProductStockCheckViewModel
     private lateinit var coilStockDataBinding: FragmentCoilStockBinding
-
+    private lateinit var adapter : ProductCoilStockAdapter
     companion object {
         fun newInstance() = ProductStockCheckFragment()
     }
@@ -170,10 +169,19 @@ class ProductStockCheckFragment : Fragment() {
         })
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (pos_label_input_layout.visibility == View.VISIBLE) {
-                visibility(false)
-            } else {
-                (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            if(adapter.itemCount == 0) {
+                if (pos_label_input_layout.visibility == View.VISIBLE) {
+                    visibility(false)
+                } else {
+                    (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+                }
+            }else{
+                adapter.item.clear()
+                coilStockDataBinding.changeStockAutoTv.setText("")
+                coilStockDataBinding.labelNoEdtStock.setText("")
+                coilStockDataBinding.changeStockAutoTv.requestFocus()
+                coilStockDataBinding.changeStockAutoTv.dismissDropDown()
+                adapter.notifyDataSetChanged()
             }
         }
 
@@ -199,7 +207,7 @@ class ProductStockCheckFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        val adapter = ProductCoilStockAdapter(productStockCheckViewModel, requireContext())
+         adapter = ProductCoilStockAdapter(productStockCheckViewModel, requireContext())
         coilStockDataBinding.recyclerView.adapter = adapter
 
         productStockCheckViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {

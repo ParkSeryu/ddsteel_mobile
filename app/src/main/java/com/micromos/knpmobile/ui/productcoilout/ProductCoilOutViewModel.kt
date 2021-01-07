@@ -34,6 +34,9 @@ class ProductCoilOutViewModel : ViewModelBase() {
     private val _noLabelNo = MutableLiveData<Event<Unit>>()
     val noLabelNo: LiveData<Event<Unit>> = _noLabelNo
 
+    private val _noModifyEvent = MutableLiveData<Event<Unit>>()
+    val noModifyEvent: LiveData<Event<Unit>> = _noModifyEvent
+
     private val _dateTimeOverlap = MutableLiveData<Event<Unit>>()
     val dateTimeOverlap: LiveData<Event<Unit>> = _dateTimeOverlap
 
@@ -45,11 +48,12 @@ class ProductCoilOutViewModel : ViewModelBase() {
 
     val _requestNo = MutableLiveData<String?>()
 
-    val coilInData = MutableLiveData<List<ShipOrder>>()
+    val shipOrderList = MutableLiveData<List<ShipOrder>>()
 
     val labelNoList = mutableListOf<String?>()
-    val pdaDateTimeInList = mutableListOf<String?>()
-    val pdaDateTimeOutList = mutableListOf<String?>()
+    val modifyClsList = mutableListOf<Int?>()
+    val pdaDateTimeCoilInList = mutableListOf<String?>()
+    val pdaDateTimeCoilOutList = mutableListOf<String?>()
 
     val _recyclerViewState = MutableLiveData<Event<Unit>>()
     var recyclerViewStateFlag: Boolean = false
@@ -60,13 +64,11 @@ class ProductCoilOutViewModel : ViewModelBase() {
     var denomiator: Int = 0
 
     val prevShipNo = MutableLiveData<String?>(null)
-
     val _test = MutableLiveData<String>()
     val test: LiveData<String> = _test
 
     fun shipRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
-        //requestNo?.toUpperCase(Locale.ROOT)
 
         if (requestNo != null) {
             _isLoading.value = true
@@ -74,23 +76,23 @@ class ProductCoilOutViewModel : ViewModelBase() {
                 Log.d("tete", "${prevShipNo.value} / ${this._requestNo.value}")
                 if (prevShipNo.value.equals(null)) {
                     prevShipNo.value = requestNo
-                    settings(requestNo)
+                    getCommonInfo(requestNo)
                 } else if (prevShipNo.value != requestNo) {
                     _noCompleteAllLabel.value = Event(Unit)
                 } else {
-                    settings(requestNo)
+                    getCommonInfo(requestNo)
                 }
                 if (this._requestNo.value?.trim() == requestNo) {
                     recyclerViewStateFlag = false
                 }
             } else {
                 _recyclerViewState.value = Event(Unit)
-                setCoilOut(requestNo)
+                labelRetrieve(requestNo)
             }
         }
     }
 
-    private fun settings(requestNo: String) {
+    private fun getCommonInfo(requestNo: String) {
         getCustCd(requestNo)
         getShipList(requestNo)
         prevShipNo.value = requestNo
@@ -112,7 +114,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
             }
 
             override fun onFailure(call: Call<GetCustCd>, t: Throwable) {
-                Log.d("testfailedCust", t.message.toString())
+                Log.d("testFailedCust", t.message.toString())
                 noNetWork()
             }
         })
@@ -124,27 +126,28 @@ class ProductCoilOutViewModel : ViewModelBase() {
                 call: Call<ShipOrderFeed>,
                 response: Response<ShipOrderFeed>
             ) {
-                Log.d("testCoilIn", response.body().toString())
+                Log.d("testCoilOut", response.body().toString())
 
-                coilInData.value = response.body()?.items
+                shipOrderList.value = response.body()?.items
 
                 numerator = 0
                 denomiator = 0
 
-                Log.d("testCoilIn", "${response.body()?.items?.size}")
+                Log.d("testCoilOut", "${response.body()?.items?.size}")
                 val length = response.body()?.items?.size
 
                 if (length != null) {
                     denomiator = length
-
                     labelNoList.clear()
-                    pdaDateTimeInList.clear()
-                    pdaDateTimeOutList.clear()
+                    modifyClsList.clear()
+                    pdaDateTimeCoilInList.clear()
+                    pdaDateTimeCoilOutList.clear()
                     for (i in 0 until length) {
-                        labelNoList.add(coilInData.value?.get(i)?.labelNo)
-                        pdaDateTimeInList.add(coilInData.value?.get(i)?.pdaDateTimeIn)
-                        pdaDateTimeOutList.add(coilInData.value?.get(i)?.pdaDateTimeOut)
-                        if (!pdaDateTimeOutList[i].isNullOrEmpty()) {
+                        labelNoList.add(shipOrderList.value?.get(i)?.labelNo)
+                        modifyClsList.add(shipOrderList.value?.get(i)?.modifyCLS)
+                        pdaDateTimeCoilInList.add(shipOrderList.value?.get(i)?.pdaDateTimeIn)
+                        pdaDateTimeCoilOutList.add(shipOrderList.value?.get(i)?.pdaDateTimeOut)
+                        if (!pdaDateTimeCoilOutList[i].isNullOrEmpty()) {
                             numerator++
                         }
                     }
@@ -154,29 +157,36 @@ class ProductCoilOutViewModel : ViewModelBase() {
             }
 
             override fun onFailure(call: Call<ShipOrderFeed>, t: Throwable) {
-                Log.d("testfailedCoilIn", t.message.toString())
+                Log.d("testFailedCoilOut", t.message.toString())
                 noNetWork()
             }
         })
     }
 
-    private fun setCoilOut(labelNo: String) {
+    private fun labelRetrieve(labelNo: String) {
         var successFlag = "false"
         _isLoading.value = true
         for (i in 0 until labelNoList.size) {
             if (labelNo == labelNoList[i]) {
-                successFlag = if (pdaDateTimeInList[i].isNullOrEmpty()) {
-                    "notCoilIn"
-                } else if (pdaDateTimeOutList[i].isNullOrEmpty()) {
-                    "true"
+                successFlag = if (!pdaDateTimeCoilInList[i].isNullOrEmpty()) {
+                    if (modifyClsList[i] == 0) {
+                        if (pdaDateTimeCoilOutList[i].isNullOrEmpty()) {
+                            "true"
+                        } else {
+                            "overlap"
+                        }
+                    } else {
+                        "noModify"
+                    }
                 } else {
-                    "overlap"
+                    "notCoilIn"
                 }
+                Log.d("testUpdatePda", successFlag)
                 break
             }
         }
 
-        if (successFlag.equals("true")) {
+        if (successFlag == "true") {
             api.updatePDAout(labelNo).enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("testUpdatePda", response.body().toString())
@@ -186,7 +196,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
                 }
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    Log.d("testfailedUpdatePDA", t.message.toString())
+                    Log.d("testFailedUpdatePDA", t.message.toString())
                     noNetWork()
                 }
             })
@@ -194,6 +204,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
             successCall()
             when (successFlag) {
                 "overlap" -> _dateTimeOverlap.value = Event(Unit)
+                "noModify" -> _noModifyEvent.value = Event(Unit)
                 "notCoilIn" -> _noCompleteCoilIn.value = Event(Unit)
                 "false" -> _noLabelNo.value = Event(Unit)
             }

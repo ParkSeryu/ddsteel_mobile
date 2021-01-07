@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="6dp"
             android:text="@{@string/sell_cust_cd(viewModel._sell_cust_cd)}"
             android:visibility="@{viewModel.cust_cd_visibility}"
             app:layout_constraintStart_toStartOf="@id/recyclerView"

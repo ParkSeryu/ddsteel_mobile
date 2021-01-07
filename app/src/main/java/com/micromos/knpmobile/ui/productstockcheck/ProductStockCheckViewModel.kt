@@ -12,6 +12,7 @@ import com.micromos.knpmobile.dto.GetCardInfo
 import com.micromos.knpmobile.dto.GetLabelNo
 import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.user_id
+import kotlinx.android.synthetic.main.fragment_change_pos.view.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -219,7 +220,7 @@ class ProductStockCheckViewModel : ViewModelBase() {
 
     fun setText(stockCls: String?): String {
         return if (stockCls == "I") {
-            "신규"
+            "신규 업데이트"
         } else {
             "OK"
         }

@@ -19,6 +19,7 @@ import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilOutBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
+import com.micromos.knpmobile.ui.productcoilin.ProductCoilInFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_out.*
@@ -32,7 +33,7 @@ class ProductCoilOutFragment : Fragment() {
 
     private lateinit var productCoilOutViewModel: ProductCoilOutViewModel
     private lateinit var coilOutDataBinding: FragmentCoilOutBinding
-
+    private lateinit var adapter : ProductCoilOutAdapter
     companion object {
         fun newInstance() = ProductCoilOutFragment()
     }
@@ -111,6 +112,16 @@ class ProductCoilOutFragment : Fragment() {
             }
         })
 
+        productCoilOutViewModel.noModifyEvent.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_notification)
+                    .setMessage(R.string.prompt_label_no_modify_ship_out)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
         productCoilOutViewModel.dateTimeOverlap.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
@@ -157,21 +168,25 @@ class ProductCoilOutFragment : Fragment() {
         })
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            if (adapter.itemCount != 0) {
+                (requireActivity() as MainActivity).replaceFragment(newInstance())
+            } else {
+                (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            }
         }
 
         return coilOutDataBinding.root
     }
 
     private fun setRecyclerView() {
-        val adapter = ProductCoilinAdapter(productCoilOutViewModel, requireContext())
+        adapter = ProductCoilOutAdapter(productCoilOutViewModel, requireContext())
         var recyclerViewState: Parcelable? = null
 
         productCoilOutViewModel._recyclerViewState.observe(viewLifecycleOwner, Observer {
             recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
         })
 
-        productCoilOutViewModel.coilInData.observe(viewLifecycleOwner, Observer {
+        productCoilOutViewModel.shipOrderList.observe(viewLifecycleOwner, Observer {
             if (productCoilOutViewModel.recyclerViewStateFlag)
                 coilOutDataBinding.recyclerView.layoutManager?.onRestoreInstanceState(
                     recyclerViewState
@@ -192,7 +207,7 @@ class ProductCoilOutFragment : Fragment() {
         imm.hideSoftInputFromWindow(input_layout.windowToken, 0)
     }
 
-    fun setToolbar() {
+    private fun setToolbar() {
         (requireActivity() as MainActivity).toolbar_title.text = getString(R.string.menu_ship_out)
         (requireActivity() as MainActivity).toolbar_numer.text =
             productCoilOutViewModel.numerator.toString()

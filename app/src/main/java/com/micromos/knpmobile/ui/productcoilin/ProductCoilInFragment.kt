@@ -2,6 +2,7 @@ package com.micromos.knpmobile.ui.productcoilin
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ class ProductCoilInFragment : Fragment() {
 
     private lateinit var productCoilInViewModel: ProductCoilInViewModel
     private lateinit var coilInDataBinding: FragmentCoilInBinding
+    private lateinit var adapter: ProductCoilInAdapter
 
     companion object {
         fun newInstance() = ProductCoilInFragment()
@@ -128,34 +130,49 @@ class ProductCoilInFragment : Fragment() {
                         .setPositiveButton(R.string.dialog_ok) {
                             productCoilInViewModel.prevShipNo.value =
                                 productCoilInViewModel._requestNo.value?.trim()
-                            productCoilInViewModel.shipRetrieve(productCoilInViewModel._requestNo.value)
+                            productCoilInViewModel.shipNoRetrieve(productCoilInViewModel._requestNo.value)
                         }.setNegativeButton(R.string.dialog_ng) {
                             productCoilInViewModel.successCall()
                         }.show()
                 }
+
             } else {
                 productCoilInViewModel.prevShipNo.value =
                     productCoilInViewModel._requestNo.value?.trim()
-                productCoilInViewModel.shipRetrieve(productCoilInViewModel._requestNo.value)
+                productCoilInViewModel.shipNoRetrieve(productCoilInViewModel._requestNo.value)
+            }
+        })
+
+        productCoilInViewModel.noModifyEvent.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_notification)
+                    .setMessage(R.string.prompt_label_no_modify_ship_in)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
             }
         })
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            if (adapter.itemCount != 0) {
+                (requireActivity() as MainActivity).replaceFragment(newInstance())
+            } else {
+                (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            }
         }
 
         return coilInDataBinding.root
     }
 
     private fun setRecyclerView() {
-        val adapter = ProductCoilInAdapter(productCoilInViewModel, requireContext())
+        adapter = ProductCoilInAdapter(productCoilInViewModel, requireContext())
         var recyclerViewState: Parcelable? = null
 
         productCoilInViewModel._recyclerViewState.observe(viewLifecycleOwner, Observer {
             recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
         })
 
-        productCoilInViewModel.coilInData.observe(viewLifecycleOwner, Observer {
+        productCoilInViewModel.shipOrderList.observe(viewLifecycleOwner, Observer {
             if (productCoilInViewModel.recyclerViewStateFlag)
                 coilInDataBinding.recyclerView.layoutManager?.onRestoreInstanceState(
                     recyclerViewState

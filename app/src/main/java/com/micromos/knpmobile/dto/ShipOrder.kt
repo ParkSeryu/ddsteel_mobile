@@ -26,5 +26,5 @@ data class ShipOrder(
     @SerializedName("SIZE_NO") val sizeNo: String,
     @SerializedName("QUANTITY") val quantity: Int,
     @SerializedName("WEIGHT") val weight: Int,
-    @SerializedName("MODIFY_CLS") val modifyCLS: String,
+    @SerializedName("MODIFY_CLS") val modifyCLS: Int,
 )

@@ -97,10 +97,12 @@ class CustomDialog(private val context: Context, private val dialogName : Int) {
 
     fun show() {
         dialog = builder.create()
+        if(dialogName == R.layout.dialog_request)
+        dialog?.setCancelable(false)
         dialog?.show()
     }
 
-    fun dismiss() {
+    private fun dismiss() {
         dialog?.dismiss()
     }
 }

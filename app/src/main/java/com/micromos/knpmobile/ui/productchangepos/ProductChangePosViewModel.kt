@@ -30,6 +30,9 @@ class ProductChangePosViewModel : ViewModelBase() {
     private val _updateImpossible = MutableLiveData<Event<Unit>>()
     val updateImpossible: LiveData<Event<Unit>> = _updateImpossible
 
+    private val _focusChangeEvent = MutableLiveData<Event<Unit>>()
+    val focusChangeEvent: LiveData<Event<Unit>> = _focusChangeEvent
+
     val atText = MutableLiveData<String?>()
     val _labelNo = MutableLiveData<String?>()
     var labelNo: String? = ""
@@ -52,6 +55,7 @@ class ProductChangePosViewModel : ViewModelBase() {
                         if (_pos_cd.value != "") {
                             _pos_cd.value = codeList[_pos_cd.value]
                         }
+                        _focusChangeEvent.value = Event(Unit)
                     } else if (response.code() == 204) {
                         _pos_cd.value = ""
                         _noMatchLabel.value = Event(Unit)

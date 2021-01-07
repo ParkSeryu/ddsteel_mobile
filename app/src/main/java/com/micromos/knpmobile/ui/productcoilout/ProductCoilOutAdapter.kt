@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.micromos.knpmobile.databinding.ShipOutItemListBinding
 import com.micromos.knpmobile.dto.ShipOrder
 
-class ProductCoilinAdapter(val viewModel: ProductCoilOutViewModel, val context: Context) :
+class ProductCoilOutAdapter(val viewModel: ProductCoilOutViewModel, val context: Context) :
     RecyclerView.Adapter<ViewHolder>() {
     var items = listOf<ShipOrder>()
 
