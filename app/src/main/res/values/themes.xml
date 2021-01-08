@@ -45,10 +45,19 @@
 
     <style name="cardViewListStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/fontBlack</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
 
+    <style name="cardViewListStyleNoMargin" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/fontBlack</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="textStyle" parent="Widget.AppCompat.TextView">
+
         <item name="android:textSize">18sp</item>
     </style>
 

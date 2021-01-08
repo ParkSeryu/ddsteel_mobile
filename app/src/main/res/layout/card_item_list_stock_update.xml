@@ -21,9 +21,9 @@
         style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         app:cardCornerRadius="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -39,6 +39,7 @@
 
             <TextView
                 android:id="@+id/label_no_tv"
+                style="@style/cardViewListStyleNoMargin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{@string/label_no(cardItem.labelNo)}"
@@ -48,18 +49,19 @@
 
             <TextView
                 android:id="@+id/label_ok_tv"
+                style="@style/cardViewListStyleNoMargin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:text="@{viewModel.setText(cardItem.stockCls)}"
-                android:textColor="@color/red"
+                android:textColor="@color/blue"
                 app:layout_constraintBottom_toBottomOf="@id/label_no_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/label_no_tv"
-                tools:text="ok/ng" />
+                tools:text="ok" />
 
             <TextView
                 android:id="@+id/label_date_time_tv"
+                style="@style/cardViewListStyleNoMargin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{cardItem.time}"
@@ -70,9 +72,9 @@
 
             <TextView
                 android:id="@+id/product_no_tv"
+                style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:text="@{@string/product_no(cardItem.coilNo, cardItem.coilSeq)}"
                 android:visibility="@{ viewModel.setCardVisibility(cardItem.stockCls)}"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -81,9 +83,9 @@
 
             <TextView
                 android:id="@+id/name_nm_tv"
+                style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:text="@{@string/name_cd(cardItem.nameNm)}"
                 android:visibility="@{viewModel.setCardVisibility(cardItem.stockCls)}"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -92,9 +94,9 @@
 
             <TextView
                 android:id="@+id/size_cd_tv"
+                style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:text="@{@string/size_cd(cardItem.sizeNo)}"
                 android:visibility="@{viewModel.setCardVisibility(cardItem.stockCls)}"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -103,6 +105,7 @@
 
             <TextView
                 android:id="@+id/stan_nm_cd"
+                style="@style/cardViewListStyleNoMargin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{@string/stan_cd(cardItem.stanNm)}"
@@ -113,9 +116,9 @@
 
             <TextView
                 android:id="@+id/quantity_tv"
+                style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:text="@{@string/quantity(cardItem.quantity)}"
                 android:visibility="@{viewModel.setCardVisibility(cardItem.stockCls)}"
@@ -125,9 +128,9 @@
 
             <TextView
                 android:id="@+id/weight_tv"
+                style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:text="@{@string/weight(cardItem.weight)}"
                 android:visibility="@{viewModel.setCardVisibility(cardItem.stockCls)}"
                 app:layout_constraintRight_toRightOf="@id/stan_nm_cd"

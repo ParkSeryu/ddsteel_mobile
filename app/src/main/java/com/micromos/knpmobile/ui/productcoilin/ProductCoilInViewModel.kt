@@ -1,11 +1,14 @@
 package com.micromos.knpmobile.ui.productcoilin
 
 import android.graphics.Color
+import android.graphics.Color.WHITE
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.micromos.knpmobile.Event
+import com.micromos.knpmobile.R
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.ShipOrder
 import com.micromos.knpmobile.dto.ShipOrderFeed
@@ -14,6 +17,7 @@ import com.micromos.knpmobile.network.KNPApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.coroutineContext
 
 class ProductCoilInViewModel : ViewModelBase() {
 
@@ -58,6 +62,7 @@ class ProductCoilInViewModel : ViewModelBase() {
 
     var numerator: Int = 0
     var denomiator: Int = 0
+
 
     val prevShipNo = MutableLiveData<String?>(null)
     val _test = MutableLiveData<String>()
@@ -178,7 +183,7 @@ class ProductCoilInViewModel : ViewModelBase() {
             }
         }
 
-        if (successFlag == "true") {
+        if (successFlag.equals("true")) {
             api.updatePDAin(labelNo).enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("testUpdatePda", response.body().toString())
@@ -206,7 +211,7 @@ class ProductCoilInViewModel : ViewModelBase() {
         return if (pdaDateTime.isNullOrBlank())
             Color.WHITE
         else
-            Color.rgb(255, 249, 196)
+            Color.rgb(255, 253, 231)
     }
 
     fun setOkTvVisibility(pdaDateTime: String?): Int {

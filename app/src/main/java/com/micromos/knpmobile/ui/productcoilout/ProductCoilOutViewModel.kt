@@ -215,7 +215,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
         return if (pdaDateTime.isNullOrBlank())
             Color.WHITE
         else
-            Color.rgb(255, 249, 196)
+            Color.rgb(255, 253, 231)
     }
 
     fun setOkTvVisibility(pdaDateTime: String?): Int {

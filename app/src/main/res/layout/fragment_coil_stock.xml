@@ -47,8 +47,8 @@
                     android:dropDownHeight="wrap_content"
                     android:dropDownVerticalOffset="1dp"
                     android:inputType="textCapCharacters"
-                    android:text="@={viewModel.posCd}"
                     android:paddingStart="10dp"
+                    android:text="@={viewModel.posCd}"
                     app:layout_constraintBottom_toBottomOf="@id/prompt_change_stock_tv"
                     app:layout_constraintLeft_toRightOf="@id/prompt_change_stock_tv"
                     app:layout_constraintRight_toRightOf="parent"
@@ -85,8 +85,8 @@
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_marginEnd="@dimen/default_text_margin"
-                android:text="@string/button_retrieve"
                 android:onClick="@{() -> viewModel.labelRetrieve()}"
+                android:text="@string/button_retrieve"
                 android:textSize="@dimen/text_view_default_size"
                 app:layout_constraintLeft_toRightOf="@id/guideline"
                 app:layout_constraintRight_toRightOf="parent"
@@ -160,14 +160,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/input_layout_date"
-                app:layout_constraintStart_toStartOf="@id/input_layout_date"
-                app:layout_constraintEnd_toEndOf="@id/btnOk"
-                android:layout_marginBottom="20dp"
-                android:textColor="@color/fontBlack"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="@string/prompt_date_tv"/>
+                app:layout_constraintBottom_toTopOf="@id/prompt_date_tv"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/prompt_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_date_tv"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/input_layout_date"
+                app:layout_constraintEnd_toEndOf="@id/btnOk"
+                app:layout_constraintStart_toStartOf="@id/input_layout_date" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -189,13 +197,13 @@
                     android:id="@+id/date_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:gravity="center"
-                    android:cursorVisible="false"
                     android:onClick="@{() -> viewModel.showDatePickerDialog()}"
                     android:singleLine="true"
-                    android:text="@={viewModel.inDate}"/>
+                    android:text="@={viewModel.inDate}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

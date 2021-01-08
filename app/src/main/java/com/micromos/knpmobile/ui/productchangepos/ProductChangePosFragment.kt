@@ -24,6 +24,7 @@ import com.micromos.knpmobile.MainActivity.Companion.codeNmList
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentChangePosBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
+import com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_change_pos.*
 
@@ -155,7 +156,14 @@ class ProductChangePosFragment : Fragment() {
         })
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            if (label_no_edt_pos.text.toString() != "") {
+                (requireActivity() as MainActivity).replaceFragment(newInstance())
+                input_layout.requestFocus()
+                label_no_edt_pos.requestFocus()
+            } else {
+                (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
+            }
+
         }
 
         return coilChangePosDataBinding.root

@@ -2,7 +2,6 @@ package com.micromos.knpmobile.ui.productcoilin
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

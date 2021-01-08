@@ -130,7 +130,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="0dp"
-            android:layout_height="65dp"
+            android:layout_height="66dp"
             android:layout_marginEnd="@dimen/default_text_margin"
             android:onClick="@{() -> viewModel.save()}"
             android:text="@string/button_save"
