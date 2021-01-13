@@ -2,6 +2,7 @@ package com.micromos.knpmobile.ui.productchangepos
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.Selection
 import android.text.TextWatcher
 import android.util.Log
@@ -10,13 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.cognex.mobile.barcode.sdk.ReadResults
+import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
@@ -24,14 +27,18 @@ import com.micromos.knpmobile.MainActivity.Companion.codeNmList
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentChangePosBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
-import com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_change_pos.*
+import kotlinx.android.synthetic.main.fragment_change_pos.input_layout
+import kotlinx.android.synthetic.main.fragment_change_pos.progress_bar
+import java.util.*
 
-class ProductChangePosFragment : Fragment() {
+class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
+    ReaderDevice.ReaderDeviceListener {
 
     private lateinit var productChangePosViewModel: ProductChangePosViewModel
     private lateinit var coilChangePosDataBinding: FragmentChangePosBinding
+    private lateinit var readerDevice: ReaderDevice
 
     companion object {
         fun newInstance() = ProductChangePosFragment()
@@ -40,6 +47,9 @@ class ProductChangePosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         outer_layout_change_pos.setOnClickListener { hideKeyboard() }
         (requireActivity() as MainActivity).setTextChangedListener(label_no_edt_pos)
+
+        change_stock_auto_tv.inputType = 0
+        change_stock_auto_tv.setRawInputType(InputType.TYPE_CLASS_TEXT)
 
         change_stock_auto_tv.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -166,6 +176,11 @@ class ProductChangePosFragment : Fragment() {
 
         }
 
+        readerDevice = ReaderDevice.getMXDevice(context)
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductChangePosFragment)
+
         return coilChangePosDataBinding.root
     }
 
@@ -181,5 +196,55 @@ class ProductChangePosFragment : Fragment() {
         (requireActivity() as MainActivity).toolbar_numer.text = ""
         (requireActivity() as MainActivity).toolbar_hyphen.text = ""
         (requireActivity() as MainActivity).toolbar_denom.text = ""
+    }
+
+    override fun onConnectionCompleted(p0: ReaderDevice?, p1: Throwable?) {
+        Log.i("beep", "ConnectionCompleted")
+    }
+
+    override fun onAvailabilityChanged(p0: ReaderDevice?) {
+        Log.i("beep", "onAvailabilityChanged")
+    }
+
+    override fun onConnectionStateChanged(p0: ReaderDevice?) {
+        Log.i("beep", p0?.connectionState.toString())
+    }
+
+    override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
+        try {
+            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE)
+                return
+
+            var resultString = results.getResultAt(0).readString!!
+            Log.d("scanTest", resultString)
+            if (resultString.contains("\\000026")) {
+                resultString = resultString.split("\\000026")[1]
+            }
+            productChangePosViewModel._labelNo.value = resultString.toUpperCase(Locale.ROOT)
+            productChangePosViewModel.retrievePos(productChangePosViewModel._labelNo.value)
+        } catch (e: Exception) {
+            Toast.makeText(context, "읽은값 : ${e.message.toString()}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductChangePosFragment)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
     }
 }

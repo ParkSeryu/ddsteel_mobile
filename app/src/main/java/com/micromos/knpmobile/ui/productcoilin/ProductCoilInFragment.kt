@@ -2,17 +2,21 @@ package com.micromos.knpmobile.ui.productcoilin
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.cognex.mobile.barcode.sdk.ReadResults
+import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
@@ -23,12 +27,17 @@ import kotlinx.android.synthetic.main.fragment_change_pos.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_in.input_layout
 import kotlinx.android.synthetic.main.fragment_coil_in.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_in.recyclerView
+import kotlinx.android.synthetic.main.fragment_coil_stock.*
+import java.util.*
 
-class ProductCoilInFragment : Fragment() {
+class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
+    ReaderDevice.ReaderDeviceListener {
 
     private lateinit var productCoilInViewModel: ProductCoilInViewModel
     private lateinit var coilInDataBinding: FragmentCoilInBinding
     private lateinit var adapter: ProductCoilInAdapter
+    private lateinit var readerDevice: ReaderDevice
 
     companion object {
         fun newInstance() = ProductCoilInFragment()
@@ -83,13 +92,13 @@ class ProductCoilInFragment : Fragment() {
 
         productCoilInViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
-                activity?.getWindow()?.setFlags(
+                activity?.window?.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 );
                 progress_bar.visibility = View.VISIBLE
             } else {
-                activity?.getWindow()?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 progress_bar.visibility = View.INVISIBLE
                 hideKeyboard()
                 setToolbar()
@@ -144,6 +153,7 @@ class ProductCoilInFragment : Fragment() {
 
         productCoilInViewModel.noModifyEvent.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
+                Log.d("test", "tttt")
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_notification)
                     .setMessage(R.string.prompt_label_no_modify_ship_in)
@@ -159,6 +169,12 @@ class ProductCoilInFragment : Fragment() {
                 (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
             }
         }
+
+
+        readerDevice = ReaderDevice.getMXDevice(context)
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductCoilInFragment)
 
         return coilInDataBinding.root
     }
@@ -185,7 +201,6 @@ class ProductCoilInFragment : Fragment() {
             }
         })
     }
-
     private fun hideKeyboard() {
         val imm =
             activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -200,4 +215,57 @@ class ProductCoilInFragment : Fragment() {
         (requireActivity() as MainActivity).toolbar_denom.text =
             productCoilInViewModel.denomiator.toString()
     }
+
+
+    override fun onConnectionCompleted(p0: ReaderDevice?, p1: Throwable?) {
+        Log.i("beep", "ConnectionCompleted")
+    }
+
+    override fun onAvailabilityChanged(p0: ReaderDevice?) {
+        Log.i("beep", "onAvailabilityChanged")
+    }
+
+    override fun onConnectionStateChanged(p0: ReaderDevice?) {
+        Log.i("beep", p0?.connectionState.toString())
+    }
+
+    override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
+        try {
+            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE )
+                return
+
+            var resultString = results.getResultAt(0).readString!!
+            Log.d("scanTest", resultString)
+            if (resultString.contains("\\000026")) {
+                resultString = resultString.split("\\000026")[1]
+            }
+            productCoilInViewModel._requestNo.value = resultString.toUpperCase(Locale.ROOT)
+            productCoilInViewModel.shipNoRetrieve(productCoilInViewModel._requestNo.value)
+        } catch (e: Exception) {
+            Toast.makeText(context, "읽은값 : ${e.message.toString()}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductCoilInFragment)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
+    }
+
+
 }

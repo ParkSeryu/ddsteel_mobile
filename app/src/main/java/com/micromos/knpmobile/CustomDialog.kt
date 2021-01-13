@@ -3,6 +3,7 @@ package com.micromos.knpmobile
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.StringRes
@@ -23,7 +24,7 @@ class CustomDialog(private val context: Context, private val dialogName : Int) {
     // 터치 리스너 구현
     private val onTouchListener = View.OnTouchListener { _, motionEvent ->
         if (motionEvent.action == MotionEvent.ACTION_UP) {
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 dismiss()
             }, 5)
         }

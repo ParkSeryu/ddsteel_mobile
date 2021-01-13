@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.micromos.knpmobile.databinding.ShipInItemListBinding
+import com.micromos.knpmobile.databinding.CardItemShipInBinding
 import com.micromos.knpmobile.dto.ShipOrder
 
 class ProductCoilInAdapter(val viewModel: ProductCoilInViewModel, val context: Context) :
@@ -13,7 +13,7 @@ class ProductCoilInAdapter(val viewModel: ProductCoilInViewModel, val context: C
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ShipInItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            CardItemShipInBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -26,7 +26,7 @@ class ProductCoilInAdapter(val viewModel: ProductCoilInViewModel, val context: C
     }
 }
 
-class ViewHolder(val binding: ShipInItemListBinding) : RecyclerView.ViewHolder(binding.root) {
+class ViewHolder(val binding: CardItemShipInBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(viewModel: ProductCoilInViewModel, item: ShipOrder, context: Context) {
         binding.viewModel = viewModel
         binding.shipInItem = item

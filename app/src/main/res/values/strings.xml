@@ -10,7 +10,7 @@
     <string name="prompt_error">오류</string>
     <string name="prompt_exit">종료 하시겠습니까?</string>
     <string name="prompt_notification">알림</string>
-    <string name="network_failed">서버에 연결할 수 없습니다.\n네트워크 연결 상태를 확인해 주세요.</string>
+    <string name="network_failed">네트워크 연결 상태를 확인해 주세요.\n서버에 연결할 수 없습니다.</string>
     <string name="prompt_network_failed">네트워크 연결 상태를 확인해 주세요.</string>
 
     <!-- Login -->
@@ -73,7 +73,7 @@
     <string name="prompt_pos">적재위치</string>
     <string name="prompt_current_pos">현재적재위치</string>
     <string name="prompt_change_pos">변경적재위치</string>
-    <string name="failed_get_code">코드정보를 가져오는데 실패하였습니다. \n앱을 재부팅 해도 안될시 관리자에게 문의해주세요</string>
+    <string name="failed_get_code">코드정보를 가져오는데 실패하였습니다. \n앱을 재부팅 해도 안될시 관리자에게 문의해주세요.</string>
     <string name="prompt_no_match_label">해당하는 라벨번호가 없습니다. \n라벨번호를 확인해주세요.</string>
     <string name="prompt_no_match_pos">변경적재위치 값이 올바르지 않습니다.</string>
     <string name="prompt_update_impossible">조회 후 저장이 가능합니다.</string>

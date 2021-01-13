@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.setText(cardItem.stockCls)}"
-                android:textColor="@color/blue"
+                android:textColor="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/label_no_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/label_no_tv"
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{cardItem.time}"
-                android:textColor="@color/red"
+                android:textColor="@color/blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/product_no_tv"
                 tools:text="날짜" />

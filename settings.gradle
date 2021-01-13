@@ -1,2 +1,7 @@
+include ':cmbsdklib-release'
+include ':cmbsdklib-release2'
+include ':cmbsdklib-release'
+include ':cmbsdklib-release_'
+include ':cmbsdklib-release'
 include ':app'
 rootProject.name = "KNP_mobile"

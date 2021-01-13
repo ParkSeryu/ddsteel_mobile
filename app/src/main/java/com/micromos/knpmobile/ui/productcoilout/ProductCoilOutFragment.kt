@@ -8,32 +8,37 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.cognex.mobile.barcode.sdk.ReadResults
+import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilOutBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
-import com.micromos.knpmobile.ui.productcoilin.ProductCoilInFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
-import kotlinx.android.synthetic.main.fragment_coil_out.*
 import kotlinx.android.synthetic.main.fragment_coil_out.input_layout
 import kotlinx.android.synthetic.main.fragment_coil_out.outer_layout_ship
 import kotlinx.android.synthetic.main.fragment_coil_out.progress_bar
 import kotlinx.android.synthetic.main.fragment_coil_out.recyclerView
 import kotlinx.android.synthetic.main.fragment_coil_out.ship_no_edt
+import java.util.*
 
-class ProductCoilOutFragment : Fragment() {
+class ProductCoilOutFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
+    ReaderDevice.ReaderDeviceListener {
 
     private lateinit var productCoilOutViewModel: ProductCoilOutViewModel
     private lateinit var coilOutDataBinding: FragmentCoilOutBinding
-    private lateinit var adapter : ProductCoilOutAdapter
+    private lateinit var adapter: ProductCoilOutAdapter
+    private lateinit var readerDevice: ReaderDevice
+
     companion object {
         fun newInstance() = ProductCoilOutFragment()
     }
@@ -155,7 +160,7 @@ class ProductCoilOutFragment : Fragment() {
                         .setPositiveButton(R.string.dialog_ok) {
                             productCoilOutViewModel.prevShipNo.value =
                                 productCoilOutViewModel._requestNo.value?.trim()
-                            productCoilOutViewModel.shipRetrieve(productCoilOutViewModel._requestNo.value)
+                            productCoilOutViewModel.shipNoRetrieve(productCoilOutViewModel._requestNo.value)
                         }.setNegativeButton(R.string.dialog_ng) {
                             productCoilOutViewModel.successCall()
                         }.show()
@@ -163,7 +168,7 @@ class ProductCoilOutFragment : Fragment() {
             } else {
                 productCoilOutViewModel.prevShipNo.value =
                     productCoilOutViewModel._requestNo.value?.trim()
-                productCoilOutViewModel.shipRetrieve(productCoilOutViewModel._requestNo.value)
+                productCoilOutViewModel.shipNoRetrieve(productCoilOutViewModel._requestNo.value)
             }
         })
 
@@ -174,6 +179,11 @@ class ProductCoilOutFragment : Fragment() {
                 (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
             }
         }
+
+        readerDevice = ReaderDevice.getMXDevice(context)
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductCoilOutFragment)
 
         return coilOutDataBinding.root
     }
@@ -214,6 +224,56 @@ class ProductCoilOutFragment : Fragment() {
         (requireActivity() as MainActivity).toolbar_hyphen.text = "/"
         (requireActivity() as MainActivity).toolbar_denom.text =
             productCoilOutViewModel.denomiator.toString()
+    }
+
+    override fun onConnectionCompleted(p0: ReaderDevice?, p1: Throwable?) {
+        Log.i("beep", "ConnectionCompleted")
+    }
+
+    override fun onAvailabilityChanged(p0: ReaderDevice?) {
+        Log.i("beep", "onAvailabilityChanged")
+    }
+
+    override fun onConnectionStateChanged(p0: ReaderDevice?) {
+        Log.i("beep", p0?.connectionState.toString())
+    }
+
+    override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
+        try {
+            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE)
+                return
+
+            var resultString = results.getResultAt(0).readString!!
+            Log.d("scanTest", resultString)
+            if (resultString.contains("\\000026")) {
+                resultString = resultString.split("\\000026")[1]
+            }
+            productCoilOutViewModel._requestNo.value = resultString.toUpperCase(Locale.ROOT)
+            productCoilOutViewModel.shipNoRetrieve(productCoilOutViewModel._requestNo.value)
+        } catch (e: Exception) {
+            Toast.makeText(context, "읽은값 : ${e.message.toString()}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductCoilOutFragment)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
     }
 
 }

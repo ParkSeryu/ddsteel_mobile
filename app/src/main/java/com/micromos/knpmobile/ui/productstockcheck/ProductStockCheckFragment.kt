@@ -11,12 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.cognex.mobile.barcode.sdk.ReadResults
+import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
@@ -25,16 +28,21 @@ import com.micromos.knpmobile.databinding.FragmentCoilStockBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
 import com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.change_stock_auto_tv
 import kotlinx.android.synthetic.main.fragment_coil_stock.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_stock.recyclerView
 import java.util.*
 
-class ProductStockCheckFragment : Fragment() {
+class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
+    ReaderDevice.ReaderDeviceListener {
 
     private lateinit var productStockCheckViewModel: ProductStockCheckViewModel
     private lateinit var coilStockDataBinding: FragmentCoilStockBinding
-    private lateinit var adapter : ProductCoilStockAdapter
+    private lateinit var adapter: ProductCoilStockAdapter
+    private lateinit var readerDevice: ReaderDevice
+
     companion object {
         fun newInstance() = ProductStockCheckFragment()
     }
@@ -169,13 +177,13 @@ class ProductStockCheckFragment : Fragment() {
         })
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if(adapter.itemCount == 0) {
+            if (adapter.itemCount == 0) {
                 if (pos_label_input_layout.visibility == View.VISIBLE) {
                     visibility(false)
                 } else {
                     (requireActivity() as MainActivity).replaceFragment(HomeFragment.newInstance())
                 }
-            }else{
+            } else {
                 adapter.item.clear()
                 coilStockDataBinding.changeStockAutoTv.setText("")
                 coilStockDataBinding.labelNoEdtStock.setText("")
@@ -184,6 +192,11 @@ class ProductStockCheckFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
         }
+
+        readerDevice = ReaderDevice.getMXDevice(context)
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductStockCheckFragment)
 
         return coilStockDataBinding.root
     }
@@ -207,7 +220,7 @@ class ProductStockCheckFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-         adapter = ProductCoilStockAdapter(productStockCheckViewModel, requireContext())
+        adapter = ProductCoilStockAdapter(productStockCheckViewModel, requireContext())
         coilStockDataBinding.recyclerView.adapter = adapter
 
         productStockCheckViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
@@ -233,6 +246,57 @@ class ProductStockCheckFragment : Fragment() {
         imm.hideSoftInputFromWindow(input_layout_label.windowToken, 0)
         imm.hideSoftInputFromWindow(input_layout_pos.windowToken, 0)
         imm.hideSoftInputFromWindow(input_layout_date.windowToken, 0)
+    }
+
+    override fun onConnectionCompleted(p0: ReaderDevice?, p1: Throwable?) {
+        Log.i("beep", "ConnectionCompleted")
+    }
+
+    override fun onAvailabilityChanged(p0: ReaderDevice?) {
+        Log.i("beep", "onAvailabilityChanged")
+    }
+
+    override fun onConnectionStateChanged(p0: ReaderDevice?) {
+        Log.i("beep", p0?.connectionState.toString())
+    }
+
+    override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
+        try {
+            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE  || date_input_layout.visibility == View.VISIBLE)
+                return
+
+            var resultString = results.getResultAt(0).readString!!
+            Log.d("scanTest", resultString)
+            if (resultString.contains("\\000026")) {
+                resultString = resultString.split("\\000026")[1]
+            }
+            productStockCheckViewModel.labelNo.value = resultString.toUpperCase(Locale.ROOT)
+            productStockCheckViewModel.labelRetrieve()
+
+        } catch (e: Exception) {
+            Toast.makeText(context, "읽은값 : ${e.message.toString()}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        readerDevice.startAvailabilityListening()
+        readerDevice.setReaderDeviceListener(this)
+        readerDevice.connect(this@ProductStockCheckFragment)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        readerDevice.stopAvailabilityListening()
+        readerDevice.setReaderDeviceListener(null)
+        readerDevice.disconnect()
     }
 
 }

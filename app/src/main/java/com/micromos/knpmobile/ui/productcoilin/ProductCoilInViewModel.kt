@@ -115,7 +115,7 @@ class ProductCoilInViewModel : ViewModelBase() {
             }
 
             override fun onFailure(call: Call<GetCustCd>, t: Throwable) {
-                Log.d("testfailedCust", t.message.toString())
+                Log.d("testFailedCust", t.message.toString())
                 noNetWork()
             }
         })

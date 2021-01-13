@@ -67,7 +67,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
     val _test = MutableLiveData<String>()
     val test: LiveData<String> = _test
 
-    fun shipRetrieve(_requestNo: String?) {
+    fun shipNoRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
 
         if (requestNo != null) {
@@ -192,7 +192,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
                     Log.d("testUpdatePda", response.body().toString())
                     successCall()
                     recyclerViewStateFlag = true
-                    shipRetrieve(shipNo)
+                    shipNoRetrieve(shipNo)
                 }
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {

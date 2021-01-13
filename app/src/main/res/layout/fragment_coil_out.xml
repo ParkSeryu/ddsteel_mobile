@@ -45,9 +45,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="5dp"
-            android:textSize="@dimen/text_view_default_size"
-            android:onClick="@{() -> viewModel.shipRetrieve(viewModel._requestNo)}"
+            android:onClick="@{() -> viewModel.shipNoRetrieve(viewModel._requestNo)}"
             android:text="@string/button_retrieve"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_view_default_size"
             app:layout_constraintBottom_toTopOf="@id/sell_cust_cd_tv"
             app:layout_constraintLeft_toRightOf="@id/guideline"
             app:layout_constraintRight_toRightOf="parent"
@@ -58,7 +59,6 @@
             style="@style/custCdStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
             android:text="@{@string/sell_cust_cd(viewModel._sell_cust_cd)}"
             android:visibility="@{viewModel.cust_cd_visibility}"
@@ -71,7 +71,6 @@
             style="@style/custCdStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:text="@{@string/ven_cust_cd(viewModel._ven_cust_cd)}"
             android:visibility="@{viewModel.cust_cd_visibility}"
@@ -84,7 +83,6 @@
             style="@style/custCdStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:text="@{@string/dlv_cust_cd(viewModel._dlv_cust_cd)}"
             android:visibility="@{viewModel.cust_cd_visibility}"
@@ -102,7 +100,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dlv_cust_cd_tv"
-            tools:listitem="@layout/ship_in_item_list" />
+            tools:listitem="@layout/card_item_ship_in" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -110,13 +108,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_edit_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progress_bar"

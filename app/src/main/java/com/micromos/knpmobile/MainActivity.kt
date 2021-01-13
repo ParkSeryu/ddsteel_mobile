@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         val codeCdList = mutableListOf<String?>() as ArrayList<String>
         val codeNmList = mutableListOf<String?>() as ArrayList<String>
         val codeList = mutableMapOf<String, String>()
+
         fun autoCompleteTextViewCustom(AT: AutoCompleteTextView, context: Context) {
             var text = AT.text.toString()
             val rstList = java.util.ArrayList<String>()
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 Log.d("testMatchShow", "$rstList")
                 if (rstList.size == 0) {
-                    AT.dismissDropDown()
+                    //AT.dismissDropDown()
                 } else {
                     AT.setAdapter(adapter)
                     AT.showDropDown()
