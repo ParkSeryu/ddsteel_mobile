@@ -1,18 +1,16 @@
 package com.micromos.knpmobile.ui.login
 
+import android.content.pm.PackageInfo
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.micromos.knpmobile.BuildConfig
-import com.micromos.knpmobile.SingleLiveEvent
-import com.micromos.knpmobile.ViewModelBase
+import com.micromos.knpmobile.*
 import com.micromos.knpmobile.dto.User
 import com.micromos.knpmobile.network.KNPApi
-import com.micromos.knpmobile.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.coroutineContext
 
 class LoginViewModel : ViewModelBase() {
     val TAG = "testLogin"
@@ -23,32 +21,22 @@ class LoginViewModel : ViewModelBase() {
     private val _loginDeniedEvent = MutableLiveData<Event<Unit>>()
     val loginDeniedEvent: LiveData<Event<Unit>> = _loginDeniedEvent
 
+    private val _NotConnectedServer = MutableLiveData<Event<Unit>>()
+    val NotConnectedServer: LiveData<Event<Unit>> = _NotConnectedServer
+
     private val api = KNPApi.create()
-    private val _connectNetwork = MutableLiveData<Int>()
-    val connectNetwork: LiveData<Int> = _connectNetwork
+
 
     val _id = MutableLiveData<String>()
     val _password = MutableLiveData<String>()
 
+
     companion object {
-        var user_id : String? = null
-        var name : String? = null
+        var user_id: String? = null
+        var name: String? = null
     }
 
     init {
-        _connectNetwork.value = View.GONE
-        api.testServer().enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (response.code() == 200) {
-                    Log.d("checkServer", response.body().toString())
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Log.d(TAG, t.message.toString())
-                _connectNetwork.value = View.VISIBLE
-            }
-        })
         _id.value = ""
         _password.value = ""
     }
@@ -69,20 +57,22 @@ class LoginViewModel : ViewModelBase() {
                             name = response.body()?.name
                             loginSuccessEvent.call()
                         }
+                    } else if (response.code() == 204) {
+                        _loginFailedEvent.value = Event(Unit)
                     }
                 }
 
                 override fun onFailure(call: Call<User>, t: Throwable) {
                     Log.d(TAG, t.message.toString())
-                    _loginFailedEvent.value = Event(Unit)
+                    _NotConnectedServer.value = Event(Unit)
                 }
             })
         }
     }
 
     fun btnEnabled(id: String, pw: String): Boolean {
-        return if(BuildConfig.DEBUG) true else id.isNotBlank() && pw.isNotBlank()
-       // return id.isNotBlank() && pw.isNotBlank()
+        return if (BuildConfig.DEBUG) true else id.isNotBlank() && pw.isNotBlank()
+        // return id.isNotBlank() && pw.isNotBlank()
     }
 
 

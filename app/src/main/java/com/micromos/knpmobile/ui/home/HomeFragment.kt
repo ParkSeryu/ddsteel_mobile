@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        val adapter = HomeAdapterMenu(homeViewModel, requireContext())
+        val adapter = HomeAdapterMenu(homeViewModel)
         homeViewDataBinding.menuRecyclerView.adapter = adapter
         homeViewModel.menuItemList.observe(viewLifecycleOwner, Observer {
             adapter.items = it

@@ -5,28 +5,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import android.widget.*
-import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import com.micromos.knpmobile.dto.GetCodeCd
 import com.micromos.knpmobile.dto.GetCodeCdFeed
 import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.ui.home.HomeFragment
 import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.name
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.fragment_change_pos.*
-import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,8 +31,8 @@ class MainActivity : AppCompatActivity() {
     private val use_cls = "1"
 
     companion object {
-        val codeCdList = mutableListOf<String?>() as ArrayList<String>
-        val codeNmList = mutableListOf<String?>() as ArrayList<String>
+        val codeCdList = mutableListOf<String>()
+        val codeNmList = mutableListOf<String>()
         val codeList = mutableMapOf<String, String>()
 
         fun autoCompleteTextViewCustom(AT: AutoCompleteTextView, context: Context) {
@@ -79,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 val adapter = ArrayAdapter<String>(
                     context,
-                    android.R.layout.simple_list_item_1,
+                    R.layout.custom_auto_complete_layout,
                     codeNmList
                 )
                 AT.setAdapter(adapter)

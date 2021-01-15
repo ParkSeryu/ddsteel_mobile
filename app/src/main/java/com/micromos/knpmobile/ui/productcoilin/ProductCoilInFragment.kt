@@ -180,7 +180,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
     }
 
     private fun setRecyclerView() {
-        adapter = ProductCoilInAdapter(productCoilInViewModel, requireContext())
+        adapter = ProductCoilInAdapter(productCoilInViewModel)
         var recyclerViewState: Parcelable? = null
 
         productCoilInViewModel._recyclerViewState.observe(viewLifecycleOwner, Observer {

@@ -1,9 +1,7 @@
 package com.micromos.knpmobile;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.AttributeSet;
-import android.widget.AutoCompleteTextView;
 
 public class CustomAutoCompleteTextView extends androidx.appcompat.widget.AppCompatAutoCompleteTextView {
     private Context mContext;

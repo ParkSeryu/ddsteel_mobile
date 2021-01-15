@@ -87,8 +87,17 @@ interface KNPApi {
     @GET("version/getTime")
     fun getDateTime(): Call<ResponseBody>
 
-    @GET("login/test_server")
-    fun testServer(): Call<Unit>
+    @GET("version/checkVersion")
+    fun checkVersion(
+        @Query("version") version : String
+    ): Call<Unit>
+
+    @GET("version/updateApp")
+    @Streaming
+    fun downloadApk(
+        @Query("buildType") buildType : String
+    ): Call<ResponseBody>
+
 
     @GET("login")
     fun login(

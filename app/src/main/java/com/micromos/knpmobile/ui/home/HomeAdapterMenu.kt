@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.micromos.knpmobile.databinding.MenuItemBinding
 
-class HomeAdapterMenu(val viewModel: HomeViewModel, val context: Context) :
+class HomeAdapterMenu(val viewModel: HomeViewModel) :
     RecyclerView.Adapter<ViewHolder>() {
     var items = listOf<MenuItem>()
 
@@ -21,12 +21,12 @@ class HomeAdapterMenu(val viewModel: HomeViewModel, val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(viewModel, items[position], context)
+        holder.bind(viewModel, items[position])
     }
 }
 
 class ViewHolder(val binding: MenuItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(viewModel: HomeViewModel, item: MenuItem, context: Context) {
+    fun bind(viewModel: HomeViewModel, item: MenuItem) {
         binding.viewModel = viewModel
         binding.menuItemList = item
         binding.executePendingBindings()

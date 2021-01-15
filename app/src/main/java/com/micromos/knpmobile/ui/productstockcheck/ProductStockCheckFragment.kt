@@ -104,7 +104,7 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             val Month = calendar.get(Calendar.MONTH)
             val Day = calendar.get(Calendar.DAY_OF_MONTH)
             val dateListener =
-                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                     productStockCheckViewModel.inDate.value =
                         "$year / ${String.format("%02d", month + 1)} / ${
                             String.format(

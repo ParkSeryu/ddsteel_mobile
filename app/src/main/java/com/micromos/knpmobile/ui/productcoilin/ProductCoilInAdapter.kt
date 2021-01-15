@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.micromos.knpmobile.databinding.CardItemShipInBinding
 import com.micromos.knpmobile.dto.ShipOrder
 
-class ProductCoilInAdapter(val viewModel: ProductCoilInViewModel, val context: Context) :
+class ProductCoilInAdapter(val viewModel: ProductCoilInViewModel) :
     RecyclerView.Adapter<ViewHolder>() {
     var items = listOf<ShipOrder>()
 
@@ -22,12 +22,12 @@ class ProductCoilInAdapter(val viewModel: ProductCoilInViewModel, val context: C
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(viewModel, items[position], context)
+        holder.bind(viewModel, items[position])
     }
 }
 
 class ViewHolder(val binding: CardItemShipInBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(viewModel: ProductCoilInViewModel, item: ShipOrder, context: Context) {
+    fun bind(viewModel: ProductCoilInViewModel, item: ShipOrder) {
         binding.viewModel = viewModel
         binding.shipInItem = item
         binding.executePendingBindings()

@@ -1,5 +1,6 @@
 package com.micromos.knpmobile
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Handler
@@ -22,6 +23,7 @@ class CustomDialog(private val context: Context, private val dialogName : Int) {
     private var dialog: AlertDialog? = null
 
     // 터치 리스너 구현
+    @SuppressLint("ClickableViewAccessibility")
     private val onTouchListener = View.OnTouchListener { _, motionEvent ->
         if (motionEvent.action == MotionEvent.ACTION_UP) {
             Handler(Looper.getMainLooper()).postDelayed({
@@ -98,7 +100,7 @@ class CustomDialog(private val context: Context, private val dialogName : Int) {
 
     fun show() {
         dialog = builder.create()
-        if(dialogName == R.layout.dialog_request)
+        if(dialogName == R.layout.dialog_request || dialogName == R.layout.dialog_app_not_connected || dialogName == R.layout.dialog_app_update)
         dialog?.setCancelable(false)
         dialog?.show()
     }

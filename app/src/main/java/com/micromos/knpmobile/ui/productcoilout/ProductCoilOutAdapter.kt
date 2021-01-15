@@ -1,13 +1,12 @@
 package com.micromos.knpmobile.ui.productcoilout
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.micromos.knpmobile.databinding.CardItemShipOutBinding
 import com.micromos.knpmobile.dto.ShipOrder
 
-class ProductCoilOutAdapter(val viewModel: ProductCoilOutViewModel, val context: Context) :
+class ProductCoilOutAdapter(val viewModel: ProductCoilOutViewModel) :
     RecyclerView.Adapter<ViewHolder>() {
     var items = listOf<ShipOrder>()
 
@@ -22,12 +21,12 @@ class ProductCoilOutAdapter(val viewModel: ProductCoilOutViewModel, val context:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(viewModel, items[position], context)
+        holder.bind(viewModel, items[position])
     }
 }
 
 class ViewHolder(val binding: CardItemShipOutBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(viewModel: ProductCoilOutViewModel, item: ShipOrder, context: Context) {
+    fun bind(viewModel: ProductCoilOutViewModel, item: ShipOrder) {
         binding.viewModel = viewModel
         binding.shipOutItem = item
         binding.executePendingBindings()

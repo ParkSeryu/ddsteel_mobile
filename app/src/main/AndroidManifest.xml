@@ -6,6 +6,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
+    <!--외부 저장소에서 파일 저장하기 위한 권한-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!--oero 이상에서 foreground 서비스를 위한 권한-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <!--다운로드 받은 앱을 설치 하기위한 권한-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <!-- apk를 설치하기 위한 권한 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,18 +36,31 @@
         </activity>
 
         <activity
+            android:name="com.micromos.knpmobile.UpdateActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.KNP2.NoActionBar">
+        </activity>
+
+        <activity
             android:name="com.micromos.knpmobile.ui.login.LoginActivity"
             android:theme="@style/Theme.KNP2.NoActionBar"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-
+        <!-- Uri로 데이터를 보내기 위함 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
     </application>
 
 </manifest>

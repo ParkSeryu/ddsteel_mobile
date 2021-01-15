@@ -22,7 +22,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_text_margin"
+            android:layout_marginStart="@dimen/padding_10"
             android:layout_marginEnd="@dimen/default_text_margin"
             android:hint="@string/prompt_label_no"
             android:imeOptions="actionSearch"
@@ -46,7 +46,7 @@
             android:id="@+id/btnRetrieve"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="@dimen/padding_10"
             android:onClick="@{() -> viewModel.retrievePos(viewModel._labelNo)}"
             android:text="@string/button_retrieve"
             android:textSize="@dimen/text_view_default_size"
@@ -60,11 +60,12 @@
             android:id="@+id/prompt_current_stock_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:text="@string/prompt_current_pos"
-            android:textStyle="bold"
             android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/current_stock_tv"
-            app:layout_constraintLeft_toLeftOf="@id/input_layout"
+            app:layout_constraintStart_toStartOf="@id/input_layout"
             app:layout_constraintTop_toTopOf="@id/current_stock_tv" />
 
         <TextView
@@ -90,9 +91,10 @@
             android:id="@+id/prompt_change_stock_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:layout_marginStart="5dp"
             android:text="@string/prompt_change_pos"
             android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/input_layout_auto_tv"
             app:layout_constraintLeft_toLeftOf="@id/input_layout"
             app:layout_constraintTop_toTopOf="@id/input_layout_auto_tv" />
@@ -134,7 +136,7 @@
             android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="66dp"
-            android:layout_marginEnd="@dimen/default_text_margin"
+            android:layout_marginEnd="@dimen/padding_10"
             android:onClick="@{() -> viewModel.save()}"
             android:text="@string/button_save"
             android:textSize="@dimen/text_view_default_size"
@@ -149,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8" />
+            app:layout_constraintGuide_percent="0.78" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progress_bar"

@@ -39,9 +39,9 @@ class ProductCoilStockAdapter(val checkViewModel: ProductStockCheckViewModel, va
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (holder.itemViewType == 1) {
-            holder.bindUpdate(checkViewModel, item[position], context)
+            holder.bindUpdate(checkViewModel, item[position])
         } else {
-            holder.bindInsert(checkViewModel, item[position], context)
+            holder.bindInsert(checkViewModel, item[position])
         }
     }
 
@@ -65,13 +65,13 @@ class ViewHolder : RecyclerView.ViewHolder {
         bindingInsert = binding
     }
 
-    fun bindUpdate(checkViewModel: ProductStockCheckViewModel, item: GetCardInfo, context: Context) {
+    fun bindUpdate(checkViewModel: ProductStockCheckViewModel, item: GetCardInfo) {
         bindingUpdate.viewModel = checkViewModel
         bindingUpdate.cardItem = item
         bindingUpdate.executePendingBindings()
     }
 
-    fun bindInsert(checkViewModel: ProductStockCheckViewModel, item: GetCardInfo, context: Context) {
+    fun bindInsert(checkViewModel: ProductStockCheckViewModel, item: GetCardInfo) {
         bindingInsert.viewModel = checkViewModel
         bindingInsert.cardItem = item
         bindingInsert.executePendingBindings()
