@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.WindowManager
 import android.widget.*
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar_name.text = name
         getCodeCd()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         HomeButton.setOnClickListener {
             goHome()
         }

@@ -79,7 +79,7 @@
             android:enabled="false"
             android:paddingStart="5dp"
             android:paddingTop="15dp"
-            android:text="@{viewModel._pos_cd}"
+            android:text="@{viewModel.posCd}"
             android:textColor="@color/black"
             android:textSize="@dimen/text_view_default_size"
             app:layout_constraintLeft_toRightOf="@id/prompt_current_stock_tv"

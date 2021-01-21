@@ -46,7 +46,7 @@ class ProductCoilStockAdapter(val checkViewModel: ProductStockCheckViewModel, va
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (item[position].update == 1) {
+        if (item[position].updateFlag == 1) {
             return 1 // update
         } else
             return 2 // insert

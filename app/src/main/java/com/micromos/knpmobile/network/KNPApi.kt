@@ -15,43 +15,43 @@ import java.util.concurrent.TimeUnit
 interface KNPApi {
 
     @GET("code/change_pos")
-    fun changePos(
+    fun changePosCd(
         @Query("pos_cd") posCd: String,
         @Query("user_id") userId: String,
         @Query("coil_no") coilNo: String,
         @Query("coil_seq") coilSeq: String,
-        @Query("stk_type") stkType: String,
+        @Query("stk_type") stkType: String
     ): Call<Unit>
 
     @GET("code/get_code_cd")
     fun getCodeCd(
         @Query("code_kind") codeKind: String,
-        @Query("use_cls") useCls: String,
+        @Query("use_cls") useCls: String
     ): Call<GetCodeCdFeed>
 
     @GET("code/get_pos_cd")
     fun getPosCd(
-        @Query("label_no") labelNo: String,
+        @Query("label_no") labelNo: String
     ): Call<GetPosCd>
 
     @GET("product/get_cust_cd")
     fun getCustCd(
-        @Query("ship_no") shipNo: String,
+        @Query("ship_no") shipNo: String
     ): Call<GetCustCd>
 
     @GET("product/get_ship_order")
     fun getShipOrder(
-        @Query("ship_no") shipNo: String,
+        @Query("ship_no") shipNo: String
     ): Call<ShipOrderFeed>
 
     @GET("product/update_PDA_in")
     fun updatePDAin(
-        @Query("label_no") labelNo: String,
+        @Query("label_no") labelNo: String
     ): Call<Unit>
 
     @GET("product/update_PDA_out")
     fun updatePDAout(
-        @Query("label_no") labelNo: String,
+        @Query("label_no") labelNo: String
     ): Call<Unit>
 
     @GET("stock/get_label_no")

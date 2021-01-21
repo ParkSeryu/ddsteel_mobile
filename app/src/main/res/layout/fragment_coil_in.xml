@@ -59,8 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="@{@string/sell_cust_cd(viewModel._sell_cust_cd)}"
-            android:visibility="@{viewModel.cust_cd_visibility}"
+            android:text="@{@string/sell_cust_cd(viewModel.sellCustCd)}"
+            android:visibility="@{viewModel.custCdVisibility}"
             app:layout_constraintStart_toStartOf="@id/recyclerView"
             app:layout_constraintTop_toBottomOf="@id/input_layout"
             tools:text="@string/sell_cust_cd" />
@@ -71,8 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@{@string/ven_cust_cd(viewModel._ven_cust_cd)}"
-            android:visibility="@{viewModel.cust_cd_visibility}"
+            android:text="@{@string/ven_cust_cd(viewModel.venCustCd)}"
+            android:visibility="@{viewModel.custCdVisibility}"
             app:layout_constraintStart_toStartOf="@id/recyclerView"
             app:layout_constraintTop_toBottomOf="@id/sell_cust_cd_tv"
             tools:text="@string/ven_cust_cd" />
@@ -83,8 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@{@string/dlv_cust_cd(viewModel._dlv_cust_cd)}"
-            android:visibility="@{viewModel.cust_cd_visibility}"
+            android:text="@{@string/dlv_cust_cd(viewModel.dlvCustCd)}"
+            android:visibility="@{viewModel.custCdVisibility}"
             app:layout_constraintStart_toStartOf="@id/recyclerView"
             app:layout_constraintTop_toBottomOf="@id/ven_cust_cd_tv"
             tools:text="@string/dlv_cust_cd" />

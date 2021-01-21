@@ -4,22 +4,18 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 public class CustomAutoCompleteTextView extends androidx.appcompat.widget.AppCompatAutoCompleteTextView {
-    private Context mContext;
 
     public CustomAutoCompleteTextView(Context context) {
         super(context);
-        mContext = context;
     }
 
     public CustomAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
     }
 
 
     public CustomAutoCompleteTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;
     }
 
 

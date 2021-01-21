@@ -19,5 +19,5 @@ data class GetCardInfo(
     @SerializedName("QUANTITY") val quantity: Int,
     @SerializedName("WEIGHT") val weight: Int,
     @SerializedName("TIME") val time: String,
-    var update: Int
+    var updateFlag: Int
 )

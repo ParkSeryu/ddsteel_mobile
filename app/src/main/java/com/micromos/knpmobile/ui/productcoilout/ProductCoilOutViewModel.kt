@@ -8,22 +8,18 @@ import androidx.lifecycle.MutableLiveData
 import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.ShipOrder
-import com.micromos.knpmobile.dto.ShipOrderFeed
-import com.micromos.knpmobile.dto.GetCustCd
+import com.micromos.knpmobile.network.ApiResult
 import com.micromos.knpmobile.network.KNPApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.micromos.knpmobile.repository.ProductCoilRepositoryImpl
 
 class ProductCoilOutViewModel : ViewModelBase() {
 
-    private val api = KNPApi.create()
     private var shipNoList = setOf("QS", "RS", "FS", "SS", "BS", "MS")
 
-    val _sell_cust_cd = MutableLiveData<String>()
-    val _ven_cust_cd = MutableLiveData<String>()
-    val _dlv_cust_cd = MutableLiveData<String>()
-    val cust_cd_visibility = MutableLiveData(View.INVISIBLE)
+    val sellCustCd = MutableLiveData<String>()
+    val venCustCd = MutableLiveData<String>()
+    val dlvCustCd = MutableLiveData<String>()
+    val custCdVisibility = MutableLiveData(View.INVISIBLE)
 
     private val _noRetrieve = MutableLiveData<Event<Unit>>()
     val noRetrieve: LiveData<Event<Unit>> = _noRetrieve
@@ -55,7 +51,8 @@ class ProductCoilOutViewModel : ViewModelBase() {
     val pdaDateTimeCoilInList = mutableListOf<String?>()
     val pdaDateTimeCoilOutList = mutableListOf<String?>()
 
-    val _recyclerViewState = MutableLiveData<Event<Unit>>()
+    private val _recyclerViewState = MutableLiveData<Event<Unit>>()
+    val recyclerViewState: LiveData<Event<Unit>> = _recyclerViewState
     var recyclerViewStateFlag: Boolean = false
 
     var shipNo: String? = null
@@ -64,8 +61,9 @@ class ProductCoilOutViewModel : ViewModelBase() {
     var denomiator: Int = 0
 
     val prevShipNo = MutableLiveData<String?>(null)
-    val _test = MutableLiveData<String>()
-    val test: LiveData<String> = _test
+    private val _cardClick = MutableLiveData<String>()
+    val cardClick: LiveData<String> = _cardClick
+    private val repository = ProductCoilRepositoryImpl()
 
     fun shipNoRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
@@ -74,13 +72,17 @@ class ProductCoilOutViewModel : ViewModelBase() {
             _isLoading.value = true
             if (requestNo.length == 11 && requestNo.substring(0, 2) in shipNoList) {
                 Log.d("tete", "${prevShipNo.value} / ${this._requestNo.value}")
-                if (prevShipNo.value.equals(null)) {
-                    prevShipNo.value = requestNo
-                    getCommonInfo(requestNo)
-                } else if (prevShipNo.value != requestNo) {
-                    _noCompleteAllLabel.value = Event(Unit)
-                } else {
-                    getCommonInfo(requestNo)
+                when {
+                    prevShipNo.value.equals(null) -> {
+                        prevShipNo.value = requestNo
+                        getCommonInfo(requestNo)
+                    }
+                    prevShipNo.value != requestNo -> {
+                        _noCompleteAllLabel.value = Event(Unit)
+                    }
+                    else -> {
+                        getCommonInfo(requestNo)
+                    }
                 }
                 if (this._requestNo.value?.trim() == requestNo) {
                     recyclerViewStateFlag = false
@@ -94,55 +96,46 @@ class ProductCoilOutViewModel : ViewModelBase() {
 
     private fun getCommonInfo(requestNo: String) {
         getCustCd(requestNo)
-        getShipList(requestNo)
+        getShipOrder(requestNo)
         prevShipNo.value = requestNo
     }
 
     private fun getCustCd(requestNo: String) {
-        api.getCustCd(requestNo).enqueue(object : Callback<GetCustCd> {
-            override fun onResponse(call: Call<GetCustCd>, response: Response<GetCustCd>) {
-                Log.d("testCustCd", response.body().toString())
-                _sell_cust_cd.value = response.body()?.custNm.toString()
-                _ven_cust_cd.value = response.body()?.venCustNm ?: ""
-                _dlv_cust_cd.value = response.body()?.dlvCustNm ?: ""
-                if (response.code() == 200) {
-                    cust_cd_visibility.value = View.VISIBLE
-                } else {
-                    _noRetrieve.value = Event(Unit)
-                    cust_cd_visibility.value = View.INVISIBLE
-                }
+        repository.sendRequestCustCd(requestNo, object : ApiResult {
+            override fun onResult() {
+                val data = repository.getCustCD()
+                sellCustCd.value = data.value?.custNm ?: ""
+                venCustCd.value = data.value?.venCustNm ?: ""
+                dlvCustCd.value = data.value?.dlvCustNm ?: ""
+                custCdVisibility.value = View.VISIBLE
             }
 
-            override fun onFailure(call: Call<GetCustCd>, t: Throwable) {
-                Log.d("testFailedCust", t.message.toString())
+            override fun nullBody() {
+                _noRetrieve.value = Event(Unit)
+                custCdVisibility.value = View.INVISIBLE
+            }
+
+            override fun onFailure() {
                 noNetWork()
             }
         })
     }
 
-    private fun getShipList(requestNo: String) {
-        api.getShipOrder(requestNo).enqueue(object : Callback<ShipOrderFeed> {
-            override fun onResponse(
-                call: Call<ShipOrderFeed>,
-                response: Response<ShipOrderFeed>
-            ) {
-                Log.d("testCoilOut", response.body().toString())
-
-                shipOrderList.value = response.body()?.items
-
+    private fun getShipOrder(requestNo: String) {
+        repository.sendRequestShipOrder(requestNo, object : ApiResult {
+            override fun onResult() {
+                shipOrderList.value = repository.getShipOrder()
+                val size = repository.getItemSize()
                 numerator = 0
                 denomiator = 0
 
-                Log.d("testCoilOut", "${response.body()?.items?.size}")
-                val length = response.body()?.items?.size
-
-                if (length != null) {
-                    denomiator = length
+                if (size != 0) {
+                    denomiator = size
                     labelNoList.clear()
                     modifyClsList.clear()
                     pdaDateTimeCoilInList.clear()
                     pdaDateTimeCoilOutList.clear()
-                    for (i in 0 until length) {
+                    for (i in 0 until size) {
                         labelNoList.add(shipOrderList.value?.get(i)?.labelNo)
                         modifyClsList.add(shipOrderList.value?.get(i)?.modifyCLS)
                         pdaDateTimeCoilInList.add(shipOrderList.value?.get(i)?.pdaDateTimeIn)
@@ -156,8 +149,11 @@ class ProductCoilOutViewModel : ViewModelBase() {
                 successCall()
             }
 
-            override fun onFailure(call: Call<ShipOrderFeed>, t: Throwable) {
-                Log.d("testFailedCoilOut", t.message.toString())
+            override fun nullBody() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure() {
                 noNetWork()
             }
         })
@@ -187,16 +183,18 @@ class ProductCoilOutViewModel : ViewModelBase() {
         }
 
         if (successFlag == "true") {
-            api.updatePDAout(labelNo).enqueue(object : Callback<Unit> {
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                    Log.d("testUpdatePda", response.body().toString())
+            repository.updateTimePDA("OUT", labelNo, object : ApiResult {
+                override fun onResult() {
                     successCall()
                     recyclerViewStateFlag = true
                     shipNoRetrieve(shipNo)
                 }
 
-                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    Log.d("testFailedUpdatePDA", t.message.toString())
+                override fun nullBody() {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure() {
                     noNetWork()
                 }
             })
@@ -230,8 +228,8 @@ class ProductCoilOutViewModel : ViewModelBase() {
         successCall()
     }
 
-    fun test(labelNo: String) {
-        _test.value = labelNo
+    fun cardClick(labelNo: String) {
+        _cardClick.value = labelNo
     }
 
 }

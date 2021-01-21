@@ -18,7 +18,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="48dp"
                 android:background="?attr/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -38,7 +38,7 @@
                     android:id="@+id/HomeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/outline_home_24"
+                    android:src="@drawable/menu_image"
                     android:paddingStart="15dp"
                     android:paddingEnd="10dp"
                     android:paddingTop="15dp"

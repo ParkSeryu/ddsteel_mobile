@@ -23,7 +23,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:onClick="@{() -> viewModel.test(shipInItem.labelNo)}"
+        android:onClick="@{() -> viewModel.cardClick(shipInItem.labelNo)}"
         app:cardBackgroundColor="@{viewModel.setCardViewColor(shipInItem.pdaDateTimeIn)}"
         app:cardCornerRadius="5dp"
         app:layout_constraintLeft_toLeftOf="parent"

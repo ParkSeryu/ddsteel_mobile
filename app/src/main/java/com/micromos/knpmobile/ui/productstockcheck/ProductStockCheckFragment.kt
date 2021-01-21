@@ -26,9 +26,7 @@ import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilStockBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
-import com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.change_stock_auto_tv
 import kotlinx.android.synthetic.main.fragment_coil_stock.progress_bar
@@ -225,7 +223,7 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
 
         productStockCheckViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                it.update = 1
+                it.updateFlag = 1
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
             }
@@ -233,7 +231,7 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
 
         productStockCheckViewModel.cardItemListDataInsert.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                it.update = 0
+                it.updateFlag = 0
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
             }

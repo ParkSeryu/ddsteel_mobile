@@ -7,6 +7,7 @@ data class GetCodeCdFeed(@SerializedName("data") val items: List<GetCodeCd>)
 data class GetCodeCd(
     @SerializedName("CODE_CD") val codeCd: String,
     @SerializedName("CODE_NM") val codeNm: String,
+
     )
 
 data class GetPosCd(

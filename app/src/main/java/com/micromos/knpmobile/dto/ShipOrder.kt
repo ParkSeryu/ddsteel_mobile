@@ -6,6 +6,7 @@ data class GetCustCd(
     @SerializedName("CUST_NM") val custNm: String,
     @SerializedName("VEN_CUST_NM") val venCustNm: String,
     @SerializedName("DLV_CUST_NM") val dlvCustNm: String,
+    var responseCode : Int
 )
 
 data class ShipOrderFeed(@SerializedName("data") val items: List<ShipOrder>)

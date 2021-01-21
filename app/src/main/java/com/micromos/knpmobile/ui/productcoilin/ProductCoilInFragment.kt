@@ -23,12 +23,10 @@ import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilInBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_change_pos.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_in.input_layout
 import kotlinx.android.synthetic.main.fragment_coil_in.progress_bar
 import kotlinx.android.synthetic.main.fragment_coil_in.recyclerView
-import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import java.util.*
 
 class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
@@ -68,6 +66,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
         }
 
         setRecyclerView()
+
 
         productCoilInViewModel.noRetrieve.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
@@ -125,7 +124,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
             }
         })
 
-        productCoilInViewModel._test.observe(viewLifecycleOwner, Observer {
+        productCoilInViewModel.cardClick.observe(viewLifecycleOwner, Observer {
             ship_no_edt.setText(it)
         })
 
@@ -183,7 +182,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
         adapter = ProductCoilInAdapter(productCoilInViewModel)
         var recyclerViewState: Parcelable? = null
 
-        productCoilInViewModel._recyclerViewState.observe(viewLifecycleOwner, Observer {
+        productCoilInViewModel.recyclerViewState.observe(viewLifecycleOwner, Observer {
             recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
         })
 
