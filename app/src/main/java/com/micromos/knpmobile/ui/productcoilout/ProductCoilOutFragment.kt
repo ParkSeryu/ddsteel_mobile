@@ -23,6 +23,7 @@ import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilOutBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_out.input_layout
 import kotlinx.android.synthetic.main.fragment_coil_out.outer_layout_ship
 import kotlinx.android.synthetic.main.fragment_coil_out.progress_bar
@@ -124,6 +125,10 @@ class ProductCoilOutFragment : Fragment(), ReaderDevice.OnConnectionCompletedLis
                     .setPositiveButton(R.string.dialog_ok) {
                     }.show()
             }
+        })
+
+        productCoilOutViewModel.clearInputLayout.observe(viewLifecycleOwner, Observer {
+            ship_no_edt.setText("")
         })
 
         productCoilOutViewModel.dateTimeOverlap.observe(viewLifecycleOwner, Observer {

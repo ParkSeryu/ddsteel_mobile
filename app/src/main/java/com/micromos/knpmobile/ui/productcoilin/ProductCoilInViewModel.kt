@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.micromos.knpmobile.BuildConfig
 import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.ShipOrder
@@ -160,13 +161,11 @@ class ProductCoilInViewModel : ViewModelBase() {
         _isLoading.value = true
         for (i in 0 until labelNoList.size) {
             if (labelNo == labelNoList[i]) {
-                if (modifyClsList[i] == 0) {
+                if (modifyClsList[i] == 1) {
                     if (pdaDateTimeCoilInList[i].isNullOrEmpty()) {
                         successFlag = "true"
-                        Log.d("test", successFlag)
                     } else {
                         successFlag = "overlap"
-                        Log.d("test", successFlag)
                         successCall()
                     }
                 } else {
@@ -175,9 +174,8 @@ class ProductCoilInViewModel : ViewModelBase() {
                 break
             }
         }
-
         if (successFlag == "true") {
-            repository.updateTimePDA("IN", labelNo, object : ApiResult {
+            repository.updateTimePDA("IN", labelNo, shipNo!!, object : ApiResult {
                 override fun onResult() {
                     successCall()
                     recyclerViewStateFlag = true
@@ -222,6 +220,7 @@ class ProductCoilInViewModel : ViewModelBase() {
     }
 
     fun cardClick(labelNo: String) {
+        if(BuildConfig.DEBUG)
         _cardClick.value = labelNo
     }
 

@@ -28,18 +28,11 @@ class UpdateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update)
-
         downloadApk()
     }
 
     private fun downloadApk() {
-        val buildType = if (BuildConfig.DEBUG) {
-            "DEBUG"
-        } else {
-            "RELEASE"
-        }
-
-        api.downloadApk(buildType).enqueue(object : Callback<ResponseBody> {
+        api.downloadApk().enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
@@ -48,9 +41,9 @@ class UpdateActivity : AppCompatActivity() {
 
                 lifecycleScope.launch(Dispatchers.IO) {
                     val url = if (BuildConfig.DEBUG) {
-                        URL("http://192.168.0.137/index.php/version/updateApp?buildType=DEBUG")
+                        URL("http://119.205.209.23/KNP_API/Developer/index.php/version/updateApp")
                     } else {
-                        URL("http://192.168.0.137/index.php/version/updateApp?buildType=RELEASE")
+                        URL("http://119.205.209.23/KNP_API/Real/index.php/version/updateApp")
                     }
                     val connection = url.openConnection()
                     connection.connect()

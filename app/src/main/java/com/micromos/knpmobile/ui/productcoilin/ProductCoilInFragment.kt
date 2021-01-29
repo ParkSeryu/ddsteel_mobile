@@ -67,6 +67,9 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
 
         setRecyclerView()
 
+        productCoilInViewModel.clearInputLayout.observe(viewLifecycleOwner, Observer {
+            ship_no_edt.setText("")
+        })
 
         productCoilInViewModel.noRetrieve.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
@@ -152,7 +155,6 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
 
         productCoilInViewModel.noModifyEvent.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
-                Log.d("test", "tttt")
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_notification)
                     .setMessage(R.string.prompt_label_no_modify_ship_in)

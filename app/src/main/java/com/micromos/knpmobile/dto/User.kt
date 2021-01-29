@@ -9,11 +9,4 @@ data class User(
         @SerializedName("USER_NAME") val name: String,
         @SerializedName("RETIRE_FLAG") val retire: String,
         @SerializedName("PROGRAM_ID") val program: String,
-        var programs: List<String>){
-
-    fun convertProgramList(){
-        if(program.contains(",")){
-            programs = program.split(",")
-        }
-    }
-}
+)

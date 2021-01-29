@@ -10,6 +10,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+interface ChangePosRepository {
+    fun sendRequestPosCd(labelNo : String, resultCallback: ApiResult)
+    fun getPosCd() : LiveData<GetPosCd>
+    fun changePosCd(codeCd : String, user_id : String, coilNo : String, coilSeq : String, stkType : String, resultCallback: ApiResult)
+}
+
 class ChangePosRepositoryImpl : ChangePosRepository{
     private val api = KNPApi.create()
     private val posCdData = MutableLiveData<GetPosCd>()

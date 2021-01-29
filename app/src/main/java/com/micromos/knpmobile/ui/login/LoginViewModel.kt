@@ -34,6 +34,7 @@ class LoginViewModel : ViewModelBase() {
     companion object {
         var user_id: String? = null
         var name: String? = null
+        val program_id = mutableListOf<String>()
     }
 
     init {
@@ -44,17 +45,19 @@ class LoginViewModel : ViewModelBase() {
     fun onClickLogin() {
         val id = _id.value ?: ""
         val pw = _password.value ?: ""
-        if (BuildConfig.DEBUG) {
-            loginSuccessEvent.call()
-        } else {
+        //if (BuildConfig.DEBUG) {
+            //loginSuccessEvent.call()
+     //   } else {
             api.login(id, pw).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (response.code() == 200) {
-                        if (response.body()?.retire?.equals("2")!!) {
+                        if (response.body()?.retire?.equals("2")!! && response.body()?.id != "micro") {
                             _loginDeniedEvent.value = Event(Unit)
                         } else {
                             user_id = response.body()?.id
                             name = response.body()?.name
+                            program_id.addAll(response.body()?.program!!.split(","))
+                            Log.d("test", "$program_id")
                             loginSuccessEvent.call()
                         }
                     } else if (response.code() == 204) {
@@ -67,7 +70,7 @@ class LoginViewModel : ViewModelBase() {
                     _NotConnectedServer.value = Event(Unit)
                 }
             })
-        }
+      //  }
     }
 
     fun btnEnabled(id: String, pw: String): Boolean {

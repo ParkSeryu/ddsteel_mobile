@@ -154,7 +154,9 @@ class MainActivity : AppCompatActivity() {
         CustomDialog(this, R.layout.dialog_app_finish)
             .setMessage(R.string.prompt_exit)
             .setPositiveButton("예") {
-                finish()
+                moveTaskToBack(true)
+                finishAndRemoveTask()
+                android.os.Process.killProcess(android.os.Process.myPid())
             }.setNegativeButton("아니오") {
             }.show()
     }

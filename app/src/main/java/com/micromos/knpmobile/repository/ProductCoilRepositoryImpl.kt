@@ -12,6 +12,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+interface ProductCoilRepository {
+    fun sendRequestCustCd(requestNo: String, resultCallback: ApiResult)
+    fun getCustCD(): LiveData<GetCustCd>
+
+    fun sendRequestShipOrder(requestNo: String, resultCallback: ApiResult)
+    fun getShipOrder(): List<ShipOrder>?
+    fun getItemSize(): Int
+
+    fun updateTimePDA(type : String , labelNo : String, shipNo : String, resultCallback:ApiResult)
+}
+
 class ProductCoilRepositoryImpl : ProductCoilRepository {
     private val api = KNPApi.create()
     private val custCdData = MutableLiveData<GetCustCd>()
@@ -65,9 +76,9 @@ class ProductCoilRepositoryImpl : ProductCoilRepository {
         return length ?: 0
     }
 
-    override fun updateTimePDA(type: String, labelNo: String, resultCallback: ApiResult) {
+    override fun updateTimePDA(type: String, labelNo: String, shipNo : String, resultCallback: ApiResult) {
         if (type == "IN") {
-            api.updatePDAin(labelNo).enqueue(object : Callback<Unit> {
+            api.updatePDAin(labelNo, shipNo).enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("testUpdateTimeIn", response.body().toString())
                     if (response.code() == 200) resultCallback.onResult()
@@ -79,7 +90,7 @@ class ProductCoilRepositoryImpl : ProductCoilRepository {
                 }
             })
         } else if (type == "OUT") {
-            api.updatePDAout(labelNo).enqueue(object : Callback<Unit> {
+            api.updatePDAout(labelNo, shipNo).enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("testUpdateTimeOut", response.body().toString())
                     if (response.code() == 200) resultCallback.onResult()

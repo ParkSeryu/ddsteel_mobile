@@ -155,6 +155,17 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
             coilChangePosDataBinding.changeStockAutoTv.requestFocus()
         })
 
+        productChangePosViewModel.clearInputLayout.observe(viewLifecycleOwner, Observer {
+            label_no_edt_pos.setText("")
+            change_stock_auto_tv.setText("")
+            label_no_edt_pos.requestFocus()
+        })
+
+        productChangePosViewModel.changePosEvent.observe(viewLifecycleOwner, Observer {
+            notification_label_no_tv.text = getString(R.string.label_no, productChangePosViewModel.labelNo)
+            notification_pos_no_tv.text = getString(R.string.change_pos, productChangePosViewModel.notificationCurrentPosCd, productChangePosViewModel.notificationChangePosCd)
+        })
+
         productChangePosViewModel.updateImpossible.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)

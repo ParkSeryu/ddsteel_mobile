@@ -1,6 +1,7 @@
 package com.micromos.knpmobile.network
 
 import android.util.Log
+import com.micromos.knpmobile.BuildConfig
 import com.micromos.knpmobile.dto.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -46,12 +47,14 @@ interface KNPApi {
 
     @GET("product/update_PDA_in")
     fun updatePDAin(
-        @Query("label_no") labelNo: String
+        @Query("label_no") labelNo: String,
+        @Query("ship_no") shipNo: String
     ): Call<Unit>
 
     @GET("product/update_PDA_out")
     fun updatePDAout(
-        @Query("label_no") labelNo: String
+        @Query("label_no") labelNo: String,
+        @Query("ship_no") shipNo: String
     ): Call<Unit>
 
     @GET("stock/get_label_no")
@@ -95,7 +98,6 @@ interface KNPApi {
     @GET("version/updateApp")
     @Streaming
     fun downloadApk(
-        @Query("buildType") buildType : String
     ): Call<ResponseBody>
 
 
@@ -108,7 +110,9 @@ interface KNPApi {
 
     companion object Factory {
         fun create(): KNPApi {
-            val uri = "http://192.168.0.137/index.php/"
+
+            val uri = if(BuildConfig.DEBUG) "http://119.205.209.23/KNP_API/Developer/index.php/"
+            else "http://119.205.209.23/KNP_API/Real/index.php/"
 
             val okHttpClient = OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)

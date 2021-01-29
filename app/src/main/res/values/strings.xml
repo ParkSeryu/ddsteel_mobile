@@ -22,7 +22,7 @@
     <string name="failed_login">로그인 실패</string>
     <string name="invalid_login">아이디 또는 패스워드가 올바르지 않습니다.</string>
     <string name="message_denied_login">퇴사자이므로 권한이 없습니다.</string>
-    <string name="message_login_failed">아이디 또는 패스워드가 올바르지 않습니다.</string>
+    <string name="message_login_failed">등록되지 않은 사용자 입니다.</string>
     <string name="message_not_connected">네트워크 연결 상태를 확인 해 주세요.</string>
     <string name="message_not_connected_server">서버에 연결할 수 없습니다.\n네트워크 연결 상태를 확인 해 주세요.</string>
 
@@ -80,6 +80,8 @@
     <string name="prompt_no_match_label">해당하는 라벨번호가 없습니다. \n라벨번호를 확인해주세요.</string>
     <string name="prompt_no_match_pos">변경적재위치 값이 올바르지 않습니다.</string>
     <string name="prompt_update_impossible">조회 후 저장이 가능합니다.</string>
+    <string name="change_pos">%s -> %s 으로 적재위치 변경되었습니다.</string>
+
 
 
 </resources>

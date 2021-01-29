@@ -174,6 +174,11 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             visibility(true)
         })
 
+        productStockCheckViewModel.clearInputLayout.observe(viewLifecycleOwner, Observer {
+            label_no_edt_stock.setText("")
+            label_no_edt_stock.requestFocus()
+        })
+
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (adapter.itemCount == 0) {
                 if (pos_label_input_layout.visibility == View.VISIBLE) {

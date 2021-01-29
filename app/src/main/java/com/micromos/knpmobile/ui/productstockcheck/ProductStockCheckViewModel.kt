@@ -15,8 +15,6 @@ import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.user_id
 
 class ProductStockCheckViewModel : ViewModelBase() {
 
-    private val api = KNPApi.create()
-
     private val _noNetworkConnect = MutableLiveData<Event<Unit>>()
     val noNetWorkConnect: LiveData<Event<Unit>> = _noNetworkConnect
 
@@ -84,7 +82,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
         _selectDateEvent.value = Event(Unit)
         stockDate =
             inDate.value.toString().replace(" ", "").replace("\\p{Z}", "").replace("/", "")
-
     }
 
     fun labelRetrieve() {

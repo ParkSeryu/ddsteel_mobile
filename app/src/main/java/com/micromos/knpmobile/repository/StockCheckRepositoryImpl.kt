@@ -12,6 +12,28 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+interface StockCheckRepository {
+    fun sendRequestServerTime(resultCallback: ApiResult)
+    fun getServerTime(): String
+
+    fun sendRequestLabelNo(stockDate: String, labelNo: String, resultCallback: ApiResult)
+    fun updateCoilStock(
+        codeCd: String,
+        labelNo: String,
+        stockDate: String,
+        resultCallback: ApiResult
+    )
+    fun getCardInfo() : LiveData<GetCardInfo>
+
+    fun insertCoilStock(
+        stockDate: String,
+        user_id : String?,
+        labelNo: String,
+        codeCd: String,
+        resultCallback: ApiResult
+    )
+}
+
 class StockCheckRepositoryImpl : StockCheckRepository {
     private val api = KNPApi.create()
     private lateinit var time: String

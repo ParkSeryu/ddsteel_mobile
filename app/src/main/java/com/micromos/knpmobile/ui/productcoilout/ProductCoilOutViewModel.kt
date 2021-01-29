@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.micromos.knpmobile.BuildConfig
 import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.ShipOrder
@@ -71,7 +72,6 @@ class ProductCoilOutViewModel : ViewModelBase() {
         if (requestNo != null) {
             _isLoading.value = true
             if (requestNo.length == 11 && requestNo.substring(0, 2) in shipNoList) {
-                Log.d("tete", "${prevShipNo.value} / ${this._requestNo.value}")
                 when {
                     prevShipNo.value.equals(null) -> {
                         prevShipNo.value = requestNo
@@ -165,7 +165,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
         for (i in 0 until labelNoList.size) {
             if (labelNo == labelNoList[i]) {
                 successFlag = if (!pdaDateTimeCoilInList[i].isNullOrEmpty()) {
-                    if (modifyClsList[i] == 0) {
+                    if (modifyClsList[i] == 1) {
                         if (pdaDateTimeCoilOutList[i].isNullOrEmpty()) {
                             "true"
                         } else {
@@ -183,7 +183,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
         }
 
         if (successFlag == "true") {
-            repository.updateTimePDA("OUT", labelNo, object : ApiResult {
+            repository.updateTimePDA("OUT", labelNo, shipNo!!, object : ApiResult {
                 override fun onResult() {
                     successCall()
                     recyclerViewStateFlag = true
@@ -229,6 +229,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
     }
 
     fun cardClick(labelNo: String) {
+        if(BuildConfig.DEBUG)
         _cardClick.value = labelNo
     }
 

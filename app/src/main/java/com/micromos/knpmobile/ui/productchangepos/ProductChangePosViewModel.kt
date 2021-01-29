@@ -1,6 +1,7 @@
 package com.micromos.knpmobile.ui.productchangepos
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.micromos.knpmobile.Event
@@ -28,6 +29,9 @@ class ProductChangePosViewModel : ViewModelBase() {
     private val _focusChangeEvent = MutableLiveData<Event<Unit>>()
     val focusChangeEvent: LiveData<Event<Unit>> = _focusChangeEvent
 
+    private val _changePosEvent = MutableLiveData<Event<Unit>>()
+    val changePosEvent : LiveData<Event<Unit>> = _changePosEvent
+
     val atText = MutableLiveData<String?>()
     val _labelNo = MutableLiveData<String?>()
     var labelNo: String? = ""
@@ -35,10 +39,18 @@ class ProductChangePosViewModel : ViewModelBase() {
     val coilSeq = MutableLiveData<String>()
     val stkType = MutableLiveData<String>()
     val posCd = MutableLiveData<String>()
+    var notificationCurrentPosCd : String = ""
+    var notificationChangePosCd : String = ""
+    val notificationChangePosTextViewVisibility = MutableLiveData<Int>()
     private val repository = ChangePosRepositoryImpl()
+
+    init {
+        notificationChangePosTextViewVisibility.value = View.INVISIBLE
+    }
 
     fun retrievePos(_labelNo: String?) {
         labelNo = _labelNo?.trim()
+        notificationChangePosTextViewVisibility.value = View.INVISIBLE
         if (labelNo != null) {
             _isLoading.value = true
             repository.sendRequestPosCd(labelNo!!, object : ApiResult {
@@ -50,8 +62,10 @@ class ProductChangePosViewModel : ViewModelBase() {
                     posCd.value = data.value?.posCd ?: ""
                     if (posCd.value != "") {
                         posCd.value = codeList[posCd.value]
+                        notificationCurrentPosCd = posCd.value!!
                     }
-                    successCall()
+                    _focusChangeEvent.value = Event(Unit)
+                    _isLoading.value = false
                 }
 
                 override fun nullBody() {
@@ -60,7 +74,7 @@ class ProductChangePosViewModel : ViewModelBase() {
                     coilSeq.value = null
                     stkType.value = null
                     _noMatchLabel.value = Event(Unit)
-                    successCall()
+                    _isLoading.value = false
                 }
 
                 override fun onFailure() {
@@ -88,7 +102,13 @@ class ProductChangePosViewModel : ViewModelBase() {
                     stkType.value.toString(),
                     object : ApiResult {
                         override fun onResult() {
-                            retrievePos(labelNo)
+                            notificationChangePosCd = atText.value!!
+                            _changePosEvent.value = Event(Unit)
+                            notificationChangePosTextViewVisibility.value = View.VISIBLE
+                            posCd.value = ""
+                            coilNo.value = null
+                            coilSeq.value = null
+                            stkType.value = null
                             successCall()
                         }
 
@@ -102,11 +122,9 @@ class ProductChangePosViewModel : ViewModelBase() {
                     })
             } else {
                 _updateImpossible.value = Event(Unit)
-                successCall()
             }
         } else {
             _noMatchPos.value = Event(Unit)
-            successCall()
         }
     }
 
