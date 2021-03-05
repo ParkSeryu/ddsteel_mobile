@@ -42,7 +42,8 @@ interface KNPApi {
 
     @GET("product/get_ship_order")
     fun getShipOrder(
-        @Query("ship_no") shipNo: String
+        @Query("ship_no") shipNo: String,
+        @Query("program_flag") programFlag: Int
     ): Call<ShipOrderFeed>
 
     @GET("product/update_PDA_in")

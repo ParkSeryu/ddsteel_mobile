@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/menu_recyclerView"
             android:layout_width="match_parent"
@@ -25,7 +24,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
             tools:listitem="@layout/menu_item" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

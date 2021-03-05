@@ -84,11 +84,11 @@ class ProductCoilOutViewModel : ViewModelBase() {
                         getCommonInfo(requestNo)
                     }
                 }
-                if (this._requestNo.value?.trim() == requestNo) {
+                /*if (this._requestNo.value?.trim() == requestNo) {
                     recyclerViewStateFlag = false
-                }
+                }*/
             } else {
-                _recyclerViewState.value = Event(Unit)
+                //_recyclerViewState.value = Event(Unit)
                 labelRetrieve(requestNo)
             }
         }
@@ -122,7 +122,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
     }
 
     private fun getShipOrder(requestNo: String) {
-        repository.sendRequestShipOrder(requestNo, object : ApiResult {
+        repository.sendRequestShipOrder(requestNo, 2 , object : ApiResult {
             override fun onResult() {
                 shipOrderList.value = repository.getShipOrder()
                 val size = repository.getItemSize()
@@ -186,7 +186,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
             repository.updateTimePDA("OUT", labelNo, shipNo!!, object : ApiResult {
                 override fun onResult() {
                     successCall()
-                    recyclerViewStateFlag = true
+                    //recyclerViewStateFlag = true
                     shipNoRetrieve(shipNo)
                 }
 

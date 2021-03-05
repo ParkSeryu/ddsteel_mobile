@@ -45,6 +45,7 @@ class LoginViewModel : ViewModelBase() {
     fun onClickLogin() {
         val id = _id.value ?: ""
         val pw = _password.value ?: ""
+        program_id.clear()
         //if (BuildConfig.DEBUG) {
             //loginSuccessEvent.call()
      //   } else {

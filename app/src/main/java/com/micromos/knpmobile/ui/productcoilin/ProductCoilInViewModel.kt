@@ -80,12 +80,12 @@ class ProductCoilInViewModel : ViewModelBase() {
                     else -> {
                         getCommonInfo(requestNo)
                     }
-                }
+                }/*
                 if (this._requestNo.value?.trim() == requestNo) {
                     recyclerViewStateFlag = false
-                }
+                }*/
             } else {
-                _recyclerViewState.value = Event(Unit)
+                //_recyclerViewState.value = Event(Unit)
                 labelRetrieve(requestNo)
             }
         }
@@ -120,7 +120,7 @@ class ProductCoilInViewModel : ViewModelBase() {
     }
 
     private fun getShipOrder(requestNo: String) {
-        repository.sendRequestShipOrder(requestNo, object : ApiResult {
+        repository.sendRequestShipOrder(requestNo, 1, object : ApiResult {
             override fun onResult() {
                 shipOrderList.value = repository.getShipOrder()
                 val size = repository.getItemSize()
@@ -178,7 +178,7 @@ class ProductCoilInViewModel : ViewModelBase() {
             repository.updateTimePDA("IN", labelNo, shipNo!!, object : ApiResult {
                 override fun onResult() {
                     successCall()
-                    recyclerViewStateFlag = true
+                    //recyclerViewStateFlag = true 2021. 03. 04 부로 사용하지 않는 기능
                     shipNoRetrieve(shipNo)
                 }
 

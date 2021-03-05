@@ -1,6 +1,7 @@
 <resources>
     <!-- Default -->
     <string name="app_name">KNP</string>
+    <string name="company_name">(주)케이엔피이노텍</string>
     <string name="button_retrieve">조회</string>
     <string name="prompt_warning">경고</string>
     <string name="dialog_ok">확인</string>

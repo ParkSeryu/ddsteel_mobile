@@ -194,17 +194,17 @@ class ProductCoilOutFragment : Fragment(), ReaderDevice.OnConnectionCompletedLis
 
     private fun setRecyclerView() {
         adapter = ProductCoilOutAdapter(productCoilOutViewModel)
-        var recyclerViewState: Parcelable? = null
+    //    var recyclerViewState: Parcelable? = null
 
-        productCoilOutViewModel.recyclerViewState.observe(viewLifecycleOwner, Observer {
+      /*  productCoilOutViewModel.recyclerViewState.observe(viewLifecycleOwner, Observer {
             recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
-        })
+        })*/
 
         productCoilOutViewModel.shipOrderList.observe(viewLifecycleOwner, Observer {
-            if (productCoilOutViewModel.recyclerViewStateFlag)
+           /* if (productCoilOutViewModel.recyclerViewStateFlag)
                 coilOutDataBinding.recyclerView.layoutManager?.onRestoreInstanceState(
                     recyclerViewState
-                )
+                )*/
             coilOutDataBinding.recyclerView.adapter = adapter
             if (it != null) {
                 adapter.items = it

@@ -115,6 +115,7 @@ class UpdateActivity : AppCompatActivity() {
             FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", apk)
         intent.setDataAndType(apkUri, "application/vnd.android.package-archive")
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }

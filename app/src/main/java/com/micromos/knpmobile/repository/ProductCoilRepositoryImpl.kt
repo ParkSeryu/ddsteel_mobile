@@ -16,7 +16,7 @@ interface ProductCoilRepository {
     fun sendRequestCustCd(requestNo: String, resultCallback: ApiResult)
     fun getCustCD(): LiveData<GetCustCd>
 
-    fun sendRequestShipOrder(requestNo: String, resultCallback: ApiResult)
+    fun sendRequestShipOrder(requestNo: String, programFlag : Int, resultCallback: ApiResult)
     fun getShipOrder(): List<ShipOrder>?
     fun getItemSize(): Int
 
@@ -50,8 +50,8 @@ class ProductCoilRepositoryImpl : ProductCoilRepository {
         return custCdData
     }
 
-    override fun sendRequestShipOrder(requestNo: String, resultCallback: ApiResult) {
-        api.getShipOrder(requestNo).enqueue(object : Callback<ShipOrderFeed> {
+    override fun sendRequestShipOrder(requestNo: String, programFlag: Int, resultCallback: ApiResult) {
+        api.getShipOrder(requestNo, programFlag).enqueue(object : Callback<ShipOrderFeed> {
             override fun onResponse(call: Call<ShipOrderFeed>, response: Response<ShipOrderFeed>) {
                 Log.d("testCoil", response.body().toString())
                 shipOrderListData.value = response.body()?.items
@@ -103,5 +103,4 @@ class ProductCoilRepositoryImpl : ProductCoilRepository {
             })
         }
     }
-
 }

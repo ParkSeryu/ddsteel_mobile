@@ -171,7 +171,6 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
             }
         }
 
-
         readerDevice = ReaderDevice.getMXDevice(context)
         readerDevice.startAvailabilityListening()
         readerDevice.setReaderDeviceListener(this)
@@ -182,17 +181,17 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
 
     private fun setRecyclerView() {
         adapter = ProductCoilInAdapter(productCoilInViewModel)
-        var recyclerViewState: Parcelable? = null
+        //var recyclerViewState: Parcelable? = null
 
-        productCoilInViewModel.recyclerViewState.observe(viewLifecycleOwner, Observer {
+        /*productCoilInViewModel.recyclerViewState.observe(viewLifecycleOwner, Observer {
             recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
-        })
+        })*/
 
         productCoilInViewModel.shipOrderList.observe(viewLifecycleOwner, Observer {
-            if (productCoilInViewModel.recyclerViewStateFlag)
+          /*  if (productCoilInViewModel.recyclerViewStateFlag)
                 coilInDataBinding.recyclerView.layoutManager?.onRestoreInstanceState(
                     recyclerViewState
-                )
+                )*/
             coilInDataBinding.recyclerView.adapter = adapter
             if (it != null) {
                 adapter.items = it
@@ -202,6 +201,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
             }
         })
     }
+
     private fun hideKeyboard() {
         val imm =
             activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager

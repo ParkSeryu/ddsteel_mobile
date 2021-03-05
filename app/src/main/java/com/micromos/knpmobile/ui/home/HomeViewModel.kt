@@ -7,7 +7,7 @@ import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.program_id
 
 class HomeViewModel : ViewModel() {
-    private val _menuItemList = MutableLiveData<List<MenuItem>>()
+    private var _menuItemList = MutableLiveData<List<MenuItem>>()
     val menuItemList: LiveData<List<MenuItem>> = _menuItemList
 
     private val _goToAnotherView = MutableLiveData<Event<MenuItem>>()
@@ -22,6 +22,8 @@ class HomeViewModel : ViewModel() {
         )
 
         val allocationProgramList = mutableListOf<MenuItem>()
+        allocationProgramList.clear()
+
 
         programList.forEach {
             for( i in 0 .. program_id.lastIndex){
