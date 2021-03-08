@@ -92,6 +92,16 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
             }
         })
 
+        productCoilInViewModel.unExceptedError.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_error)
+                    .setMessage(R.string.unexpected_error_pda_in)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
         productCoilInViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
                 activity?.window?.setFlags(
@@ -188,10 +198,10 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
         })*/
 
         productCoilInViewModel.shipOrderList.observe(viewLifecycleOwner, Observer {
-          /*  if (productCoilInViewModel.recyclerViewStateFlag)
-                coilInDataBinding.recyclerView.layoutManager?.onRestoreInstanceState(
-                    recyclerViewState
-                )*/
+            /*  if (productCoilInViewModel.recyclerViewStateFlag)
+                  coilInDataBinding.recyclerView.layoutManager?.onRestoreInstanceState(
+                      recyclerViewState
+                  )*/
             coilInDataBinding.recyclerView.adapter = adapter
             if (it != null) {
                 adapter.items = it
@@ -232,7 +242,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
 
     override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
         try {
-            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE )
+            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE)
                 return
 
             var resultString = results.getResultAt(0).readString!!

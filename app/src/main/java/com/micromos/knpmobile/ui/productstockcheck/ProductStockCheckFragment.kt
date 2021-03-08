@@ -144,6 +144,16 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             }
         })
 
+        productStockCheckViewModel.unExceptedError.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_error)
+                    .setMessage(R.string.unexpected_error_pda_stock)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
         productStockCheckViewModel.noNetWorkConnect.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)

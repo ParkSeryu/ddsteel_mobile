@@ -21,6 +21,9 @@ class ProductStockCheckViewModel : ViewModelBase() {
     private val _noLabelNo = MutableLiveData<Event<Unit>>()
     val noLabelNo: LiveData<Event<Unit>> = _noLabelNo
 
+    private val _unExceptedError = MutableLiveData<Event<Unit>>()
+    val unExceptedError : LiveData<Event<Unit>> = _unExceptedError
+
     private val _noPosCdMatch = MutableLiveData<Event<Unit>>()
     val noPosCdMatch: LiveData<Event<Unit>> = _noPosCdMatch
 
@@ -65,7 +68,7 @@ class ProductStockCheckViewModel : ViewModelBase() {
             }
 
             override fun nullBody() {
-                TODO("Not yet implemented")
+                unExpectedError()
             }
 
             override fun onFailure() {
@@ -132,7 +135,7 @@ class ProductStockCheckViewModel : ViewModelBase() {
             }
 
             override fun nullBody() {
-                noNetWork()
+                unExpectedError()
             }
 
             override fun onFailure() {
@@ -151,7 +154,7 @@ class ProductStockCheckViewModel : ViewModelBase() {
             }
 
             override fun nullBody() {
-                noNetWork()
+                unExpectedError()
             }
 
             override fun onFailure() {
@@ -174,6 +177,11 @@ class ProductStockCheckViewModel : ViewModelBase() {
         } else {
             "OK"
         }
+    }
+
+    fun unExpectedError(){
+        _unExceptedError.value = Event(Unit)
+        successCall()
     }
 
     fun noNetWork() {

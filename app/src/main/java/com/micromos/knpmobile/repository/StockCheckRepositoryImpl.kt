@@ -46,6 +46,7 @@ class StockCheckRepositoryImpl : StockCheckRepository {
                     time = response.body()!!.string().trim().substring(0, 8)
                     resultCallback.onResult()
                 }
+                else resultCallback.nullBody()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

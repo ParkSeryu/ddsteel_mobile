@@ -90,6 +90,16 @@ class ProductCoilOutFragment : Fragment(), ReaderDevice.OnConnectionCompletedLis
             }
         })
 
+        productCoilOutViewModel.unExceptedError.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_error)
+                    .setMessage(R.string.unexpected_error_pda_out)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
         productCoilOutViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Log.d("visibility", "${productCoilOutViewModel.isLoading.value}")

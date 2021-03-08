@@ -82,6 +82,7 @@ class ProductCoilRepositoryImpl : ProductCoilRepository {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("testUpdateTimeIn", response.body().toString())
                     if (response.code() == 200) resultCallback.onResult()
+                    else resultCallback.nullBody()
                 }
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {
@@ -94,6 +95,7 @@ class ProductCoilRepositoryImpl : ProductCoilRepository {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("testUpdateTimeOut", response.body().toString())
                     if (response.code() == 200) resultCallback.onResult()
+                    else resultCallback.nullBody()
                 }
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {

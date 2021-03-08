@@ -17,6 +17,9 @@ class ProductChangePosViewModel : ViewModelBase() {
     private val _noNetworkConnect = MutableLiveData<Event<Unit>>()
     val noNetWorkConnect: LiveData<Event<Unit>> = _noNetworkConnect
 
+    private val _unExceptedError = MutableLiveData<Event<Unit>>()
+    val unExceptedError : LiveData<Event<Unit>> = _unExceptedError
+
     private val _noMatchLabel = MutableLiveData<Event<Unit>>()
     val noMatchLabel: LiveData<Event<Unit>> = _noMatchLabel
 
@@ -113,7 +116,7 @@ class ProductChangePosViewModel : ViewModelBase() {
                         }
 
                         override fun nullBody() {
-                            TODO("Not yet implemented")
+                            unExpectedError()
                         }
 
                         override fun onFailure() {
@@ -132,6 +135,12 @@ class ProductChangePosViewModel : ViewModelBase() {
         _noNetworkConnect.value = Event(Unit)
         successCall()
     }
+
+    fun unExpectedError(){
+        _unExceptedError.value = Event(Unit)
+        successCall()
+    }
+
 }
 
 

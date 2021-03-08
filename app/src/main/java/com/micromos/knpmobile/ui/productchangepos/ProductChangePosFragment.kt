@@ -113,6 +113,15 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
             }
         })
 
+        productChangePosViewModel.unExceptedError.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_error)
+                    .setMessage(R.string.unexpected_error_pda_change_pos)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
 
         productChangePosViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {

@@ -24,6 +24,9 @@ class ProductCoilInViewModel : ViewModelBase() {
     private val _noRetrieve = MutableLiveData<Event<Unit>>()
     val noRetrieve: LiveData<Event<Unit>> = _noRetrieve
 
+    private val _unExceptedError = MutableLiveData<Event<Unit>>()
+    val unExceptedError : LiveData<Event<Unit>> = _unExceptedError
+
     private val _noNetworkConnect = MutableLiveData<Event<Unit>>()
     val noNetWorkConnect: LiveData<Event<Unit>> = _noNetworkConnect
 
@@ -146,7 +149,7 @@ class ProductCoilInViewModel : ViewModelBase() {
             }
 
             override fun nullBody() {
-                TODO("Not yet implemented")
+                unExpectedError()
             }
 
             override fun onFailure() {
@@ -183,7 +186,7 @@ class ProductCoilInViewModel : ViewModelBase() {
                 }
 
                 override fun nullBody() {
-                    TODO("Not yet implemented")
+                    unExpectedError()
                 }
 
                 override fun onFailure() {
@@ -204,7 +207,7 @@ class ProductCoilInViewModel : ViewModelBase() {
         return if (pdaDateTime.isNullOrBlank())
             Color.WHITE
         else
-            Color.rgb(255, 253, 231)
+            Color.rgb(191, 255, 0)
     }
 
     fun setOkTvVisibility(pdaDateTime: String?): Int {
@@ -222,6 +225,11 @@ class ProductCoilInViewModel : ViewModelBase() {
     fun cardClick(labelNo: String) {
         if(BuildConfig.DEBUG)
         _cardClick.value = labelNo
+    }
+
+    fun unExpectedError(){
+        _unExceptedError.value = Event(Unit)
+        successCall()
     }
 
 }

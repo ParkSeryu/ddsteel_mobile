@@ -104,7 +104,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_layout_label"
-                tools:listitem="@layout/card_item_list_stock_update" />
+                tools:listitem="@layout/card_item_list_stock_update"
+                android:focusable="true" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
