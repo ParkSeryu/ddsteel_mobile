@@ -212,6 +212,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
         }
     }
 
+
     fun setCardViewColor(pdaDateTime: String?): Int {
         return if (pdaDateTime.isNullOrBlank())
             Color.WHITE

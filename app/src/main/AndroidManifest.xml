@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.micromos.knpmobile">
 
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
@@ -50,6 +53,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.scan.LabelCaptureActivity"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
         <!-- Uri로 데이터를 보내기 위함 -->
         <provider

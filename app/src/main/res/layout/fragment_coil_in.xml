@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.micromos.knpmobile.ui.productcoilin.ProductCoilInViewModel" />
@@ -15,6 +14,13 @@
         android:id="@+id/outer_layout_ship"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <fragment
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            toptop>
+
+        </fragment>
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -88,6 +94,31 @@
             app:layout_constraintStart_toStartOf="@id/recyclerView"
             app:layout_constraintTop_toBottomOf="@id/ven_cust_cd_tv"
             tools:text="@string/dlv_cust_cd" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/scan_one_by_one"
+            android:layout_width="75dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="5dp"
+            android:onClick="@{() -> viewModel.scanBarCodeOneByOne()}"
+            android:text="스캔1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/sell_cust_cd_tv" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/scan_continuous"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="5dp"
+            android:onClick="@{() -> viewModel.scanBarCodeContinuous()}"
+            android:text="스캔2"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/sell_cust_cd_tv" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

@@ -3,6 +3,7 @@ package com.micromos.knpmobile.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.micromos.knpmobile.BuildConfig
 import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.program_id
 
@@ -26,9 +27,14 @@ class HomeViewModel : ViewModel() {
 
 
         programList.forEach {
-            for( i in 0 .. program_id.lastIndex){
-                if(it.id == program_id[i])
-                    allocationProgramList.add(it)
+            if(BuildConfig.DEBUG){
+                allocationProgramList.add(it)
+            }
+            else {
+                for (i in 0..program_id.lastIndex) {
+                    if (it.id == program_id[i])
+                        allocationProgramList.add(it)
+                }
             }
         }
         _menuItemList.value = allocationProgramList

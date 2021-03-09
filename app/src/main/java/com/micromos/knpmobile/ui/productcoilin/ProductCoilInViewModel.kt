@@ -1,7 +1,6 @@
 package com.micromos.knpmobile.ui.productcoilin
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,10 +9,16 @@ import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.ShipOrder
 import com.micromos.knpmobile.network.ApiResult
-import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.repository.ProductCoilRepositoryImpl
 
 class ProductCoilInViewModel : ViewModelBase() {
+
+    companion object{
+        fun test( s : String){
+            val test = MutableLiveData<String>()
+            test.value = s
+        }
+    }
 
     private var shipNoList = setOf("QS", "RS", "FS", "SS", "BS", "MS")
     val sellCustCd = MutableLiveData<String>()
@@ -65,6 +70,11 @@ class ProductCoilInViewModel : ViewModelBase() {
 
     private val repository = ProductCoilRepositoryImpl()
 
+    private val _onClickScanButtonOneByOne = MutableLiveData<Event<Unit>>()
+    val onClickScanButtonOneByOne : LiveData<Event<Unit>> = _onClickScanButtonOneByOne
+
+    private val _onClickScanButtonContinuous = MutableLiveData<Event<Unit>>()
+    val onClickScanButtonContinuous : LiveData<Event<Unit>> = _onClickScanButtonContinuous
 
     fun shipNoRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
@@ -201,6 +211,14 @@ class ProductCoilInViewModel : ViewModelBase() {
                 "false" -> _noLabelNo.value = Event(Unit)
             }
         }
+    }
+
+    fun scanBarCodeOneByOne(){
+        _onClickScanButtonOneByOne.value = Event(Unit)
+    }
+
+    fun scanBarCodeContinuous(){
+        _onClickScanButtonContinuous.value = Event(Unit)
     }
 
     fun setCardViewColor(pdaDateTime: String?): Int {

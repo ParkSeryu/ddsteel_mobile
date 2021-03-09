@@ -46,9 +46,9 @@ class LoginViewModel : ViewModelBase() {
         val id = _id.value ?: ""
         val pw = _password.value ?: ""
         program_id.clear()
-        //if (BuildConfig.DEBUG) {
-            //loginSuccessEvent.call()
-     //   } else {
+        if (BuildConfig.DEBUG) {
+            loginSuccessEvent.call()
+        } else {
             api.login(id, pw).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (response.code() == 200) {
@@ -71,12 +71,11 @@ class LoginViewModel : ViewModelBase() {
                     _NotConnectedServer.value = Event(Unit)
                 }
             })
-      //  }
+        }
     }
 
     fun btnEnabled(id: String, pw: String): Boolean {
         return if (BuildConfig.DEBUG) true else id.isNotBlank() && pw.isNotBlank()
-        // return id.isNotBlank() && pw.isNotBlank()
     }
 
 
