@@ -1,18 +1,28 @@
 package com.micromos.knpmobile
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.WindowManager
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import com.micromos.knpmobile.dto.GetCodeCdFeed
 import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.ui.home.HomeFragment
@@ -22,7 +32,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +40,8 @@ class MainActivity : AppCompatActivity() {
     private val api = KNPApi.create()
     private val code_kind = "SYS05"
     private val use_cls = "1"
+
+    val FLAG_PERM_CAMERA = 98
 
     companion object {
         val codeCdList = mutableListOf<String>()
@@ -53,11 +65,10 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 }
-
                 val adapter =
                     ArrayAdapter<String>(
                         context,
-                        android.R.layout.simple_list_item_1,
+                        R.layout.custom_auto_complete_layout,
                         rstList
                     )
                 Log.d("testMatchShow", "$rstList")
@@ -65,7 +76,9 @@ class MainActivity : AppCompatActivity() {
                     //AT.dismissDropDown()
                 } else {
                     AT.setAdapter(adapter)
-                    AT.showDropDown()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        AT.showDropDown()
+                    }, 5)
                 }
             } else {
                 val adapter = ArrayAdapter<String>(
@@ -74,7 +87,18 @@ class MainActivity : AppCompatActivity() {
                     codeNmList
                 )
                 AT.setAdapter(adapter)
-                AT.showDropDown()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    AT.showDropDown()
+                }, 5)
+            }
+        }
+
+        fun transToUpperCase(s: Editable?, editText: EditText) {
+            var text = s.toString()
+            if (text != text.toUpperCase(Locale.ROOT)) {
+                text = text.toUpperCase(Locale.ROOT)
+                editText.setText(text)
+                editText.setSelection(editText.length())
             }
         }
     }
@@ -91,7 +115,49 @@ class MainActivity : AppCompatActivity() {
             goHome()
         }
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        permissionCheck()
+
+
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            FLAG_PERM_CAMERA -> {
+                if (grantResults.isNotEmpty() && grantResults.get(0) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "카메라 접근 권한 승인", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, "카메라 접근 권한 거부", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        return
+    }
+
+    private fun permissionCheck() {
+        val permssionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+
+        if (permssionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.CAMERA
+                )
+            ) {
+            } else {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.CAMERA),
+                    FLAG_PERM_CAMERA
+                )
+            }
+        }
+
+
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
@@ -115,15 +181,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d("testFailedGetCode", t.message.toString())
             }
         })
-    }
-
-    fun transToUpperCase(s: Editable?, editText: EditText) {
-        var text = s.toString()
-        if (text != text.toUpperCase(Locale.ROOT)) {
-            text = text.toUpperCase(Locale.ROOT)
-            editText.setText(text)
-            editText.setSelection(editText.length())
-        }
     }
 
     fun setTextChangedListener(editText: EditText) {

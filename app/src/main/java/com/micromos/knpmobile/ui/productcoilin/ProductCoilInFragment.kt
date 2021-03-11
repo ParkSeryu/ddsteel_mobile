@@ -1,6 +1,7 @@
 package com.micromos.knpmobile.ui.productcoilin
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,18 +18,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.cognex.mobile.barcode.sdk.ReadResults
 import com.cognex.mobile.barcode.sdk.ReaderDevice
-import com.google.zxing.integration.android.IntentIntegrator
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilInBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
-import com.micromos.knpmobile.ui.scan.LabelCaptureActivity
-import com.micromos.knpmobile.ui.scan.LabelContinuousCaptureFragment
+import com.micromos.knpmobile.ui.scanproductcoilin.ScanProductCoilInActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
-import kotlinx.android.synthetic.main.fragment_coil_in.input_layout
-import kotlinx.android.synthetic.main.fragment_coil_in.progress_bar
 import java.util.*
 
 class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
@@ -139,15 +136,11 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
             }
         })
 
-        productCoilInViewModel.onClickScanButtonOneByOne.observe(viewLifecycleOwner, Observer {
-            val integrator = IntentIntegrator.forSupportFragment(this)
-            integrator.setOrientationLocked(false)
-            integrator.captureActivity = LabelCaptureActivity::class.java
-            integrator.initiateScan()
-        })
-
-        productCoilInViewModel.onClickScanButtonContinuous.observe(viewLifecycleOwner, Observer {
-            (requireActivity() as MainActivity).replaceFragment(LabelContinuousCaptureFragment.newInstance())
+        productCoilInViewModel.onClickScanButton.observe(viewLifecycleOwner, Observer {
+            val intent = Intent(
+                context, ScanProductCoilInActivity::class.java
+            )
+            startActivity(intent)
         })
 
         productCoilInViewModel.cardClick.observe(viewLifecycleOwner, Observer {
@@ -202,19 +195,6 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
         return coilInDataBinding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents == null) {
-                Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(context, result.contents, Toast.LENGTH_LONG).show()
-                productCoilInViewModel._requestNo.value = result.contents.toUpperCase(Locale.ROOT)
-                productCoilInViewModel.shipNoRetrieve(productCoilInViewModel._requestNo.value)
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 
     private fun setRecyclerView() {
         adapter = ProductCoilInAdapter(productCoilInViewModel)
@@ -287,6 +267,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
     override fun onResume() {
         super.onResume()
         Log.d("test", "onResume")
+        productCoilInViewModel.screenOrientation()
         readerDevice.startAvailabilityListening()
         readerDevice.setReaderDeviceListener(this)
         readerDevice.connect(this@ProductCoilInFragment)
@@ -306,6 +287,15 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
         readerDevice.stopAvailabilityListening()
         readerDevice.setReaderDeviceListener(null)
         readerDevice.disconnect()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            productCoilInViewModel.screenOrientation()
+        }else{
+            productCoilInViewModel.screenOrientation()
+        }
     }
 
 

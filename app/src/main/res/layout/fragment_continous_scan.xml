@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.scan.LabelContinuousCaptureViewModel" />
+            type="com.micromos.knpmobile.ui.scanproductcoilin.ScanProductCoilInViewModel" />
     </data>
 
 

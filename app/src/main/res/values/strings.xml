@@ -3,6 +3,7 @@
     <string name="app_name">KNP</string>
     <string name="company_name">(주)케이엔피이노텍</string>
     <string name="button_retrieve">조회</string>
+    <string name="button_scan">스캔</string>
     <string name="prompt_warning">경고</string>
     <string name="dialog_ok">확인</string>
     <string name="dialog_ng">취소</string>
@@ -13,11 +14,16 @@
     <string name="prompt_notification">알림</string>
     <string name="network_failed">네트워크 연결 상태를 확인해 주세요.\n서버에 연결할 수 없습니다.</string>
     <string name="unexpected_error_pda_in">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 001)</string>
-    <string name="unexpected_error_pda_out">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 002)</string>
-    <string name="unexpected_error_pda_stock">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 003)</string>
-    <string name="unexpected_error_pda_change_pos">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 004)</string>
+    <string name="unexpected_error_pda_in_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 002)</string>
+    <string name="unexpected_error_pda_out">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 003)</string>
+    <string name="unexpected_error_pda_out_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 004)</string>
+    <string name="unexpected_error_pda_stock">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 005)</string>
+    <string name="unexpected_error_pda_stock_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 006)</string>
+    <string name="unexpected_error_pda_change_pos">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 007)</string>
+    <string name="unexpected_error_pda_change_pos_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 008)</string>
     <string name="prompt_network_failed">네트워크 연결 상태를 확인해 주세요.</string>
     <string name="prompt_update_exists">업데이트를 진행합니다.</string>
+    <string name="hyphen">/</string>
 
     <!-- Login -->
     <string name="prompt_id">아이디</string>

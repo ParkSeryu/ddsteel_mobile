@@ -13,13 +13,6 @@ import com.micromos.knpmobile.repository.ProductCoilRepositoryImpl
 
 class ProductCoilInViewModel : ViewModelBase() {
 
-    companion object{
-        fun test( s : String){
-            val test = MutableLiveData<String>()
-            test.value = s
-        }
-    }
-
     private var shipNoList = setOf("QS", "RS", "FS", "SS", "BS", "MS")
     val sellCustCd = MutableLiveData<String>()
     val venCustCd = MutableLiveData<String>()
@@ -70,11 +63,8 @@ class ProductCoilInViewModel : ViewModelBase() {
 
     private val repository = ProductCoilRepositoryImpl()
 
-    private val _onClickScanButtonOneByOne = MutableLiveData<Event<Unit>>()
-    val onClickScanButtonOneByOne : LiveData<Event<Unit>> = _onClickScanButtonOneByOne
-
-    private val _onClickScanButtonContinuous = MutableLiveData<Event<Unit>>()
-    val onClickScanButtonContinuous : LiveData<Event<Unit>> = _onClickScanButtonContinuous
+    private val _onClickScanButton = MutableLiveData<Event<Unit>>()
+    val onClickScanButton : LiveData<Event<Unit>> = _onClickScanButton
 
     fun shipNoRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
@@ -103,6 +93,7 @@ class ProductCoilInViewModel : ViewModelBase() {
             }
         }
     }
+
 
     private fun getCommonInfo(requestNo: String) {
         getCustCd(requestNo)
@@ -213,19 +204,15 @@ class ProductCoilInViewModel : ViewModelBase() {
         }
     }
 
-    fun scanBarCodeOneByOne(){
-        _onClickScanButtonOneByOne.value = Event(Unit)
-    }
-
-    fun scanBarCodeContinuous(){
-        _onClickScanButtonContinuous.value = Event(Unit)
+    fun scanBarCode(){
+        _onClickScanButton.value = Event(Unit)
     }
 
     fun setCardViewColor(pdaDateTime: String?): Int {
         return if (pdaDateTime.isNullOrBlank())
             Color.WHITE
         else
-            Color.rgb(191, 255, 0)
+            Color.rgb(191, 255, 231)
     }
 
     fun setOkTvVisibility(pdaDateTime: String?): Int {
@@ -248,6 +235,10 @@ class ProductCoilInViewModel : ViewModelBase() {
     fun unExpectedError(){
         _unExceptedError.value = Event(Unit)
         successCall()
+    }
+
+    fun screenOrientation(){
+        onCleared()
     }
 
 }

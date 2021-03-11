@@ -1,5 +1,7 @@
 package com.micromos.knpmobile.ui.productchangepos
 
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
@@ -20,17 +22,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.cognex.mobile.barcode.sdk.ReadResults
 import com.cognex.mobile.barcode.sdk.ReaderDevice
+import com.micromos.knpmobile.CustomAutoCompleteTextView
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
 import com.micromos.knpmobile.MainActivity.Companion.codeNmList
+import com.micromos.knpmobile.MainActivity.Companion.transToUpperCase
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentChangePosBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
+import com.micromos.knpmobile.ui.scanproductchangepos.ScanProductChangePosActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_change_pos.*
+import kotlinx.android.synthetic.main.fragment_change_pos.change_stock_auto_tv
 import kotlinx.android.synthetic.main.fragment_change_pos.input_layout
 import kotlinx.android.synthetic.main.fragment_change_pos.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import java.util.*
 
 class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
@@ -60,8 +67,9 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
             }
 
             override fun afterTextChanged(s: Editable?) {
-                (requireActivity() as MainActivity).transToUpperCase(s, change_stock_auto_tv)
+                transToUpperCase(s, change_stock_auto_tv)
                 context?.let { autoCompleteTextViewCustom(change_stock_auto_tv, it) }
+
             }
         })
     }
@@ -166,13 +174,17 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
 
         productChangePosViewModel.clearInputLayout.observe(viewLifecycleOwner, Observer {
             label_no_edt_pos.setText("")
-            change_stock_auto_tv.setText("")
             label_no_edt_pos.requestFocus()
         })
 
         productChangePosViewModel.changePosEvent.observe(viewLifecycleOwner, Observer {
-            notification_label_no_tv.text = getString(R.string.label_no, productChangePosViewModel.labelNo)
-            notification_pos_no_tv.text = getString(R.string.change_pos, productChangePosViewModel.notificationCurrentPosCd, productChangePosViewModel.notificationChangePosCd)
+            notification_label_no_tv.text =
+                getString(R.string.label_no, productChangePosViewModel.labelNo)
+            notification_pos_no_tv.text = getString(
+                R.string.change_pos,
+                productChangePosViewModel.notificationCurrentPosCd,
+                productChangePosViewModel.notificationChangePosCd
+            )
         })
 
         productChangePosViewModel.updateImpossible.observe(viewLifecycleOwner, Observer {
@@ -183,6 +195,13 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
                     .setPositiveButton(R.string.dialog_ok) {
                     }.show()
             }
+        })
+
+        productChangePosViewModel.onClickScanButton.observe(viewLifecycleOwner, Observer {
+            val intent = Intent(
+                context, ScanProductChangePosActivity::class.java
+            )
+            startActivity(intent)
         })
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -266,5 +285,14 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
         readerDevice.stopAvailabilityListening()
         readerDevice.setReaderDeviceListener(null)
         readerDevice.disconnect()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            productChangePosViewModel.screenOrientation()
+        }else{
+            productChangePosViewModel.screenOrientation()
+        }
     }
 }

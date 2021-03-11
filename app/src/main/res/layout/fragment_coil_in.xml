@@ -15,13 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            toptop>
-
-        </fragment>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout"
@@ -33,7 +26,7 @@
             android:imeOptions="actionSearch"
             app:endIconMode="clear_text"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintRight_toLeftOf="@id/guideline2"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -52,6 +45,21 @@
             android:layout_marginEnd="5dp"
             android:onClick="@{() -> viewModel.shipNoRetrieve(viewModel._requestNo)}"
             android:text="@string/button_retrieve"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_view_default_size"
+            app:layout_constraintBottom_toTopOf="@id/sell_cust_cd_tv"
+            app:layout_constraintLeft_toRightOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/input_layout" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnScan"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="5dp"
+            android:onClick="@{() -> viewModel.scanBarCode()}"
+            android:text="@string/button_scan"
             android:textStyle="bold"
             android:textSize="@dimen/text_view_default_size"
             app:layout_constraintBottom_toTopOf="@id/sell_cust_cd_tv"
@@ -95,30 +103,6 @@
             app:layout_constraintTop_toBottomOf="@id/ven_cust_cd_tv"
             tools:text="@string/dlv_cust_cd" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/scan_one_by_one"
-            android:layout_width="75dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="5dp"
-            android:onClick="@{() -> viewModel.scanBarCodeOneByOne()}"
-            android:text="스캔1"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_view_default_size"
-            app:layout_constraintRight_toRightOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@id/sell_cust_cd_tv" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/scan_continuous"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="5dp"
-            android:onClick="@{() -> viewModel.scanBarCodeContinuous()}"
-            android:text="스캔2"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_view_default_size"
-            app:layout_constraintLeft_toRightOf="@id/guideline"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/sell_cust_cd_tv" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -138,6 +122,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progress_bar"

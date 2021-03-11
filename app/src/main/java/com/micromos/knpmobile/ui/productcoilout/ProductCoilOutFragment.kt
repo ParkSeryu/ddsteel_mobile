@@ -1,7 +1,8 @@
 package com.micromos.knpmobile.ui.productcoilout
 
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,12 +23,11 @@ import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilOutBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
+import com.micromos.knpmobile.ui.scanproductcoilout.ScanProductCoilOutActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_out.input_layout
 import kotlinx.android.synthetic.main.fragment_coil_out.outer_layout_ship
 import kotlinx.android.synthetic.main.fragment_coil_out.progress_bar
-import kotlinx.android.synthetic.main.fragment_coil_out.recyclerView
 import kotlinx.android.synthetic.main.fragment_coil_out.ship_no_edt
 import java.util.*
 
@@ -161,6 +161,13 @@ class ProductCoilOutFragment : Fragment(), ReaderDevice.OnConnectionCompletedLis
             }
         })
 
+        productCoilOutViewModel.onClickScanButton.observe(viewLifecycleOwner, Observer {
+            val intent = Intent(
+                context, ScanProductCoilOutActivity::class.java
+            )
+            startActivity(intent)
+        })
+
         productCoilOutViewModel.cardClick.observe(viewLifecycleOwner, Observer {
             ship_no_edt.setText(it)
         })
@@ -288,6 +295,15 @@ class ProductCoilOutFragment : Fragment(), ReaderDevice.OnConnectionCompletedLis
         readerDevice.stopAvailabilityListening()
         readerDevice.setReaderDeviceListener(null)
         readerDevice.disconnect()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            productCoilOutViewModel.screenOrientation()
+        }else{
+            productCoilOutViewModel.screenOrientation()
+        }
     }
 
 }

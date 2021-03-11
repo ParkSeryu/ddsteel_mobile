@@ -105,7 +105,8 @@ class CustomDialog(private val context: Context, private val dialogName : Int) {
         dialog?.show()
     }
 
-    private fun dismiss() {
+     fun dismiss() {
         dialog?.dismiss()
     }
+
 }

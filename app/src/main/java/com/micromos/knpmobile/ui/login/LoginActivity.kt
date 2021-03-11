@@ -1,11 +1,15 @@
 package com.micromos.knpmobile.ui.login
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -29,7 +33,6 @@ class LoginActivity : AppCompatActivity() {
     private val api = KNPApi.create()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         LoginViewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
@@ -43,13 +46,13 @@ class LoginActivity : AppCompatActivity() {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
         checkVersion()
-        LoginViewModel._id.value = sharedPreferences.getString("ID","")
+        LoginViewModel._id.value = sharedPreferences.getString("ID", "")
 
 
         LoginViewModel.loginSuccessEvent.observe(this, Observer
         {
             val preferencesID = sharedPreferences.getString("ID", "")
-            if(preferencesID != user_id){
+            if (preferencesID != user_id) {
                 editor.putString("ID", user_id)
                 editor.apply()
             }
@@ -105,15 +108,14 @@ class LoginActivity : AppCompatActivity() {
                     CustomDialog(this@LoginActivity, R.layout.dialog_app_update)
                         .setMessage(R.string.prompt_update_exists)
                         .setPositiveButton("확인") {
-                           val intent = Intent(applicationContext, UpdateActivity::class.java)
+                            val intent = Intent(applicationContext, UpdateActivity::class.java)
                             startActivity(intent)
 
-                        }.setNegativeButton("종료"){
+                        }.setNegativeButton("종료") {
                             finish()
                         }.show()
                 }
             }
-
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 CustomDialog(this@LoginActivity, R.layout.dialog_app_not_connected)
                     .setMessage(R.string.message_not_connected_server)

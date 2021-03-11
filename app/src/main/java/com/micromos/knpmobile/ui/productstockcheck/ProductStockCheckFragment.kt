@@ -1,6 +1,8 @@
 package com.micromos.knpmobile.ui.productstockcheck
 
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.Selection
@@ -23,9 +25,12 @@ import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.MainActivity.Companion.autoCompleteTextViewCustom
+import com.micromos.knpmobile.MainActivity.Companion.transToUpperCase
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentCoilStockBinding
 import com.micromos.knpmobile.ui.home.HomeFragment
+import com.micromos.knpmobile.ui.scanproductchangepos.ScanProductChangePosActivity
+import com.micromos.knpmobile.ui.scanproductstockcheck.ScanProductStockCheckActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import kotlinx.android.synthetic.main.fragment_coil_stock.change_stock_auto_tv
@@ -64,7 +69,7 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             }
 
             override fun afterTextChanged(s: Editable?) {
-                (requireActivity() as MainActivity).transToUpperCase(s, change_stock_auto_tv)
+                transToUpperCase(s, change_stock_auto_tv)
                 context?.let { autoCompleteTextViewCustom(change_stock_auto_tv, it) }
             }
         })
@@ -189,6 +194,14 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             label_no_edt_stock.requestFocus()
         })
 
+        productStockCheckViewModel.onClickScanButton.observe(viewLifecycleOwner, Observer {
+            val intent = Intent(
+                context, ScanProductStockCheckActivity::class.java
+            )
+            intent.putExtra("stockDate", productStockCheckViewModel.stockDate)
+            startActivity(intent)
+        })
+
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (adapter.itemCount == 0) {
                 if (pos_label_input_layout.visibility == View.VISIBLE) {
@@ -275,7 +288,7 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
 
     override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
         try {
-            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE  || date_input_layout.visibility == View.VISIBLE)
+            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE || date_input_layout.visibility == View.VISIBLE)
                 return
 
             var resultString = results.getResultAt(0).readString!!
@@ -310,6 +323,15 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
         readerDevice.stopAvailabilityListening()
         readerDevice.setReaderDeviceListener(null)
         readerDevice.disconnect()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            productStockCheckViewModel.screenOrientation()
+        }else{
+            productStockCheckViewModel.screenOrientation()
+        }
     }
 
 }

@@ -1,5 +1,10 @@
 package com.micromos.knpmobile.ui.home
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +20,9 @@ class HomeViewModel : ViewModel() {
     val goToAnotherView: LiveData<Event<MenuItem>> = _goToAnotherView
 
     init {
+
+
+
         val programList = listOf(
             MenuItem.ProductCoilIn,
             MenuItem.ProductCoilOut,

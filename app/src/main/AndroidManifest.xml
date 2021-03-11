@@ -34,6 +34,7 @@
         <activity
             android:name="com.micromos.knpmobile.MainActivity"
             android:windowSoftInputMode="adjustNothing"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.KNP2.NoActionBar">
 
         </activity>
@@ -47,6 +48,7 @@
         <activity
             android:name="com.micromos.knpmobile.ui.login.LoginActivity"
             android:theme="@style/Theme.KNP2.NoActionBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,12 +56,17 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.scan.LabelCaptureActivity"
-            android:screenOrientation="fullSensor"
-            android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <!-- Scanner 관련 -->
+        <activity android:name=".ui.scanproductcoilin.ScanProductCoilInActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ui.scanproductcoilout.ScanProductCoilOutActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ui.scanproductstockcheck.ScanProductStockCheckActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ui.scanproductchangepos.ScanProductChangePosActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <!-- Uri로 데이터를 보내기 위함 -->
         <provider

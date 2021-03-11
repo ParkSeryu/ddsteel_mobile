@@ -1,7 +1,6 @@
-package com.micromos.knpmobile.ui.productcoilout
+package com.micromos.knpmobile.ui.scanproductcoilin
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,13 +9,12 @@ import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.ShipOrder
 import com.micromos.knpmobile.network.ApiResult
-import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.repository.ProductCoilRepositoryImpl
 
-class ProductCoilOutViewModel : ViewModelBase() {
+
+class ScanProductCoilInViewModel : ViewModelBase() {
 
     private var shipNoList = setOf("QS", "RS", "FS", "SS", "BS", "MS")
-
     val sellCustCd = MutableLiveData<String>()
     val venCustCd = MutableLiveData<String>()
     val dlvCustCd = MutableLiveData<String>()
@@ -26,12 +24,12 @@ class ProductCoilOutViewModel : ViewModelBase() {
     val noRetrieve: LiveData<Event<Unit>> = _noRetrieve
 
     private val _unExceptedError = MutableLiveData<Event<Unit>>()
-    val unExceptedError : LiveData<Event<Unit>> = _unExceptedError
+    val unExceptedError: LiveData<Event<Unit>> = _unExceptedError
 
     private val _noNetworkConnect = MutableLiveData<Event<Unit>>()
     val noNetWorkConnect: LiveData<Event<Unit>> = _noNetworkConnect
 
-    private val _noLabelNo = MutableLiveData<Event<Unit>>()
+    val _noLabelNo = MutableLiveData<Event<Unit>>()
     val noLabelNo: LiveData<Event<Unit>> = _noLabelNo
 
     private val _noModifyEvent = MutableLiveData<Event<Unit>>()
@@ -39,9 +37,6 @@ class ProductCoilOutViewModel : ViewModelBase() {
 
     private val _dateTimeOverlap = MutableLiveData<Event<Unit>>()
     val dateTimeOverlap: LiveData<Event<Unit>> = _dateTimeOverlap
-
-    private val _noCompleteCoilIn = MutableLiveData<Event<Unit>>()
-    val noCompleteCoilIn: LiveData<Event<Unit>> = _noCompleteCoilIn
 
     private val _noCompleteAllLabel = MutableLiveData<Event<Unit>>()
     val noCompleteAllLabel: LiveData<Event<Unit>> = _noCompleteAllLabel
@@ -53,24 +48,22 @@ class ProductCoilOutViewModel : ViewModelBase() {
     val labelNoList = mutableListOf<String?>()
     val modifyClsList = mutableListOf<Int?>()
     val pdaDateTimeCoilInList = mutableListOf<String?>()
-    val pdaDateTimeCoilOutList = mutableListOf<String?>()
-
-    private val _recyclerViewState = MutableLiveData<Event<Unit>>()
-    val recyclerViewState: LiveData<Event<Unit>> = _recyclerViewState
-    var recyclerViewStateFlag: Boolean = false
 
     var shipNo: String? = null
 
     var numerator: Int = 0
     var denomiator: Int = 0
 
+    var numeratorStr =  MutableLiveData<String>()
+    var denomiatorStr = MutableLiveData<String>()
+    var hyphen = MutableLiveData<String>()
+
     val prevShipNo = MutableLiveData<String?>(null)
     private val _cardClick = MutableLiveData<String>()
     val cardClick: LiveData<String> = _cardClick
+
     private val repository = ProductCoilRepositoryImpl()
 
-    private val _onClickScanButton = MutableLiveData<Event<Unit>>()
-    val onClickScanButton : LiveData<Event<Unit>> = _onClickScanButton
 
     fun shipNoRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
@@ -90,11 +83,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
                         getCommonInfo(requestNo)
                     }
                 }
-                /*if (this._requestNo.value?.trim() == requestNo) {
-                    recyclerViewStateFlag = false
-                }*/
             } else {
-                //_recyclerViewState.value = Event(Unit)
                 labelRetrieve(requestNo)
             }
         }
@@ -124,11 +113,12 @@ class ProductCoilOutViewModel : ViewModelBase() {
             override fun onFailure() {
                 noNetWork()
             }
+
         })
     }
 
     private fun getShipOrder(requestNo: String) {
-        repository.sendRequestShipOrder(requestNo, 2 , object : ApiResult {
+        repository.sendRequestShipOrder(requestNo, 1, object : ApiResult {
             override fun onResult() {
                 shipOrderList.value = repository.getShipOrder()
                 val size = repository.getItemSize()
@@ -140,17 +130,19 @@ class ProductCoilOutViewModel : ViewModelBase() {
                     labelNoList.clear()
                     modifyClsList.clear()
                     pdaDateTimeCoilInList.clear()
-                    pdaDateTimeCoilOutList.clear()
                     for (i in 0 until size) {
                         labelNoList.add(shipOrderList.value?.get(i)?.labelNo)
                         modifyClsList.add(shipOrderList.value?.get(i)?.modifyCLS)
                         pdaDateTimeCoilInList.add(shipOrderList.value?.get(i)?.pdaDateTimeIn)
-                        pdaDateTimeCoilOutList.add(shipOrderList.value?.get(i)?.pdaDateTimeOut)
-                        if (!pdaDateTimeCoilOutList[i].isNullOrEmpty()) {
+                        if (!pdaDateTimeCoilInList[i].isNullOrEmpty()) {
                             numerator++
                         }
                     }
                 }
+                numeratorStr.value = numerator.toString()
+                denomiatorStr.value = denomiator.toString()
+                hyphen.value = "/"
+
                 shipNo = requestNo
                 successCall()
             }
@@ -163,6 +155,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
                 noNetWork()
             }
         })
+
     }
 
     private fun labelRetrieve(labelNo: String) {
@@ -170,29 +163,23 @@ class ProductCoilOutViewModel : ViewModelBase() {
         _isLoading.value = true
         for (i in 0 until labelNoList.size) {
             if (labelNo == labelNoList[i]) {
-                successFlag = if (!pdaDateTimeCoilInList[i].isNullOrEmpty()) {
-                    if (modifyClsList[i] == 1) {
-                        if (pdaDateTimeCoilOutList[i].isNullOrEmpty()) {
-                            "true"
-                        } else {
-                            "overlap"
-                        }
+                if (modifyClsList[i] == 1) {
+                    if (pdaDateTimeCoilInList[i].isNullOrEmpty()) {
+                        successFlag = "true"
                     } else {
-                        "noModify"
+                        successFlag = "overlap"
+                        successCall()
                     }
                 } else {
-                    "notCoilIn"
+                    successFlag = "noModify"
                 }
-                Log.d("testUpdatePda", successFlag)
                 break
             }
         }
-
         if (successFlag == "true") {
-            repository.updateTimePDA("OUT", labelNo, shipNo!!, object : ApiResult {
+            repository.updateTimePDA("IN", labelNo, shipNo!!, object : ApiResult {
                 override fun onResult() {
                     successCall()
-                    //recyclerViewStateFlag = true
                     shipNoRetrieve(shipNo)
                 }
 
@@ -209,14 +196,9 @@ class ProductCoilOutViewModel : ViewModelBase() {
             when (successFlag) {
                 "overlap" -> _dateTimeOverlap.value = Event(Unit)
                 "noModify" -> _noModifyEvent.value = Event(Unit)
-                "notCoilIn" -> _noCompleteCoilIn.value = Event(Unit)
                 "false" -> _noLabelNo.value = Event(Unit)
             }
         }
-    }
-
-    fun scanBarCode(){
-        _onClickScanButton.value = Event(Unit)
     }
 
     fun setCardViewColor(pdaDateTime: String?): Int {
@@ -239,11 +221,11 @@ class ProductCoilOutViewModel : ViewModelBase() {
     }
 
     fun cardClick(labelNo: String) {
-        if(BuildConfig.DEBUG)
-        _cardClick.value = labelNo
+        if (BuildConfig.DEBUG)
+            _cardClick.value = labelNo
     }
 
-    fun unExpectedError(){
+    fun unExpectedError() {
         _unExceptedError.value = Event(Unit)
         successCall()
     }
@@ -253,5 +235,3 @@ class ProductCoilOutViewModel : ViewModelBase() {
     }
 
 }
-
-

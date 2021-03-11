@@ -66,7 +66,7 @@
                 android:imeOptions="actionSend"
                 app:endIconMode="clear_text"
                 app:layout_constraintLeft_toLeftOf="@id/input_layout_pos"
-                app:layout_constraintRight_toRightOf="@id/guideline"
+                app:layout_constraintRight_toRightOf="@id/guideline_scan_Button"
                 app:layout_constraintTop_toBottomOf="@id/input_layout_pos">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -76,7 +76,6 @@
                     android:inputType="text|textCapCharacters"
                     android:singleLine="true"
                     android:text="@={viewModel.labelNo}" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -86,6 +85,20 @@
                 android:layout_marginEnd="@dimen/default_text_margin"
                 android:onClick="@{() -> viewModel.labelRetrieve()}"
                 android:text="@string/button_retrieve"
+                android:textSize="@dimen/text_view_default_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/recyclerView"
+                app:layout_constraintLeft_toRightOf="@id/guideline_scan_Button"
+                app:layout_constraintRight_toLeftOf="@id/guideline"
+                app:layout_constraintTop_toTopOf="@id/input_layout_label" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnScan"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/default_text_margin"
+                android:onClick="@{() -> viewModel.scanBarCode()}"
+                android:text="@string/button_scan"
                 android:textSize="@dimen/text_view_default_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/recyclerView"
@@ -99,13 +112,13 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="6dp"
                 android:clickable="true"
+                android:focusable="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_layout_label"
-                tools:listitem="@layout/card_item_list_stock_update"
-                android:focusable="true" />
+                tools:listitem="@layout/card_item_list_stock_update" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
@@ -113,6 +126,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.8" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_scan_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/progress_bar"

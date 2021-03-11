@@ -1,4 +1,4 @@
-package com.micromos.knpmobile.ui.productcoilout
+package com.micromos.knpmobile.ui.scanproductcoilout
 
 import android.graphics.Color
 import android.util.Log
@@ -10,10 +10,10 @@ import com.micromos.knpmobile.Event
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.ShipOrder
 import com.micromos.knpmobile.network.ApiResult
-import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.repository.ProductCoilRepositoryImpl
 
-class ProductCoilOutViewModel : ViewModelBase() {
+
+class ScanProductCoilOutViewModel : ViewModelBase() {
 
     private var shipNoList = setOf("QS", "RS", "FS", "SS", "BS", "MS")
 
@@ -55,22 +55,20 @@ class ProductCoilOutViewModel : ViewModelBase() {
     val pdaDateTimeCoilInList = mutableListOf<String?>()
     val pdaDateTimeCoilOutList = mutableListOf<String?>()
 
-    private val _recyclerViewState = MutableLiveData<Event<Unit>>()
-    val recyclerViewState: LiveData<Event<Unit>> = _recyclerViewState
-    var recyclerViewStateFlag: Boolean = false
-
     var shipNo: String? = null
 
     var numerator: Int = 0
     var denomiator: Int = 0
 
+    var numeratorStr =  MutableLiveData<String>()
+    var denomiatorStr = MutableLiveData<String>()
+    var hyphen = MutableLiveData<String>()
+
     val prevShipNo = MutableLiveData<String?>(null)
     private val _cardClick = MutableLiveData<String>()
     val cardClick: LiveData<String> = _cardClick
-    private val repository = ProductCoilRepositoryImpl()
 
-    private val _onClickScanButton = MutableLiveData<Event<Unit>>()
-    val onClickScanButton : LiveData<Event<Unit>> = _onClickScanButton
+    private val repository = ProductCoilRepositoryImpl()
 
     fun shipNoRetrieve(_requestNo: String?) {
         val requestNo = _requestNo?.trim()
@@ -90,11 +88,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
                         getCommonInfo(requestNo)
                     }
                 }
-                /*if (this._requestNo.value?.trim() == requestNo) {
-                    recyclerViewStateFlag = false
-                }*/
             } else {
-                //_recyclerViewState.value = Event(Unit)
                 labelRetrieve(requestNo)
             }
         }
@@ -151,6 +145,11 @@ class ProductCoilOutViewModel : ViewModelBase() {
                         }
                     }
                 }
+
+                numeratorStr.value = numerator.toString()
+                denomiatorStr.value = denomiator.toString()
+                hyphen.value = "/"
+
                 shipNo = requestNo
                 successCall()
             }
@@ -215,9 +214,6 @@ class ProductCoilOutViewModel : ViewModelBase() {
         }
     }
 
-    fun scanBarCode(){
-        _onClickScanButton.value = Event(Unit)
-    }
 
     fun setCardViewColor(pdaDateTime: String?): Int {
         return if (pdaDateTime.isNullOrBlank())
@@ -240,7 +236,7 @@ class ProductCoilOutViewModel : ViewModelBase() {
 
     fun cardClick(labelNo: String) {
         if(BuildConfig.DEBUG)
-        _cardClick.value = labelNo
+            _cardClick.value = labelNo
     }
 
     fun unExpectedError(){
@@ -252,6 +248,5 @@ class ProductCoilOutViewModel : ViewModelBase() {
         onCleared()
     }
 
+
 }
-
-

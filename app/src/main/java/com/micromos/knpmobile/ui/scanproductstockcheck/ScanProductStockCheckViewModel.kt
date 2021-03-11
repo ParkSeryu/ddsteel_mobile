@@ -1,19 +1,18 @@
-package com.micromos.knpmobile.ui.productstockcheck
+package com.micromos.knpmobile.ui.scanproductstockcheck
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.micromos.knpmobile.Event
-import com.micromos.knpmobile.MainActivity.Companion.codeList
-import com.micromos.knpmobile.MainActivity.Companion.codeNmList
+import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.GetCardInfo
 import com.micromos.knpmobile.network.ApiResult
-import com.micromos.knpmobile.network.KNPApi
 import com.micromos.knpmobile.repository.StockCheckRepositoryImpl
-import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.user_id
+import com.micromos.knpmobile.ui.login.LoginViewModel
 
-class ProductStockCheckViewModel : ViewModelBase() {
+class ScanProductStockCheckViewModel : ViewModelBase() {
 
     private val _noNetworkConnect = MutableLiveData<Event<Unit>>()
     val noNetWorkConnect: LiveData<Event<Unit>> = _noNetworkConnect
@@ -29,12 +28,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
 
     private val _noPosCdNo = MutableLiveData<Event<Unit>>()
     val noPosCdNo: LiveData<Event<Unit>> = _noPosCdNo
-
-    private val _selectDateEvent = MutableLiveData<Event<Unit>>()
-    val selectDateEvent: LiveData<Event<Unit>> = _selectDateEvent
-
-    private val _showDatePickerDialogEvent = MutableLiveData<Event<Unit>>()
-    val showDatePickerDialogEvent: LiveData<Event<Unit>> = _showDatePickerDialogEvent
 
     val labelNo = MutableLiveData<String?>()
     val inDate = MutableLiveData<String>()
@@ -52,9 +45,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
     val cardItemListDataInsert: LiveData<GetCardInfo> = _cardItemListDataInsert
 
     private val repository = StockCheckRepositoryImpl()
-
-    private val _onClickScanButton = MutableLiveData<Event<Unit>>()
-    val onClickScanButton : LiveData<Event<Unit>> = _onClickScanButton
 
     init {
         getServerTime()
@@ -80,31 +70,18 @@ class ProductStockCheckViewModel : ViewModelBase() {
         })
     }
 
-    fun scanBarCode(){
-        _onClickScanButton.value = Event(Unit)
-    }
-
-    fun showDatePickerDialog() {
-        _showDatePickerDialogEvent.value = Event(Unit)
-    }
-
-    fun btnDateOk() {
-        _selectDateEvent.value = Event(Unit)
-        stockDate =
-            inDate.value.toString().replace(" ", "").replace("\\p{Z}", "").replace("/", "")
-    }
-
     fun labelRetrieve() {
+        Log.d("test","test")
         posCdTrim = posCd.value?.trim().toString()
         labelNoTrim = labelNo.value?.trim().toString()
-        codeList.forEach {
+        MainActivity.codeList.forEach {
             if (it.value == posCdTrim) {
                 codeCd = it.key
             }
         }
 
         if (posCdTrim != "null") {
-            if (posCdTrim in codeNmList) {
+            if (posCdTrim in MainActivity.codeNmList) {
                 if (labelNoTrim != "null" && labelNoTrim != "") {
                     _isLoading.value = true
                     repository.sendRequestLabelNo(stockDate, labelNoTrim, object : ApiResult {
@@ -154,7 +131,8 @@ class ProductStockCheckViewModel : ViewModelBase() {
 
     private fun insertCoilStock() {
         _isLoading.value = true
-        repository.insertCoilStock(stockDate, user_id, labelNoTrim, codeCd, object : ApiResult {
+        repository.insertCoilStock(stockDate,
+            LoginViewModel.user_id, labelNoTrim, codeCd, object : ApiResult {
             override fun onResult() {
                 _cardItemListDataInsert.value = repository.getCardInfo().value
                 successCall()
@@ -186,6 +164,10 @@ class ProductStockCheckViewModel : ViewModelBase() {
         }
     }
 
+    fun screenOrientation(){
+        onCleared()
+    }
+
     fun unExpectedError(){
         _unExceptedError.value = Event(Unit)
         successCall()
@@ -195,11 +177,4 @@ class ProductStockCheckViewModel : ViewModelBase() {
         _noNetworkConnect.value = Event(Unit)
         successCall()
     }
-
-    fun screenOrientation(){
-        onCleared()
     }
-
-}
-
-

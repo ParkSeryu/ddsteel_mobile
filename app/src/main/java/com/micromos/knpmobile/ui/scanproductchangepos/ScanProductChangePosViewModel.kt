@@ -1,19 +1,17 @@
-package com.micromos.knpmobile.ui.productchangepos
+package com.micromos.knpmobile.ui.scanproductchangepos
 
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.micromos.knpmobile.Event
-import com.micromos.knpmobile.MainActivity.Companion.codeList
-import com.micromos.knpmobile.MainActivity.Companion.codeNmList
+import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.network.ApiResult
 import com.micromos.knpmobile.repository.ChangePosRepositoryImpl
-import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.user_id
+import com.micromos.knpmobile.ui.login.LoginViewModel
 
-class ProductChangePosViewModel : ViewModelBase() {
-
-      private val _noNetworkConnect = MutableLiveData<Event<Unit>>()
+class ScanProductChangePosViewModel : ViewModelBase() {
+    private val _noNetworkConnect = MutableLiveData<Event<Unit>>()
     val noNetWorkConnect: LiveData<Event<Unit>> = _noNetworkConnect
 
     private val _unExceptedError = MutableLiveData<Event<Unit>>()
@@ -28,9 +26,6 @@ class ProductChangePosViewModel : ViewModelBase() {
     private val _updateImpossible = MutableLiveData<Event<Unit>>()
     val updateImpossible: LiveData<Event<Unit>> = _updateImpossible
 
-    private val _focusChangeEvent = MutableLiveData<Event<Unit>>()
-    val focusChangeEvent: LiveData<Event<Unit>> = _focusChangeEvent
-
     private val _changePosEvent = MutableLiveData<Event<Unit>>()
     val changePosEvent : LiveData<Event<Unit>> = _changePosEvent
 
@@ -44,9 +39,6 @@ class ProductChangePosViewModel : ViewModelBase() {
     var notificationCurrentPosCd : String = ""
     var notificationChangePosCd : String = ""
     val notificationChangePosTextViewVisibility = MutableLiveData<Int>()
-
-    private val _onClickScanButton = MutableLiveData<Event<Unit>>()
-    val onClickScanButton : LiveData<Event<Unit>> = _onClickScanButton
 
     private val repository = ChangePosRepositoryImpl()
 
@@ -67,10 +59,9 @@ class ProductChangePosViewModel : ViewModelBase() {
                     stkType.value = data.value?.stkType
                     posCd.value = data.value?.posCd ?: ""
                     if (posCd.value != "") {
-                        posCd.value = codeList[posCd.value]
+                        posCd.value = MainActivity.codeList[posCd.value]
                         notificationCurrentPosCd = posCd.value!!
                     }
-                    _focusChangeEvent.value = Event(Unit)
                     _isLoading.value = false
                 }
 
@@ -90,23 +81,19 @@ class ProductChangePosViewModel : ViewModelBase() {
         }
     }
 
-    fun scanBarCode(){
-        _onClickScanButton.value = Event(Unit)
-    }
-
     fun save() {
         var codeCd = String()
-        if (atText.value.toString() in codeNmList) {
+        if (atText.value.toString() in MainActivity.codeNmList) {
             if (coilNo.value != null && coilSeq.value != null && stkType.value != null) {
                 _isLoading.value = true
-                codeList.forEach {
+                MainActivity.codeList.forEach {
                     if (it.value == atText.value) {
                         codeCd = it.key
                     }
                 }
                 repository.changePosCd(
                     codeCd,
-                    user_id.toString(),
+                    LoginViewModel.user_id.toString(),
                     coilNo.value.toString(),
                     coilSeq.value.toString(),
                     stkType.value.toString(),
@@ -153,5 +140,3 @@ class ProductChangePosViewModel : ViewModelBase() {
     }
 
 }
-
-
