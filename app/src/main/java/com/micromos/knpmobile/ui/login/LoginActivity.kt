@@ -120,9 +120,9 @@ class LoginActivity : AppCompatActivity() {
                 CustomDialog(this@LoginActivity, R.layout.dialog_app_not_connected)
                     .setMessage(R.string.message_not_connected_server)
                     .setPositiveButton("재시도") {
-                        finish()
-                    }.setNegativeButton("종료") {
                         checkVersion()
+                    }.setNegativeButton("종료") {
+                        finish()
                     }.show()
             }
         })

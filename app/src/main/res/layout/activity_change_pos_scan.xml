@@ -104,7 +104,7 @@
                     android:background="@drawable/edit_text_border"
                     android:completionThreshold="0"
                     android:dropDownWidth="match_parent"
-                    android:dropDownHeight="wrap_content"
+                    android:dropDownHeight="100dp"
                     android:dropDownVerticalOffset="1dp"
                     android:inputType="textCapCharacters"
                     android:paddingStart="5dp"

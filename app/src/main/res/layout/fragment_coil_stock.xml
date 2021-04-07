@@ -43,7 +43,7 @@
                     android:layout_height="55dp"
                     android:completionThreshold="0"
                     android:dropDownWidth="match_parent"
-                    android:dropDownHeight="wrap_content"
+                    android:dropDownHeight="200dp"
                     android:dropDownVerticalOffset="1dp"
                     android:inputType="textCapCharacters"
                     android:paddingStart="10dp"
