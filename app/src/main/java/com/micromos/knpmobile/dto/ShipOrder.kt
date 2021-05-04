@@ -20,6 +20,9 @@ data class ShipOrder(
     @SerializedName("LABEL_NO") val labelNo: String,
     @SerializedName("PDA_DATETIME1") val pdaDateTimeIn: String,
     @SerializedName("PDA_DATETIME2") val pdaDateTimeOut: String,
+    @SerializedName("PACK_CLS") val packCls: String,
+    @SerializedName("POS_CD") val posCd: String,
+    @SerializedName("POS_NM") val posNm: String,
     @SerializedName("NAME_CD") val nameCd: String,
     @SerializedName("NAME_NM") val nameNm: String,
     @SerializedName("STAN_CD") val stanCd: String,
@@ -29,3 +32,5 @@ data class ShipOrder(
     @SerializedName("WEIGHT") val weight: Int,
     @SerializedName("MODIFY_CLS") val modifyCLS: Int,
 )
+
+

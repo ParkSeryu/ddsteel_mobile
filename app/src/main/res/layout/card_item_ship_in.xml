@@ -49,6 +49,18 @@
                 tools:text="라벨번호 % s" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pos_cd_tv"
+                style="@style/cardViewListStyleNoMargin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{shipInItem.posNm}"
+                app:layout_constraintLeft_toRightOf="@id/label_no_tv"
+                android:layout_marginLeft="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="위치 % s" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/label_ok_tv"
                 style="@style/cardViewListStyleNoMargin"
                 android:layout_width="wrap_content"

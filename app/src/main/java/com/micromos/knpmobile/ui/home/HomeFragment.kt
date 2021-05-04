@@ -13,12 +13,12 @@ import com.micromos.knpmobile.EventObserver
 import com.micromos.knpmobile.MainActivity
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.FragmentHomeBinding
+import com.micromos.knpmobile.ui.productMaterialCheck.ProductMaterialCheckFragment
 import com.micromos.knpmobile.ui.productchangepos.ProductChangePosFragment
 import com.micromos.knpmobile.ui.productcoilin.ProductCoilInFragment
 import com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment
 import com.micromos.knpmobile.ui.productstockcheck.ProductStockCheckFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_coil_in.*
 
 class HomeFragment : Fragment() {
 
@@ -64,6 +64,9 @@ class HomeFragment : Fragment() {
                 }
                 MenuItem.ProductChangePos -> {
                     (requireActivity() as MainActivity).replaceFragment(ProductChangePosFragment.newInstance())
+                }
+                MenuItem.ProductMaterialCheck -> {
+                    (requireActivity() as MainActivity).replaceFragment(ProductMaterialCheckFragment.newInstance())
                 }
             }
         })

@@ -14,7 +14,6 @@ import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 interface KNPApi {
-
     @GET("code/change_pos")
     fun changePosCd(
         @Query("pos_cd") posCd: String,
@@ -34,6 +33,11 @@ interface KNPApi {
     fun getPosCd(
         @Query("label_no") labelNo: String
     ): Call<GetPosCd>
+
+    @GET("code/get_label_info")
+    fun getKnpLabelInfo(
+        @Query("label_no") labelNo: String
+    ): Call<GetKnpLabelInfo>
 
     @GET("product/get_cust_cd")
     fun getCustCd(
@@ -93,7 +97,7 @@ interface KNPApi {
 
     @GET("version/checkVersion")
     fun checkVersion(
-        @Query("version") version : String
+        @Query("version") version: String
     ): Call<Unit>
 
     @GET("version/updateApp")
@@ -112,7 +116,7 @@ interface KNPApi {
     companion object Factory {
         fun create(): KNPApi {
 
-            val uri = if(BuildConfig.DEBUG) "http://119.205.209.23/KNP_API/Developer/index.php/"
+            val uri = if (BuildConfig.DEBUG) "http://119.205.209.23/KNP_API/Developer/index.php/"
             else "http://119.205.209.23/KNP_API/Real/index.php/"
 
             val okHttpClient = OkHttpClient.Builder()

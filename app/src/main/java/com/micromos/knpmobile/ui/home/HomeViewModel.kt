@@ -27,7 +27,8 @@ class HomeViewModel : ViewModel() {
             MenuItem.ProductCoilIn,
             MenuItem.ProductCoilOut,
             MenuItem.ProductStockCheck,
-            MenuItem.ProductChangePos
+            MenuItem.ProductChangePos,
+            MenuItem.ProductMaterialCheck
         )
 
         val allocationProgramList = mutableListOf<MenuItem>()

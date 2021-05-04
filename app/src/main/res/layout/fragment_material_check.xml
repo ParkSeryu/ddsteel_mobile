@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.micromos.knpmobile.ui.productMaterialCheck.ProductMaterialCheckViewModel" />
+
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/outer_layout_material_check"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/prompt_hyundai_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/prompt_hyundai_label"
+            android:textColor="@color/fontBlack"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/input_layout_hyundai_label"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_hyundai_label"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:hint="@string/prompt_label_no"
+            android:imeOptions="actionSearch"
+            app:endIconMode="clear_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/prompt_hyundai_label">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/label_no_hyundai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapCharacters"
+                android:singleLine="true"
+                android:text="@={viewModel.labelNoHyundai}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRetrieveHyundai"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="10dp"
+            android:onClick="@{() -> viewModel.hyundaiLabelRetrieve(viewModel.labelNoHyundai)}"
+            android:text="@string/button_retrieve"
+            android:textSize="@dimen/text_view_default_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/hyundaiLabelInfoCardLayout"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input_layout_hyundai_label" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/hyundaiLabelInfoCardLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:visibility="@{viewModel.hyundaiLabelVisibility}"
+            app:layout_constraintLeft_toLeftOf="@id/input_layout_hyundai_label"
+            app:layout_constraintRight_toRightOf="@id/btnRetrieveHyundai"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_hyundai_label">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_hyundai"
+                style="@style/Widget.MaterialComponents.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/black"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/product_no_tv_hyundai"
+                        style="@style/cardViewListStyleNoMargin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/mill_no(viewModel.productNoHyundai)}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="제품번호 %s" />
+
+                    <TextView
+                        android:id="@+id/size_cd_tv_hyundai"
+                        style="@style/cardViewListStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/size_cd(viewModel.sizeNoHyundai)}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/product_no_tv_hyundai"
+                        tools:text="@string/size_cd" />
+
+                    <TextView
+                        android:id="@+id/weight_tv_hyundai"
+                        style="@style/cardViewListStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/weight(viewModel.weightHyundai)}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/size_cd_tv_hyundai"
+                        tools:text="@string/weight" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/prompt_knp_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/prompt_knp_label"
+            android:textColor="@color/fontBlack"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/input_layout_hyundai_label"
+            app:layout_constraintTop_toBottomOf="@id/hyundaiLabelInfoCardLayout" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_knp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:hint="@string/prompt_label_no"
+            android:imeOptions="actionSearch"
+            app:endIconMode="clear_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/prompt_knp_label">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/label_no_knp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapCharacters"
+                android:singleLine="true"
+                android:text="@={viewModel.labelNoKnp}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRetrieveKnp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="10dp"
+            android:onClick="@{() -> viewModel.knpLabelRetrieve(viewModel.labelNoKnp)}"
+            android:text="@string/button_retrieve"
+            android:textSize="@dimen/text_view_default_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/knpLabelInfoCardLayout"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input_layout_knp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/knpLabelInfoCardLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:visibility="@{viewModel.knpLabelVisibility}"
+            app:layout_constraintLeft_toLeftOf="@id/input_layout_knp"
+            app:layout_constraintRight_toRightOf="@id/btnRetrieveKnp"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_knp">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.MaterialComponents.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/black"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/product_no_tv_knp"
+                        style="@style/cardViewListStyleNoMargin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/mill_no(viewModel.productNoKnp)}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="제품번호 %s" />
+
+                    <TextView
+                        android:id="@+id/size_cd_tv_knp"
+                        style="@style/cardViewListStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/size_cd(viewModel.sizeNoKnp)}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/product_no_tv_knp"
+                        tools:text="@string/size_cd" />
+
+                    <TextView
+                        android:id="@+id/weight_tv_knp"
+                        style="@style/cardViewListStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/weight(viewModel.weightKnp)}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/size_cd_tv_knp"
+                        tools:text="@string/weight" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/input_layout_notification_tv"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edit_text_border"
+            android:visibility="@{viewModel.materialCheckVisibility}"
+            app:layout_constraintLeft_toLeftOf="@id/input_layout_knp"
+            app:layout_constraintRight_toRightOf="@id/btnRetrieveKnp"
+            app:layout_constraintTop_toBottomOf="@id/knpLabelInfoCardLayout" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/notification_product_no_tv"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginTop="25dp"-->
+        <!--            android:textColor="@color/fontBlack"-->
+        <!--            android:textSize="16sp"-->
+        <!--            android:visibility="@{viewModel.materialCheckVisibility}"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@id/prompt_knp_label"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/input_layout_notification_tv"-->
+        <!--            tools:text="제품번호 : %s" />-->
+
+        <TextView
+            android:id="@+id/notification_match_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/fontBlack"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:visibility="@{viewModel.materialCheckVisibility}"
+            app:layout_constraintBottom_toBottomOf="@id/input_layout_notification_tv"
+            app:layout_constraintLeft_toLeftOf="@id/input_layout_notification_tv"
+            app:layout_constraintRight_toRightOf="@id/input_layout_notification_tv"
+            app:layout_constraintTop_toTopOf="@id/input_layout_notification_tv"
+            tools:text="두 라벨은 일치 합니다" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.58" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.78" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#8C000000"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

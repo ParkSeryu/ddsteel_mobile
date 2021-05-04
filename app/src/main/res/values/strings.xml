@@ -21,6 +21,7 @@
     <string name="unexpected_error_pda_stock_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 006)</string>
     <string name="unexpected_error_pda_change_pos">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 007)</string>
     <string name="unexpected_error_pda_change_pos_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 008)</string>
+    <string name="unexpected_error_pda_material_check">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 009)</string>
     <string name="prompt_network_failed">네트워크 연결 상태를 확인해 주세요.</string>
     <string name="prompt_update_exists">업데이트를 진행합니다.</string>
     <string name="hyphen">/</string>
@@ -43,9 +44,11 @@
     <string name="menu_ship_out">출고관리</string>
     <string name="menu_coil_stock">재고조사</string>
     <string name="menu_change_pos">적재위치변경</string>
+    <string name="menu_material_check">소재확인</string>
 
     <!-- Ship Common -->
     <string name="product_no">제품번호 : %s-%s</string>
+    <string name="mill_no">제품번호 : %s</string>
     <string name="label_no">라벨번호 : %s</string>
     <string name="ship_no">상차지시번호</string>
     <string name="sell_cust_cd">수요가 : %s</string>
@@ -58,8 +61,15 @@
     <string name="weight">중량 : %,2dkg</string>
     <string name="ok">OK</string>
     <string name="insert">신규 추가</string>
+    <string name="matchedLabel">두 라벨은 &lt;font color="#0010FF"><b>일치</b>&lt;/font>합니다.</string>
+    <string name="unMatchedLabel">두 라벨은 &lt;font color="#ff0000"><b>불일치</b>&lt;/font>합니다.</string>
+<!--
 
-    <!-- Ship In-->
+    <string name="matchedLabel">두 라벨은 &lt;font color="#0010FF"><b>일치</b>&lt;/font>합니다.</string>
+    <string name="unMatchedLabel">두 라벨은 &lt;font color="#ff0000"><b>불일치</b>&lt;/font>합니다.</string>
+-->
+
+    <!-- Ship In -->
     <string name="prompt_no_retrieve_ship_in">올바르지 않은 상차번호 입니다.</string>
     <string name="prompt_no_label_ship_in">상차지시서에 없는 라벨번호 입니다.</string>
     <string name="prompt_label_overlap_ship_in">이미 상차처리된 라벨입니다.</string>
@@ -83,7 +93,7 @@
     <string name="current_time">중량 : %,2dkg</string>
 
     <!-- change pos -->
-    <string name="prompt_label_no">라벨번호</string>
+    <string name="prompt_label_no">라벨번호 입력</string>
     <string name="prompt_pos">적재위치</string>
     <string name="prompt_current_pos">현재적재위치</string>
     <string name="prompt_change_pos">변경적재위치</string>
@@ -92,6 +102,10 @@
     <string name="prompt_no_match_pos">변경적재위치 값이 올바르지 않습니다.</string>
     <string name="prompt_update_impossible">조회 후 저장이 가능합니다.</string>
     <string name="change_pos">%s -> %s 으로 적재위치 변경되었습니다.</string>
+
+    <!-- material check -->
+    <string name="prompt_hyundai_label">현대제철라벨</string>
+    <string name="prompt_knp_label">KNP 라벨 </string>
 
 
 
