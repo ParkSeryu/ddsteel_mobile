@@ -35,6 +35,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline2">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/pos_label_input_layout"
                 android:layout_width="match_parent"
@@ -43,6 +44,21 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
+                <Spinner
+                    android:id="@+id/change_yard_cust_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="@dimen/default_text_margin"
+                    android:background="@drawable/spinner_background"
+                    android:layout_marginStart="@dimen/default_text_margin"
+                    android:layout_marginEnd="@dimen/default_text_margin"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_pos"
@@ -55,7 +71,7 @@
                     android:inputType="textCapCharacters"
                     app:endIconMode="clear_text"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/change_yard_cust_spinner">
 
                     <com.micromos.knpmobile.CustomAutoCompleteTextView
                         android:id="@+id/change_stock_auto_tv"

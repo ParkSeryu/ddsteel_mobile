@@ -13,6 +13,8 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -31,6 +33,7 @@ import kotlinx.android.synthetic.main.activity_coil_stock_scan.barcode_scanner
 import kotlinx.android.synthetic.main.activity_coil_stock_scan.change_stock_auto_tv
 import kotlinx.android.synthetic.main.activity_coil_stock_scan.commonLayout
 import kotlinx.android.synthetic.main.activity_coil_stock_scan.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_stock.*
 
 class ScanProductStockCheckActivity : AppCompatActivity() {
 
@@ -40,7 +43,6 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
 
     private lateinit var beepManager: BeepManager
     private var lastText: String? = null
-
     private val formats: Collection<BarcodeFormat> = listOf(
         BarcodeFormat.QR_CODE,
         BarcodeFormat.CODE_39
@@ -48,7 +50,7 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
 
     private val callback: BarcodeCallback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult) {
-            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats) {
+            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats || progress_bar.visibility == View.VISIBLE) {
                 // Prevent duplicate scans
                 return
             }
@@ -59,6 +61,7 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
             scanProductStockCheckViewModel.labelRetrieve()
             val tone = ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME)
             tone.startTone(ToneGenerator.TONE_PROP_BEEP2, 500)
+
         }
 
         override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}
@@ -81,7 +84,6 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
 
         val intent = intent.getStringExtra("stockDate")!!
         scanProductStockCheckViewModel.stockDate = intent
-
         setRecyclerView()
 
         scanProductStockCheckViewModel.noLabelNo.observe(this, Observer {
@@ -104,6 +106,14 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
             CustomDialog(this, R.layout.dialog_incorrect)
                 .setTitle(R.string.prompt_notification)
                 .setMessage(R.string.prompt_no_pos_cd_match)
+                .setPositiveButton(R.string.dialog_ok) {
+                }.show()
+        })
+
+        scanProductStockCheckViewModel.noYardCustCdMatch.observe(this, Observer {
+            CustomDialog(this, R.layout.dialog_incorrect)
+                .setTitle(R.string.prompt_notification)
+                .setMessage(R.string.prompt_no_yard_cust_cd_match)
                 .setPositiveButton(R.string.dialog_ok) {
                 }.show()
         })
@@ -132,16 +142,18 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 );
                 progress_bar.visibility = View.VISIBLE
+                barcode_scanner.pause()
             } else {
                 Log.d("visibleProgressBarOff", "${scanProductStockCheckViewModel.isLoading.value}")
                 this.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 progress_bar.visibility = View.INVISIBLE
+                barcode_scanner.resume()
                 hideKeyboard()
             }
         })
 
         commonLayout.setOnClickListener { hideKeyboard() }
-
+        setYardCustSpinner()
         change_stock_auto_tv.setOnClickListener {
             change_stock_auto_tv.text = change_stock_auto_tv.text
             val eText = change_stock_auto_tv.text
@@ -168,6 +180,42 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
         })
     }
 
+    private fun setYardCustSpinner() {
+        val adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.yard_cust,
+            android.R.layout.simple_list_item_checked
+        )
+        change_yard_cust_spinner.adapter = adapter
+        change_yard_cust_spinner.prompt = "하치장을 선택해주세요."
+        change_yard_cust_spinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    when (position) {
+                        0 -> {
+                            scanProductStockCheckViewModel.yardCustCd.value = "KP001"
+                            scanProductStockCheckViewModel.posCd.value = ""
+                            input_layout_pos.isEnabled = true
+                        }
+                        1 -> {
+                            scanProductStockCheckViewModel.yardCustCd.value = "DY01"
+                            scanProductStockCheckViewModel.posCd.value = "대웅에스앤티"
+                            input_layout_pos.isEnabled = false
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+            }
+    }
+
     private fun setRecyclerView() {
         adapter = ScanProductStockCheckAdapter(scanProductStockCheckViewModel, this)
         productStockCheckScanBinding.recyclerView.adapter = adapter
@@ -178,6 +226,7 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
             }
+            scanProductStockCheckViewModel.isScanFlag.value = false
         })
 
         scanProductStockCheckViewModel.cardItemListDataInsert.observe(this, Observer {
@@ -186,7 +235,9 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
             }
+            scanProductStockCheckViewModel.isScanFlag.value = false
         })
+
     }
 
     override fun onResume() {
@@ -211,9 +262,9 @@ class ScanProductStockCheckActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             scanProductStockCheckViewModel.screenOrientation()
-        }else{
+        } else {
             scanProductStockCheckViewModel.screenOrientation()
         }
     }

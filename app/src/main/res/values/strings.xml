@@ -89,11 +89,13 @@
     <string name="prompt_date_tv">재고조사 기준일을 입력해주세요</string>
     <string name="prompt_no_pos_cd">적재위치를 입력해주세요.</string>
     <string name="prompt_no_pos_cd_match">적재위치 값이 올바르지 않습니다.</string>
+    <string name="prompt_no_yard_cust_cd_match">하치장 위치가 올바르지 않습니다. \n 하치장 정보가 올바른지 확인해주세요.</string>
     <string name="prompt_no_label_no">라벨번호를 입력해주세요.</string>
     <string name="current_time">중량 : %,2dkg</string>
 
     <!-- change pos -->
     <string name="prompt_label_no">라벨번호 입력</string>
+    <string name="prompt_yard_cust">하치장</string>
     <string name="prompt_pos">적재위치</string>
     <string name="prompt_current_pos">현재적재위치</string>
     <string name="prompt_change_pos">변경적재위치</string>

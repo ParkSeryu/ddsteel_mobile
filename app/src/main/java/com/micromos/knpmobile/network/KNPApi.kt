@@ -64,7 +64,7 @@ interface KNPApi {
 
     @GET("stock/get_label_no")
     fun getLabelNo(
-        @Query("in_date") inDate: String,
+        @Query("stock_date") stockDate: String,
         @Query("label_no") labelNo: String
     ): Call<GetLabelNo>
 
@@ -74,21 +74,23 @@ interface KNPApi {
         @Query("in_date") inDate: String
     ): Call<GetCardInfo>
 
-    @FormUrlEncoded
-    @POST("stock/insert_coil_stock")
+    @GET("stock/insert_coil_stock")
     fun insertCoilStock(
-        @Field("in_date") inDate: String,
-        @Field("stock_no") stockNo: String,
-        @Field("user_id") userId: String,
-        @Field("label_no") labelNo: String,
-        @Field("pos_cd") posCd: String
+        @Query("in_date") inDate: String,
+        @Query("stock_no") stockNo: String,
+        @Query("user_id") userId: String,
+        @Query("label_no") labelNo: String,
+        @Query("pos_cd") posCd: String,
+        @Query("yard_cust_cd") yardCustCd: String
     ): Call<Unit>
 
     @GET("stock/update_coil_stock")
     fun updateCoilStock(
         @Query("pos_cd") posCd: String,
         @Query("label_no") labelNo: String,
-        @Query("in_date") inDate: String
+        @Query("in_date") inDate: String,
+        @Query("yard_cust_cd") yardCustCd: String,
+        @Query("pack_cls") packCls : Int,
     ): Call<Unit>
 
 

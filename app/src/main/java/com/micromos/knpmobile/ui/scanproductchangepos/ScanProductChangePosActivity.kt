@@ -30,6 +30,8 @@ import com.micromos.knpmobile.MainActivity.Companion.transToUpperCase
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.ActivityChangePosScanBinding
 import kotlinx.android.synthetic.main.activity_change_pos_scan.*
+import kotlinx.android.synthetic.main.activity_change_pos_scan.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_in.*
 import java.util.*
 
 class ScanProductChangePosActivity : AppCompatActivity() {
@@ -45,7 +47,7 @@ class ScanProductChangePosActivity : AppCompatActivity() {
 
     private val callback: BarcodeCallback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult) {
-            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats) {
+            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats || progress_bar.visibility == View.VISIBLE) {
                 // Prevent duplicate scans
                 return
             }

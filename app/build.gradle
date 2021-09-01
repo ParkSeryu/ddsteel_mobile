@@ -13,8 +13,8 @@ android {
         applicationId "com.micromos.KNP"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 9
-        versionName "9"
+        versionCode 13
+        versionName "13"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

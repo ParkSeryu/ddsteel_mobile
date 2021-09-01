@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -50,11 +52,10 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
         fun newInstance() = ProductStockCheckFragment()
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setYardCustSpinner()
         pos_label_input_layout.visibility = View.INVISIBLE
-
         outer_layout_coil_stock.setOnClickListener { hideKeyboard() }
         recyclerView.setOnClickListener { hideKeyboard() }
         (requireActivity() as MainActivity).setTextChangedListener(change_stock_auto_tv)
@@ -99,6 +100,7 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             this.viewModel = productStockCheckViewModel
             this.lifecycleOwner = this@ProductStockCheckFragment
         }
+
         setRecyclerView()
 
         productStockCheckViewModel.showDatePickerDialogEvent.observe(viewLifecycleOwner, Observer {
@@ -149,6 +151,16 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             }
         })
 
+        productStockCheckViewModel.noYardCustCdMatch.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_notification)
+                    .setMessage(R.string.prompt_no_yard_cust_cd_match)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
         productStockCheckViewModel.unExceptedError.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
@@ -171,14 +183,12 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
 
         productStockCheckViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
-                Log.d("visibleProgressBarOn", "${productStockCheckViewModel.isLoading.value}")
-                activity?.window?.setFlags(
+               activity?.window?.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 );
                 progress_bar.visibility = View.VISIBLE
             } else {
-                Log.d("visibleProgressBarOff", "${productStockCheckViewModel.isLoading.value}")
                 activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 progress_bar.visibility = View.INVISIBLE
                 hideKeyboard()
@@ -245,16 +255,57 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
         (requireActivity() as MainActivity).toolbar_denom.text = ""
     }
 
+    private fun setYardCustSpinner() {
+        val adapter = context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.yard_cust,
+                android.R.layout.simple_list_item_checked
+            )
+        }
+        change_yard_cust_spinner.adapter = adapter
+        change_yard_cust_spinner.prompt = "하치장을 선택해주세요."
+        change_yard_cust_spinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    when (position) {
+                        0 -> {
+                            productStockCheckViewModel.yardCustCd.value = "KP001"
+                            productStockCheckViewModel.posCd.value = ""
+                            input_layout_pos.isEnabled = true
+                        }
+                        1 -> {
+                            productStockCheckViewModel.yardCustCd.value = "DY01"
+                            productStockCheckViewModel.posCd.value = "대웅에스앤티"
+                            input_layout_pos.isEnabled = false
+                        }
+                    }
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+            }
+    }
+
     private fun setRecyclerView() {
         adapter = ProductCoilStockAdapter(productStockCheckViewModel, requireContext())
         coilStockDataBinding.recyclerView.adapter = adapter
+
+
 
         productStockCheckViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 it.updateFlag = 1
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
+
             }
+            productStockCheckViewModel.isScanFlag.value = false
         })
 
         productStockCheckViewModel.cardItemListDataInsert.observe(viewLifecycleOwner, Observer {
@@ -262,8 +313,12 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
                 it.updateFlag = 0
                 adapter.item.add(0, it)
                 adapter.notifyDataSetChanged()
+
             }
+            productStockCheckViewModel.isScanFlag.value = false
         })
+
+        Log.d("testFragment", "${productStockCheckViewModel.isScanFlag.value}")
     }
 
     private fun hideKeyboard() {
@@ -327,9 +382,9 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             productStockCheckViewModel.screenOrientation()
-        }else{
+        } else {
             productStockCheckViewModel.screenOrientation()
         }
     }

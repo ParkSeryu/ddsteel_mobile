@@ -52,7 +52,7 @@
                 style="@style/cardViewListStyleNoMargin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.setText(cardItem.stockCls)}"
+                android:text="@{viewModel.setText(cardItem.stockCls, cardItem.cntCheckFlag)}"
                 android:textColor="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/label_no_tv"
                 app:layout_constraintEnd_toEndOf="parent"

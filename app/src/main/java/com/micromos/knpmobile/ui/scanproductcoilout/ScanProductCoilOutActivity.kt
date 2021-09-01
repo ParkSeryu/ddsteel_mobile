@@ -22,7 +22,9 @@ import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.ActivityCoilOutScanBinding
 import kotlinx.android.synthetic.main.activity_coil_out_scan.*
 import kotlinx.android.synthetic.main.activity_coil_out_scan.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_out.*
+import kotlinx.android.synthetic.main.fragment_coil_out.ship_no_edt
 
 
 class ScanProductCoilOutActivity : AppCompatActivity() {
@@ -40,7 +42,7 @@ class ScanProductCoilOutActivity : AppCompatActivity() {
     private val callback: BarcodeCallback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult) {
 
-            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats) {
+            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats || progress_bar.visibility == View.VISIBLE) {
                 // Prevent duplicate scans
                 return
             }

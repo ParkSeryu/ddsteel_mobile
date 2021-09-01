@@ -3,7 +3,9 @@ package com.micromos.knpmobile.dto
 import com.google.gson.annotations.SerializedName
 
 data class GetLabelNo(
-    @SerializedName("LABEL_NO") val labelNo: String
+    @SerializedName("LABEL_NO") val labelNo: String,
+    @SerializedName("YARD_CUST_CD") val yardCustCd: String,
+    @SerializedName("PACK_CLS") val packCls: Int,
 )
 
 data class GetCardInfo(
@@ -18,6 +20,7 @@ data class GetCardInfo(
     @SerializedName("SIZE_NO") val sizeNo: String,
     @SerializedName("QUANTITY") val quantity: Int,
     @SerializedName("WEIGHT") val weight: Int,
+    @SerializedName("CNT_CHECK_FLAG") val cntCheckFlag: Int,
     @SerializedName("TIME") val time: String,
     var updateFlag: Int
 )

@@ -1,5 +1,6 @@
 package com.micromos.knpmobile.ui.productstockcheck
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +10,7 @@ import com.micromos.knpmobile.MainActivity.Companion.codeNmList
 import com.micromos.knpmobile.ViewModelBase
 import com.micromos.knpmobile.dto.GetCardInfo
 import com.micromos.knpmobile.network.ApiResult
-import com.micromos.knpmobile.network.KNPApi
+import com.micromos.knpmobile.network.StockApiResult
 import com.micromos.knpmobile.repository.StockCheckRepositoryImpl
 import com.micromos.knpmobile.ui.login.LoginViewModel.Companion.user_id
 
@@ -22,10 +23,13 @@ class ProductStockCheckViewModel : ViewModelBase() {
     val noLabelNo: LiveData<Event<Unit>> = _noLabelNo
 
     private val _unExceptedError = MutableLiveData<Event<Unit>>()
-    val unExceptedError : LiveData<Event<Unit>> = _unExceptedError
+    val unExceptedError: LiveData<Event<Unit>> = _unExceptedError
 
     private val _noPosCdMatch = MutableLiveData<Event<Unit>>()
     val noPosCdMatch: LiveData<Event<Unit>> = _noPosCdMatch
+
+    private val _noYardCustCdMatch = MutableLiveData<Event<Unit>>()
+    val noYardCustCdMatch: LiveData<Event<Unit>> = _noYardCustCdMatch
 
     private val _noPosCdNo = MutableLiveData<Event<Unit>>()
     val noPosCdNo: LiveData<Event<Unit>> = _noPosCdNo
@@ -36,9 +40,13 @@ class ProductStockCheckViewModel : ViewModelBase() {
     private val _showDatePickerDialogEvent = MutableLiveData<Event<Unit>>()
     val showDatePickerDialogEvent: LiveData<Event<Unit>> = _showDatePickerDialogEvent
 
+
+
+    val isScanFlag = MutableLiveData<Boolean>()
     val labelNo = MutableLiveData<String?>()
     val inDate = MutableLiveData<String>()
     val posCd = MutableLiveData<String?>()
+    val yardCustCd = MutableLiveData<String>()
 
     lateinit var stockDate: String
     private lateinit var posCdTrim: String
@@ -54,10 +62,11 @@ class ProductStockCheckViewModel : ViewModelBase() {
     private val repository = StockCheckRepositoryImpl()
 
     private val _onClickScanButton = MutableLiveData<Event<Unit>>()
-    val onClickScanButton : LiveData<Event<Unit>> = _onClickScanButton
+    val onClickScanButton: LiveData<Event<Unit>> = _onClickScanButton
 
     init {
         getServerTime()
+        isScanFlag.value = false
     }
 
     private fun getServerTime() {
@@ -80,7 +89,7 @@ class ProductStockCheckViewModel : ViewModelBase() {
         })
     }
 
-    fun scanBarCode(){
+    fun scanBarCode() {
         _onClickScanButton.value = Event(Unit)
     }
 
@@ -95,6 +104,10 @@ class ProductStockCheckViewModel : ViewModelBase() {
     }
 
     fun labelRetrieve() {
+        Log.d("testViewModel", "${isScanFlag.value}")
+        if(isScanFlag.value == true) return
+        isScanFlag.value = true
+
         posCdTrim = posCd.value?.trim().toString()
         labelNoTrim = labelNo.value?.trim().toString()
         codeList.forEach {
@@ -107,21 +120,27 @@ class ProductStockCheckViewModel : ViewModelBase() {
             if (posCdTrim in codeNmList) {
                 if (labelNoTrim != "null" && labelNoTrim != "") {
                     _isLoading.value = true
-                    repository.sendRequestLabelNo(stockDate, labelNoTrim, object : ApiResult {
-                        override fun onResult() {
-                            updateCoilStock()
-                            successCall()
-                        }
+                    repository.sendRequestLabelNo(
+                        stockDate,
+                        labelNoTrim,
+                        yardCustCd.value!!,
+                        object : StockApiResult {
+                            override fun onResult(checkYardCust: Boolean, packCls: Int) {
+                                if (checkYardCust) { // 하치장이 맞지 않으면
+                                    _noYardCustCdMatch.value = Event(Unit)
+                                    successCall()
+                                } else {
+                                    updateCoilStock(packCls)
+                                }
+                            }
+                            override fun nullBody() {
+                                insertCoilStock()
+                            }
+                            override fun onFailure() {
+                                noNetWork()
+                            }
 
-                        override fun nullBody() {
-                            insertCoilStock()
-                            successCall()
-                        }
-
-                        override fun onFailure() {
-                            noNetWork()
-                        }
-                    })
+                        })
                 } else {
                     _noLabelNo.value = Event(Unit)
                 }
@@ -133,60 +152,76 @@ class ProductStockCheckViewModel : ViewModelBase() {
         }
     }
 
-    private fun updateCoilStock() {
-        _isLoading.value = true
-        repository.updateCoilStock(codeCd, labelNoTrim, stockDate, object : ApiResult {
-            override fun onResult() {
-                _cardItemListDataUpdate.value = repository.getCardInfo().value
-                successCall()
-            }
+    private fun updateCoilStock(packCls: Int) {
+        repository.updateCoilStock(
+            codeCd,
+            labelNoTrim,
+            stockDate,
+            yardCustCd.value!!,
+            packCls,
+            object : ApiResult {
+                override fun onResult() {
+                    _cardItemListDataUpdate.value = repository.getCardInfo().value
+                    successCall()
+                }
 
-            override fun nullBody() {
-                unExpectedError()
-            }
+                override fun nullBody() {
+                    unExpectedError()
+                }
 
-            override fun onFailure() {
-                noNetWork()
-            }
-        })
-
+                override fun onFailure() {
+                    noNetWork()
+                }
+            })
     }
 
     private fun insertCoilStock() {
-        _isLoading.value = true
-        repository.insertCoilStock(stockDate, user_id, labelNoTrim, codeCd, object : ApiResult {
-            override fun onResult() {
-                _cardItemListDataInsert.value = repository.getCardInfo().value
-                successCall()
-            }
+        repository.insertCoilStock(
+            stockDate,
+            user_id,
+            labelNoTrim,
+            codeCd,
+            yardCustCd.value!!,
+            object : ApiResult {
+                override fun onResult() {
+                    _cardItemListDataInsert.value = repository.getCardInfo().value
+                    successCall()
+                }
 
-            override fun nullBody() {
-                unExpectedError()
-            }
+                override fun nullBody() {
+                    unExpectedError()
+                }
 
-            override fun onFailure() {
-                noNetWork()
-            }
-        })
+                override fun onFailure() {
+                    noNetWork()
+                }
+            })
     }
 
     fun setCardVisibility(stockCls: String): Int {
+
         return if (stockCls == "I") {
             View.GONE
         } else {
             View.VISIBLE
         }
+
     }
 
-    fun setText(stockCls: String?): String {
+    fun setText(stockCls: String?, cntCheckFlag: Int): String {
+
         return if (stockCls == "I") {
-            "신규 업데이트"
+            if(cntCheckFlag == 1){
+                "관리자 확인요망!"
+            }else {
+                "신규 업데이트"
+            }
         } else {
             "OK"
         }
     }
 
-    fun unExpectedError(){
+    fun unExpectedError() {
         _unExceptedError.value = Event(Unit)
         successCall()
     }
@@ -196,7 +231,7 @@ class ProductStockCheckViewModel : ViewModelBase() {
         successCall()
     }
 
-    fun screenOrientation(){
+    fun screenOrientation() {
         onCleared()
     }
 

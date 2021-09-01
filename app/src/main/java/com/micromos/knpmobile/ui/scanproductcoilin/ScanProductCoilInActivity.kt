@@ -22,6 +22,8 @@ import com.micromos.knpmobile.CustomDialog
 import com.micromos.knpmobile.R
 import com.micromos.knpmobile.databinding.ActivityCoilInScanBinding
 import kotlinx.android.synthetic.main.activity_coil_in_scan.*
+import kotlinx.android.synthetic.main.activity_coil_in_scan.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_in.*
 
 
 class ScanProductCoilInActivity : AppCompatActivity() {
@@ -39,7 +41,7 @@ class ScanProductCoilInActivity : AppCompatActivity() {
 
     private val callback: BarcodeCallback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult) {
-            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats) {
+            if (result.text == null || result.text == lastText || result.barcodeFormat !in formats || progress_bar.visibility == View.VISIBLE) {
                 // Prevent duplicate scans
                 return
             }
