@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.home.HomeViewModel" />
+            type="com.micromos.ddsteelmobile.ui.home.HomeViewModel" />
 
         <variable
             name="menuItemList"
-            type="com.micromos.knpmobile.ui.home.MenuItem" />
+            type="com.micromos.ddsteelmobile.ui.home.MenuItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,10 +33,10 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="#B6B6B6"
+                android:background="#80C3E1"
                 android:gravity="center"
                 android:padding="6dp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:text="@{menuItemList.id}"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/guideline"

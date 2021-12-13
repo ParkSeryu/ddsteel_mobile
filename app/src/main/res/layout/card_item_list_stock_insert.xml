@@ -7,12 +7,12 @@
 
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.productstockcheck.ProductStockCheckViewModel" />
+            type="com.micromos.ddsteelmobile.ui.productstockcheck.ProductStockCheckViewModel" />
 
 
         <variable
             name="cardItem"
-            type="com.micromos.knpmobile.dto.GetCardInfo" />
+            type="com.micromos.ddsteelmobile.dto.GetCardInfo" />
 
     </data>
 

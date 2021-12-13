@@ -7,26 +7,26 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.micromos.knpmobile.ui.home.HomeFragment"
+        android:name="com.micromos.ddsteelmobile.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_ship_in"
-        android:name="com.micromos.knpmobile.ui.productcoilin.ProductCoilInFragment"
+        android:name="com.micromos.ddsteelmobile.ui.productcoilin.ProductCoilInFragment"
         tools:layout="@layout/fragment_coil_in" />
 
     <fragment
-        android:id="@+id/nav_ship_out"
-        android:name="com.micromos.knpmobile.ui.productcoilout.ProductCoilOutFragment"
-        tools:layout="@layout/fragment_coil_out" />
-
-    <fragment
         android:id="@+id/nav_coil_stock"
-        android:name="com.micromos.knpmobile.ui.productstockcheck.ProductStockCheckFragment"
+        android:name="com.micromos.ddsteelmobile.ui.productstockcheck.ProductStockCheckFragment"
         tools:layout="@layout/fragment_coil_stock" />
 
     <fragment
         android:id="@+id/nav_pos_change"
-        android:name="com.micromos.knpmobile.ui.productchangepos.ProductChangePosFragment"
+        android:name="com.micromos.ddsteelmobile.ui.productchangepos.ProductChangePosFragment"
         tools:layout="@layout/fragment_change_pos" />
+
+    <fragment
+        android:id="@+id/nav_material_in"
+        android:name="com.micromos.ddsteelmobile.ui.productmaterialIn.ProductMaterialInFragment"
+        tools:layout="@layout/fragment_material_in" />
 </navigation>

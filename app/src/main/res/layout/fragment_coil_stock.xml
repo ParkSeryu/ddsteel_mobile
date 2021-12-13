@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.productstockcheck.ProductStockCheckViewModel" />
+            type="com.micromos.ddsteelmobile.ui.productstockcheck.ProductStockCheckViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +51,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/change_yard_cust_spinner">
 
-                <com.micromos.knpmobile.CustomAutoCompleteTextView
+                <com.micromos.ddsteelmobile.CustomAutoCompleteTextView
                     android:id="@+id/change_stock_auto_tv"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
@@ -93,7 +93,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRetrieveLabel"
+                android:id="@+id/btnLabelIn"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/default_text_margin"

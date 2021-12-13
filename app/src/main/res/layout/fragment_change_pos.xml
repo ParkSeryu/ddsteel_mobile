@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.productchangepos.ProductChangePosViewModel" />
+            type="com.micromos.ddsteelmobile.ui.productchangepos.ProductChangePosViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,8 +21,9 @@
             android:id="@+id/input_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_10"
+            android:layout_height="55dp"
+            android:layout_marginStart="@dimen/default_text_margin"
+            android:layout_marginTop="3dp"
             android:layout_marginEnd="@dimen/default_text_margin"
             android:hint="@string/prompt_label_no"
             android:imeOptions="actionSearch"
@@ -34,11 +35,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/label_no_edt_pos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:inputType="text|textCapCharacters"
+                android:padding="3dp"
                 android:singleLine="true"
-                android:text="@={viewModel._labelNo}" />
-
+                android:text="@={viewModel._labelNo}"
+                android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -61,8 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="@string/prompt_current_pos"
-            android:textSize="18sp"
             android:textColor="@color/fontBlack"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/current_stock_tv"
             app:layout_constraintStart_toStartOf="@id/input_layout"
@@ -78,37 +80,22 @@
             android:background="@drawable/text_view_border"
             android:enabled="false"
             android:paddingStart="5dp"
-            android:paddingTop="15dp"
+            android:paddingTop="12dp"
             android:text="@{viewModel.posCd}"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_view_default_size"
+            android:textSize="20sp"
             app:layout_constraintLeft_toRightOf="@id/prompt_current_stock_tv"
             app:layout_constraintRight_toLeftOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/input_layout"
             tools:text="%s" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnScan"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/button_scan"
-            android:onClick="@{() -> viewModel.scanBarCode()}"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_view_default_size"
-            app:layout_constraintLeft_toRightOf="@id/guideline"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/dummyTextView"
-            app:layout_constraintTop_toBottomOf="@id/input_layout" />
-
         <TextView
             android:id="@+id/dummyTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/input_layout_auto_tv"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="3dp"
-            />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input_layout_auto_tv" />
 
         <TextView
             android:id="@+id/prompt_change_stock_tv"
@@ -116,8 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="@string/prompt_change_pos"
-            android:textSize="18sp"
             android:textColor="@color/fontBlack"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/input_layout_auto_tv"
             app:layout_constraintLeft_toLeftOf="@id/input_layout"
@@ -128,14 +115,14 @@
             android:id="@+id/input_layout_auto_tv"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_marginTop="3dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             app:endIconMode="clear_text"
             app:layout_constraintLeft_toRightOf="@id/prompt_change_stock_tv"
             app:layout_constraintRight_toLeftOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/current_stock_tv">
 
-            <com.micromos.knpmobile.CustomAutoCompleteTextView
+            <com.micromos.ddsteelmobile.CustomAutoCompleteTextView
                 android:id="@+id/change_stock_auto_tv"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
@@ -147,9 +134,10 @@
                 android:dropDownHeight="120dp"
                 android:dropDownVerticalOffset="1dp"
                 android:inputType="text|textCapCharacters"
+                android:padding="3dp"
                 android:paddingStart="5dp"
-                android:text="@={viewModel.atText}"
-                android:textSize="@dimen/text_view_default_size"
+                android:text="@={viewModel.autoCompleteTextView}"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -173,10 +161,11 @@
         <TextView
             android:id="@+id/input_layout_notification_tv"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/edit_text_border"
             android:visibility="@{viewModel.notificationChangePosTextViewVisibility}"
+            app:layout_constraintBottom_toBottomOf="@id/notification_prompt_tv"
             app:layout_constraintLeft_toLeftOf="@id/prompt_change_stock_tv"
             app:layout_constraintRight_toRightOf="@id/btnSave"
             app:layout_constraintTop_toBottomOf="@id/input_layout_auto_tv" />
@@ -186,9 +175,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="10dp"
+            android:text="@{@string/label_no(viewModel.notificationLabelNo)}"
             android:textColor="@color/fontBlack"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:visibility="@{viewModel.notificationChangePosTextViewVisibility}"
             app:layout_constraintLeft_toLeftOf="@id/prompt_change_stock_tv"
             app:layout_constraintTop_toTopOf="@id/input_layout_notification_tv"
@@ -199,20 +189,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="20dp"
+            android:text="@{@string/change_pos(viewModel.notificationCurrentPosCd, viewModel.notificationChangePosCd)}"
             android:textColor="@color/fontBlack"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:visibility="@{viewModel.notificationChangePosTextViewVisibility}"
             app:layout_constraintLeft_toLeftOf="@id/notification_label_no_tv"
             app:layout_constraintTop_toBottomOf="@id/notification_label_no_tv"
-            tools:text="%s -> %s 으로 적재위치 변경되었습니다." />
+            tools:text="%s -> %s" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
+        <TextView
+            android:id="@+id/notification_prompt_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.58" />
+            android:layout_marginTop="5dp"
+            android:text="적재위치 변경 완료되었습니다."
+            android:textColor="@color/fontBlack"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.notificationChangePosTextViewVisibility}"
+            app:layout_constraintLeft_toLeftOf="@id/notification_label_no_tv"
+            app:layout_constraintTop_toBottomOf="@id/notification_pos_no_tv"
+            tools:text="적재위치 변경 완료되었습니다." />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

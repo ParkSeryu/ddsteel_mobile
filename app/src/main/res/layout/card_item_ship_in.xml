@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.productcoilin.ProductCoilInViewModel" />
+            type="com.micromos.ddsteelmobile.ui.productcoilin.ProductCoilInViewModel" />
 
         <variable
             name="shipInItem"
-            type="com.micromos.knpmobile.dto.ShipOrder" />
+            type="com.micromos.ddsteelmobile.dto.ShipOrder" />
 
     </data>
 
@@ -23,8 +23,8 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:onClick="@{() -> viewModel.cardClick(shipInItem.labelNo)}"
-        app:cardBackgroundColor="@{viewModel.setCardViewColor(shipInItem.pdaDateTimeIn)}"
+        android:onClick="@{() -> viewModel.cardClick(shipInItem.shipNo,shipInItem.shipSeq,shipInItem.scanDate)}"
+        app:cardBackgroundColor="@{viewModel.setCardViewColor(shipInItem.scanDate)}"
         app:cardCornerRadius="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -39,26 +39,14 @@
             android:padding="10dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/label_no_tv"
+                android:id="@+id/product_no_tv"
                 style="@style/cardViewListStyleNoMargin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/label_no(shipInItem.labelNo)}"
+                android:text="@{@string/product_no(shipInItem.coilNo, shipInItem.coilSeq)}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="라벨번호 % s" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/pos_cd_tv"
-                style="@style/cardViewListStyleNoMargin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{shipInItem.posNm}"
-                app:layout_constraintLeft_toRightOf="@id/label_no_tv"
-                android:layout_marginLeft="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="위치 % s" />
-
+                tools:text="product_no" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/label_ok_tv"
@@ -67,29 +55,53 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ok"
                 android:textColor="@color/fontRed"
-                android:visibility="@{viewModel.setOkTvVisibility(shipInItem.pdaDateTimeIn)}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/label_no_tv" />
+                android:layout_marginEnd="5dp"
+                android:visibility="@{viewModel.setOkTvVisibility(shipInItem.scanDate)}"
+                app:layout_constraintRight_toLeftOf="@id/scan_cls_tv"
+                app:layout_constraintTop_toTopOf="@id/product_no_tv" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/product_no_tv"
+                android:id="@+id/scan_cls_tv"
+                style="@style/cardViewListStyleNoMargin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{shipInItem.scanCls}"
+                android:textColor="@color/fontRed"
+                android:visibility="@{viewModel.setOkTvVisibility(shipInItem.scanDate)}"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/product_no_tv" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mill_maker_tv"
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/product_no(shipInItem.coilNo, shipInItem.coilSeq)}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_no_tv"
-                tools:text="제품번호" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/name_nm_tv"
-                style="@style/cardViewListStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/name_cd(shipInItem.nameNm)}"
+                android:text="@{@string/mill_maker_cd(shipInItem.millMakerNm)}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/product_no_tv"
-                tools:text="@string/name_cd" />
+                tools:text="mill_maker" />
+
+            <TextView
+                android:id="@+id/label_date_time_tv"
+                style="@style/cardViewListStyleNoMargin"
+                android:layout_width="wrap_content"
+                android:text="@{shipInItem.scanTime}"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/mill_maker_tv"
+                tools:text="날짜" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/name_cd_tv"
+                style="@style/cardViewListStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/name_cd(shipInItem.nameNm, shipInItem.typeNm)}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mill_maker_tv"
+                tools:text="name_cd" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/size_cd_tv"
@@ -98,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{@string/size_cd(shipInItem.sizeNo)}"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name_nm_tv"
+                app:layout_constraintTop_toBottomOf="@id/name_cd_tv"
                 tools:text="@string/size_cd" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -108,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{@string/stan_cd(shipInItem.stanNm)}"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/name_nm_tv"
+                app:layout_constraintTop_toTopOf="@id/name_cd_tv"
                 tools:text="@string/stan_cd" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -116,9 +128,9 @@
                 style="@style/cardViewListStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
                 android:text="@{@string/quantity(shipInItem.quantity)}"
                 app:layout_constraintRight_toLeftOf="@id/weight_tv"
+                android:layout_marginEnd="5dp"
                 app:layout_constraintTop_toBottomOf="@id/stan_nm_cd"
                 tools:text="@string/quantity" />
 

@@ -1,0 +1,119 @@
+<resources>
+    <!-- Default -->
+    <string name="app_name">(주)대동스틸</string>
+    <string name="company_name">대동스틸</string>
+    <string name="button_retrieve">조회</string>
+    <string name="button_in">입고</string>
+    <string name="button_new">신규</string>
+    <string name="button_ok">완료</string>
+    <string name="button_scan">스캔</string>
+    <string name="prompt_warning">경고</string>
+    <string name="dialog_ok">확인</string>
+    <string name="dialog_ng">취소</string>
+    <string name="button_save">저장</string>
+    <string name="button_save_failed">저장 실패</string>
+    <string name="prompt_error">오류</string>
+    <string name="prompt_notice">알림</string>
+    <string name="prompt_not_ok">한건도 소재입고 되지않아 완료할 수 없습니다.</string>
+    <string name="prompt_exit">종료 하시겠습니까?</string>
+    <string name="prompt_notification">알림</string>
+    <string name="network_failed">네트워크 연결 상태를 확인해 주세요.\n서버에 연결할 수 없습니다.</string>
+    <string name="unexpected_error_pda_in">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 001)</string>
+    <string name="unexpected_error_pda_in_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 002)</string>
+    <string name="unexpected_error_pda_out">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 003)</string>
+    <string name="unexpected_error_pda_out_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 004)</string>
+    <string name="unexpected_error_pda_stock">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 005)</string>
+    <string name="unexpected_error_pda_stock_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 006)</string>
+    <string name="unexpected_error_pda_change_pos">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 007)</string>
+    <string name="unexpected_error_pda_change_pos_scan">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 008)</string>
+    <string name="unexpected_error_pda_material_check">예기치 않은 오류가 발생하였습니다. \n해당 메시지가 지속될 경우 문의주세요. \n (error_code : 009)</string>
+    <string name="prompt_network_failed">네트워크 연결 상태를 확인해 주세요.</string>
+    <string name="prompt_update_exists">업데이트를 진행합니다.</string>
+    <string name="hyphen">/</string>
+    <string name="prompt_common_error">에러, 마이크로모스에 문의해주세요. \n (error_code : %s) </string>
+
+    <!-- Login -->
+    <string name="prompt_id">아이디</string>
+    <string name="prompt_password">비밀번호</string>
+    <string name="prompt_Login">로그인</string>
+    <string name="denied_login">로그인 거부</string>
+    <string name="failed_login">로그인 실패</string>
+    <string name="invalid_login">아이디 또는 패스워드가 올바르지 않습니다.</string>
+    <string name="message_denied_login">퇴사자이므로 권한이 없습니다.</string>
+    <string name="message_login_failed">등록되지 않은 사용자 입니다.</string>
+    <string name="message_not_connected">네트워크 연결 상태를 확인 해 주세요.</string>
+    <string name="message_not_connected_server">서버에 연결할 수 없습니다.\n네트워크 연결 상태를 확인 해 주세요.</string>
+
+    <!-- Program List -->
+    <string name="menu_home">Home</string>
+    <string name="menu_ship_in">출고검수</string>
+    <string name="menu_coil_stock">재고조사</string>
+    <string name="menu_change_pos">적재위치변경</string>
+    <string name="menu_material_in">소재입고</string>
+
+    <!-- Ship Common -->
+    <string name="product_no">제품번호 : %s-%s</string>
+    <string name="mill_no">제품번호 : %s</string>
+    <string name="label_no">라벨번호 : %s</string>
+    <string name="ship_no">출고번호 : %s</string>
+    <string name="sales_man_cd">담당자 : %s</string>
+    <string name="sell_cust_cd">수요가 : %s</string>
+    <string name="region_cd">도착지 : %s</string>
+    <string name="yard_cust_cd">하치장 : %s</string>
+    <string name="dlv_cust_cd">납품처 : %s</string>
+    <string name="name_cd">품명 : %s</string>
+    <string name="size_cd">Size : %s</string>
+    <string name="stan_cd">재질 : %s</string>
+    <string name="quantity">수량 : %,2d</string>
+    <string name="weight">중량 : %,2dkg</string>
+    <string name="ok">OK</string>
+    <string name="insert">신규 추가</string>
+    <string name="matchedLabel">두 라벨은 &lt;font color="#0010FF"><b>일치</b>&lt;/font>합니다.</string>
+    <string name="unMatchedLabel">두 라벨은 &lt;font color="#ff0000"><b>불일치</b>&lt;/font>합니다.</string>
+
+    <!-- Ship In -->
+    <string name="prompt_no_retrieve_ship_in">올바르지 않은 출고번호 입니다.</string>
+    <string name="prompt_no_stock_ship_in">재고가 없습니다. \n 다시한번 확인해주세요.</string>
+    <string name="prompt_no_label_ship_in">출고대상에 포함되지 않는 제품입니다.</string>
+    <string name="prompt_label_overlap_ship_in">이미 상차처리된 라벨입니다.</string>
+    <string name="prompt_label_no_modify_ship_in">상차처리 할 수 없는 라벨입니다.</string>
+    <string name="prompt_label_no_success_ship_in">라벨 스캔이 완료되지 않았습니다.\n 다른 상차번호를 조회 하시겠습니까?</string>
+    <string name="prompt_label_forced_update">해당 지시를 강제로 처리하시겠습니까?</string>
+    <string name="prompt_label_update_rollback">해당 지시를 취소하시겠습니까?</string>
+
+
+    <!-- coil stock -->
+    <string name="prompt_date">날짜입력</string>
+    <string name="prompt_date_tv">재고조사 기준일을 입력해주세요</string>
+    <string name="prompt_no_pos_cd">적재위치를 입력해주세요.</string>
+    <string name="prompt_no_pos_cd_match">적재위치 값이 올바르지 않습니다.</string>
+    <string name="prompt_no_yard_cust_cd_match">하치장 위치가 올바르지 않습니다. \n 하치장 정보가 올바른지 확인해주세요.</string>
+    <string name="prompt_no_label_no">라벨번호를 입력해주세요.</string>
+    <string name="current_time">중량 : %,2dkg</string>
+
+    <!-- change pos -->
+    <string name="prompt_label_no">라벨번호 입력</string>
+    <string name="prompt_yard_cust">하치장</string>
+    <string name="prompt_pos">적재위치</string>
+    <string name="prompt_current_pos">현재적재위치</string>
+    <string name="prompt_change_pos">변경적재위치</string>
+    <string name="failed_get_code">코드정보를 가져오는데 실패하였습니다. \n앱을 재부팅 해도 안될시 관리자에게 문의해주세요.</string>
+    <string name="prompt_no_match_label">해당하는 라벨번호가 없습니다. \n라벨번호를 확인해주세요.</string>
+    <string name="prompt_no_match_pos">변경적재위치 값이 올바르지 않습니다.</string>
+    <string name="prompt_update_impossible">조회 후 저장이 가능합니다.</string>
+    <string name="change_pos">%s -> %s 으로 적재위치 변경되었습니다.</string>
+
+    <!-- material In -->
+    <string name="trans_car_no">차량번호</string>
+    <string name="trans_man">운송기사</string>
+    <string name="trans_man_phone">전화번호</string>
+    <string name="label">라벨번호</string>
+    <string name="prompt_trans_man_phone">하이픈(-) 없이 입력</string>
+    <string name="prompt_fail_get_in_no">입고번호를 가져오는데에 실패하였습니다. \n 네트워크 연결을 확인하시거나 관리자에게 문의해주세요.</string>
+    <string name="prompt_fail_update_label">소재입고실패.\n 네트워크 연결을 확인하시거나 관리자에게 문의해주세요.</string>
+    <string name="prompt_fail_get_card_info">소재정보 가져오기 실패.\n 네트워크 연결을 확인하시거나 관리자에게 문의해주세요.</string>
+    <string name="prompt_not_complete_in">정보가 모두 입력되지 않았습니다.</string>
+    <string name="prompt_no_match_phone_number">올바르지 않은 전화번호입니다.</string>
+    <string name="prompt_no_match_mill_no">입고 예정정보가 없는 라벨입니다. \n 확인바랍니다.</string>
+    <string name="prompt_not_finished">입고된 라벨이 존재하지 않습니다. \n 종료 하시겠습니까?</string>
+</resources>

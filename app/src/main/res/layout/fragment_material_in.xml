@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.micromos.ddsteelmobile.ui.productmaterialIn.ProductMaterialInViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_material_in"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_trans_car_no"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:enabled="@{viewModel.transEnabled}"
+            android:hint="@string/trans_car_no"
+            android:imeOptions="actionSearch"
+            android:padding="0dp"
+            app:endIconMode="clear_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!--            app:hintTextColor="@color/black"-->
+            <!--            app:boxStrokeColor="@color/black"-->
+            <!--            android:textCursorDrawable="@drawable/text_box_cursor"-->
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/trans_car_no"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text|textCapCharacters"
+                android:padding="0dp"
+                android:singleLine="true"
+                android:text="@={viewModel.transCarNo}"
+
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNew"
+            style="@style/DefaultButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:enabled="@{viewModel.btnNewEnabled}"
+            android:onClick="@{() -> viewModel.onClickBtnNew()}"
+            android:text="@string/button_new"
+            android:textSize="@dimen/text_view_default_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/input_layout_trans_man"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input_layout_trans_car_no" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_trans_man"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:enabled="@{viewModel.transEnabled}"
+            android:hint="@string/trans_man"
+            android:imeOptions="actionSearch"
+            app:endIconMode="clear_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline_center"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_trans_car_no">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/trans_man"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text|textCapCharacters"
+                android:padding="0dp"
+                android:singleLine="true"
+                android:text="@={viewModel.transMan}"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_trans_man_phone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/default_text_margin"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:enabled="@{viewModel.transEnabled}"
+            android:hint="@string/trans_man_phone"
+            android:imeOptions="actionSearch"
+            app:endIconMode="clear_text"
+            app:layout_constraintLeft_toRightOf="@id/guideline_center"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_trans_car_no">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/trans_man_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:padding="0dp"
+                android:singleLine="true"
+                android:text="@={viewModel.transManPhone}"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_label"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:enabled="@{viewModel.labelEnabled}"
+            android:hint="@string/label"
+            android:imeOptions="actionSearch"
+            app:endIconMode="clear_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_trans_man">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/label_no"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text|textCapCharacters"
+                android:padding="0dp"
+                android:singleLine="true"
+                android:text="@={viewModel._labelNo}"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLabelIn"
+            style="@style/DefaultButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/default_text_margin"
+            android:enabled="@{viewModel.btnLabelInEnabled}"
+            android:onClick="@{() -> viewModel.btnLabelIn(viewModel._labelNo)}"
+            android:text="@string/button_in"
+            android:textSize="@dimen/text_view_default_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/recyclerView"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input_layout_label" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="6dp"
+            android:splitMotionEvents="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_label"
+            tools:listitem="@layout/card_item_material_in" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.4" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#8C000000"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

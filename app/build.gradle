@@ -10,11 +10,11 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.micromos.KNP"
+        applicationId 'com.micromos.ddsteel'
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 13
-        versionName "13"
+        versionCode 1
+        versionName "1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,17 +23,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [appName : "@string/app_name"]
+            manifestPlaceholders = [appName: "@string/app_name"]
         }
 
         debug {
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "KNP테스트용"]
+            manifestPlaceholders = [appName: "대동스틸 개발자용"]
         }
     }
 
-    dataBinding {
-        enabled = true
+
+    buildFeatures {
+        dataBinding {
+            enabled = true
+        }
     }
 
     compileOptions {

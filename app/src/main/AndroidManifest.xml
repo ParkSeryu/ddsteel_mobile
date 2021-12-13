@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.micromos.knpmobile">
+    package="com.micromos.ddsteelmobile">
 
     <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -28,27 +27,27 @@
         android:label="${appName}"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.KNP2"
+        android:theme="@style/Theme.DDSTEEL"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
 
         <activity
-            android:name="com.micromos.knpmobile.MainActivity"
+            android:name="com.micromos.ddsteelmobile.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@style/Theme.KNP2.NoActionBar"
+            android:theme="@style/Theme.DDSTEEL.NoActionBar"
             android:windowSoftInputMode="adjustNothing">
 
         </activity>
 
         <activity
-            android:name="com.micromos.knpmobile.UpdateActivity"
-            android:theme="@style/Theme.KNP2.NoActionBar"
+            android:name="com.micromos.ddsteelmobile.UpdateActivity"
+            android:theme="@style/Theme.DDSTEEL.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
 
         <activity
-            android:name="com.micromos.knpmobile.ui.login.LoginActivity"
+            android:name="com.micromos.ddsteelmobile.ui.login.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.KNP2.NoActionBar"
+            android:theme="@style/Theme.DDSTEEL.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,20 +56,20 @@
         </activity>
 
         <!-- Scanner 관련 -->
-        <activity
-            android:name=".ui.scanproductcoilin.ScanProductCoilInActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".ui.scanproductcoilout.ScanProductCoilOutActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".ui.scanproductstockcheck.ScanProductStockCheckActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".ui.scanproductchangepos.ScanProductChangePosActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing" />
+<!--        <activity-->
+<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductcoilin.ScanProductCoilInActivity"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize" />-->
+<!--        <activity-->
+<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductcoilout.ScanProductCoilOutActivity"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize" />-->
+<!--        <activity-->
+<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductstockcheck.ScanProductStockCheckActivity"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
+<!--            android:windowSoftInputMode="adjustNothing" />-->
+<!--        <activity-->
+<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductchangepos.ScanProductChangePosActivity"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
+<!--            android:windowSoftInputMode="adjustNothing" />-->
 
         <!-- Uri로 데이터를 보내기 위함 -->
         <provider

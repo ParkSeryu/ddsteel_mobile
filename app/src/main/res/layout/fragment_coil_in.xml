@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.micromos.knpmobile.ui.productcoilin.ProductCoilInViewModel" />
+            type="com.micromos.ddsteelmobile.ui.productcoilin.ProductCoilInViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,13 +21,15 @@
             android:id="@+id/input_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_marginStart="@dimen/default_text_margin"
+            android:layout_marginTop="3dp"
             android:layout_marginEnd="@dimen/default_text_margin"
+            android:hint="상차지시번호"
             android:imeOptions="actionSearch"
             app:endIconMode="clear_text"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/guideline2"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -34,8 +37,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textCapCharacters"
+                android:padding="3dp"
                 android:singleLine="true"
-                android:text="@={viewModel._requestNo}" />
+                android:text="@={viewModel._requestNo}"
+                android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -45,51 +50,65 @@
             android:layout_marginEnd="5dp"
             android:onClick="@{() -> viewModel.shipNoRetrieve(viewModel._requestNo)}"
             android:text="@string/button_retrieve"
-            android:textStyle="bold"
             android:textSize="@dimen/text_view_default_size"
-            app:layout_constraintBottom_toTopOf="@id/sell_cust_cd_tv"
-            app:layout_constraintLeft_toRightOf="@id/guideline2"
-            app:layout_constraintRight_toRightOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@id/input_layout" />
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnScan"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="5dp"
-            android:onClick="@{() -> viewModel.scanBarCode()}"
-            android:text="@string/button_scan"
             android:textStyle="bold"
-            android:textSize="@dimen/text_view_default_size"
-            app:layout_constraintBottom_toTopOf="@id/sell_cust_cd_tv"
+            app:layout_constraintBottom_toTopOf="@id/ship_no_tv"
             app:layout_constraintLeft_toRightOf="@id/guideline"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/input_layout" />
 
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/btnScan"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_marginEnd="5dp"-->
+        <!--            android:onClick="@{() -> viewModel.scanBarCode()}"-->
+        <!--            android:text="@string/button_scan"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:textSize="@dimen/text_view_default_size"-->
+        <!--            app:layout_constraintBottom_toTopOf="@id/sell_cust_cd_tv"-->
+        <!--            app:layout_constraintLeft_toRightOf="@id/guideline"-->
+        <!--            app:layout_constraintRight_toRightOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/input_layout" />-->
+
         <TextView
-            android:id="@+id/sell_cust_cd_tv"
+            android:id="@+id/ship_no_tv"
             style="@style/custCdStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="@{@string/sell_cust_cd(viewModel.sellCustCd)}"
-            android:visibility="@{viewModel.custCdVisibility}"
+            android:text="@{@string/ship_no(viewModel.shipMasterNo)}"
+            android:visibility="@{viewModel.coilInVisibility}"
             app:layout_constraintStart_toStartOf="@id/recyclerView"
             app:layout_constraintTop_toBottomOf="@id/input_layout"
-            tools:text="@string/sell_cust_cd" />
+            tools:text="@string/ship_no" />
 
         <TextView
-            android:id="@+id/ven_cust_cd_tv"
+            android:id="@+id/sales_man_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="@{@string/sales_man_cd(viewModel.salesManCd)}"
+            android:textColor="@color/cust_cd_color"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:visibility="@{viewModel.coilInVisibility}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ship_no_tv"
+            tools:text="@string/sales_man_cd" />
+
+
+        <TextView
+            android:id="@+id/sell_cust_cd"
             style="@style/custCdStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@{@string/ven_cust_cd(viewModel.venCustCd)}"
-            android:visibility="@{viewModel.custCdVisibility}"
+            android:text="@{@string/sell_cust_cd(viewModel.sellCustCd)}"
+            android:visibility="@{viewModel.coilInVisibility}"
             app:layout_constraintStart_toStartOf="@id/recyclerView"
-            app:layout_constraintTop_toBottomOf="@id/sell_cust_cd_tv"
-            tools:text="@string/ven_cust_cd" />
+            app:layout_constraintTop_toBottomOf="@id/ship_no_tv"
+            tools:text="@string/sell_cust_cd" />
 
         <TextView
             android:id="@+id/dlv_cust_cd_tv"
@@ -98,22 +117,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@{@string/dlv_cust_cd(viewModel.dlvCustCd)}"
-            android:visibility="@{viewModel.custCdVisibility}"
+            android:visibility="@{viewModel.coilInVisibility}"
             app:layout_constraintStart_toStartOf="@id/recyclerView"
-            app:layout_constraintTop_toBottomOf="@id/ven_cust_cd_tv"
+            app:layout_constraintTop_toBottomOf="@id/sell_cust_cd"
             tools:text="@string/dlv_cust_cd" />
 
+        <TextView
+            android:id="@+id/region_cd"
+            style="@style/custCdStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@{@string/region_cd(viewModel.regionCd)}"
+            android:visibility="@{viewModel.coilInVisibility}"
+            app:layout_constraintLeft_toLeftOf="@id/recyclerView"
+            app:layout_constraintTop_toBottomOf="@id/dlv_cust_cd_tv"
+            tools:text="@string/region_cd" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:splitMotionEvents="false"
+            android:visibility="@{viewModel.coilInVisibility}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dlv_cust_cd_tv"
+            app:layout_constraintTop_toBottomOf="@id/region_cd"
             tools:listitem="@layout/card_item_ship_in" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -128,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.6" />
+            app:layout_constraintGuide_percent="0.55" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progress_bar"
