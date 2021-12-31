@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingStart="15dp"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
     android:textColor="@color/fontBlack"
-    android:textSize="18sp"
+    android:textSize="20sp"
     tools:text="A1-01" />

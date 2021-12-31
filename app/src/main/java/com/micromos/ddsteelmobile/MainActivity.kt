@@ -2,6 +2,7 @@ package com.micromos.ddsteelmobile
 
 import android.Manifest
 import android.content.Context
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val api = DDsteelApi.create()
     private val FLAG_PERM_CAMERA = 98
+    lateinit var m3Receiver: M3Receiver
 
     companion object {
         val pos_cd_list = mutableListOf<String>()
@@ -44,19 +46,20 @@ class MainActivity : AppCompatActivity() {
         val posList = mutableMapOf<String, String>()
 
         fun autoCompleteTextViewCustomPosCd(AT: AutoCompleteTextView, context: Context) {
-            var text = AT.text.toString()
-            val rstList = ArrayList<String>()
+            val text = AT.text.toString()
+            val atList = ArrayList<String>()
 
             if (text.isNotEmpty()) {
-                if (text.length >= 3 && text.toCharArray()[2] != '-') {
-                    val char = text.substring(0, 2)
-                    text = char + "-" + text.substring(2)
-                }
-                Log.d("testMatchText", text)
                 for (i in 0 until pos_nm_list.size) {
                     if (pos_nm_list[i].contains(text)) {
                         Log.d("testMatchList", pos_nm_list[i])
-                        rstList.add(pos_nm_list[i])
+                        atList.add(pos_nm_list[i])
+                    }
+                }
+
+                if (atList.size in 1..4) {
+                    while (atList.size < 5) {
+                        atList.add("")
                     }
                 }
 
@@ -64,10 +67,11 @@ class MainActivity : AppCompatActivity() {
                     ArrayAdapter<String>(
                         context,
                         R.layout.custom_auto_complete_layout,
-                        rstList
+                        atList
                     )
-                Log.d("testMatchShow", "$rstList")
-                if (rstList.size == 0) {
+                Log.d("testMatchShow", "$atList")
+
+                if (atList.size == 0) {
                     //AT.dismissDropDown()
                 } else {
                     AT.setAdapter(adapter)
@@ -76,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     }, 5)
                 }
             } else {
-                val adapter = ArrayAdapter<String>(
+                val adapter = ArrayAdapter(
                     context,
                     R.layout.custom_auto_complete_layout,
                     pos_nm_list
@@ -103,6 +107,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        m3Receiver = M3Receiver.getInstance()
         toolbar_name.text = "$name($work_place_nm)"
         getCommonPosCd()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -155,7 +160,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCommonPosCd() {
         api.getCommonPosCd().enqueue(object : Callback<GetCommonPosCdFeed> {
-            override fun onResponse(call: Call<GetCommonPosCdFeed>, response: Response<GetCommonPosCdFeed>) {
+            override fun onResponse(
+                call: Call<GetCommonPosCdFeed>,
+                response: Response<GetCommonPosCdFeed>
+            ) {
                 pos_cd_list.clear()
                 pos_nm_list.clear()
                 Log.d("testGetPosCd", response.body().toString())
@@ -206,4 +214,20 @@ class MainActivity : AppCompatActivity() {
             }.setNegativeButton("아니오") {
             }.show()
     }
+
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter()
+        filter.addAction("com.android.server.scannerservice.broadcast")
+        registerReceiver(m3Receiver, filter)
+        Log.d("onResume", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("onPause", "onPause")
+        m3Receiver.unRegister()
+    }
+
+
 }

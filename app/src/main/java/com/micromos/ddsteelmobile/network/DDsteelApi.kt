@@ -93,8 +93,7 @@ interface DDsteelApi {
         @Query("stock_no") stockNo: String,
         @Query("user_id") userId: String,
         @Query("label_no") labelNo: String,
-        @Query("pos_cd") posCd: String,
-        @Query("yard_cust_cd") yardCustCd: String
+        @Query("pos_cd") posCd: String
     ): Call<Unit>
 
     @GET("stock/update_coil_stock")
@@ -102,8 +101,7 @@ interface DDsteelApi {
         @Query("pos_cd") posCd: String,
         @Query("label_no") labelNo: String,
         @Query("in_date") inDate: String,
-        @Query("yard_cust_cd") yardCustCd: String,
-        @Query("pack_cls") packCls : Int,
+        @Query("pack_cls") packCls : Int
     ): Call<Unit>
 
     @GET("materialIn/getNewSequence")
@@ -115,8 +113,8 @@ interface DDsteelApi {
         @Query("workPlaceCd")workPlaceCd: String,
         @Query("transNo")transNo: String,
         @Query("transCarNo")transCarNo: String,
-        @Query("transMan")transMan: String,
-        @Query("transManPhone")transManPhone: String,
+        @Query("transMan")transMan: String?,
+        @Query("transManPhone")transManPhone: String?,
         @Query("labelNo")labelNo: String
     ): Call<GetLabelUpdateInfo>
 
@@ -135,8 +133,9 @@ interface DDsteelApi {
 
     companion object Factory {
         fun create(): DDsteelApi {
-            val uri = if (BuildConfig.DEBUG) "http://192.168.0.168/DDSTEEL_API/Developer/index.php/"
-            else "http://192.168.0.168/DDSTEEL_API/Real/index.php/"
+            val uri = if (BuildConfig.DEBUG) "http://121.171.250.65/DDSTEEL_API/Developer/index.php/"
+                //"http://121.171.250.65/DDSTEEL_API/Developer/index.php/"
+            else "http://121.171.250.65/DDSTEEL_API/Real/index.php/"
             // local
             // "http://192.168.0.168/DDSTEEL_API/Developer/index.php/"
 

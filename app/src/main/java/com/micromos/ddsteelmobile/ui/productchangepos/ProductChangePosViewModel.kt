@@ -1,5 +1,7 @@
 package com.micromos.ddsteelmobile.ui.productchangepos
 
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,9 +41,7 @@ class ProductChangePosViewModel : ViewModelBase() {
     val coilSeq = MutableLiveData<String>()
     val posCd = MutableLiveData<String>()
 
-    var notificationLabelNo = MutableLiveData<String>()
-    var notificationCurrentPosCd = MutableLiveData<String>()
-    var notificationChangePosCd = MutableLiveData<String>()
+
     val notificationChangePosTextViewVisibility = MutableLiveData<Int>()
 
     private val repository = ChangePosRepositoryImpl()
@@ -63,11 +63,8 @@ class ProductChangePosViewModel : ViewModelBase() {
                     posCd.value = data.value?.posCd ?: ""
                     if (posCd.value != "") {
                         posCd.value = posList[posCd.value]
-                        notificationCurrentPosCd.value = posCd.value!!
-                    }else{
-                        notificationCurrentPosCd.value = ""
                     }
-                    notificationLabelNo.value = "${coilNo.value}-${coilSeq.value}"
+
                     _focusChangeEvent.value = Event(Unit)
                     _isLoading.value = false
                 }
@@ -104,8 +101,10 @@ class ProductChangePosViewModel : ViewModelBase() {
                     coilSeq.value.toString(),
                     object : ApiResult {
                         override fun onResult() {
-                            notificationChangePosCd.value = autoCompleteTextView.value!!
                             notificationChangePosTextViewVisibility.value = View.VISIBLE
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                notificationChangePosTextViewVisibility.value = View.INVISIBLE
+                            }, 3000)
                             posCd.value = ""
                             coilNo.value = null
                             coilSeq.value = null

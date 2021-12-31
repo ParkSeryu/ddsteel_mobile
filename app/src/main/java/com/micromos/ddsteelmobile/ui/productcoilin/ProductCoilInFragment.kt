@@ -1,6 +1,8 @@
 package com.micromos.ddsteelmobile.ui.productcoilin
 
+import android.content.IntentFilter
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.cognex.mobile.barcode.sdk.ReadResults
 import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.ddsteelmobile.CustomDialog
+import com.micromos.ddsteelmobile.M3Receiver
 import com.micromos.ddsteelmobile.MainActivity
 import com.micromos.ddsteelmobile.R
 import com.micromos.ddsteelmobile.databinding.FragmentCoilInBinding
@@ -25,15 +28,16 @@ import com.micromos.ddsteelmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_coil_in.progress_bar
+import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import java.util.*
 
-class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
-    ReaderDevice.ReaderDeviceListener {
+class ProductCoilInFragment : Fragment(), M3Receiver.ScanListener {
 
     private lateinit var productCoilInViewModel: ProductCoilInViewModel
     private lateinit var coilInDataBinding: FragmentCoilInBinding
     private lateinit var adapter: ProductCoilInAdapter
-    private lateinit var readerDevice: ReaderDevice
+    private val m3Receiver: M3Receiver by lazy { M3Receiver.getInstance() }
+
 
     companion object {
         fun newInstance() = ProductCoilInFragment()
@@ -107,10 +111,12 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 );
+                ship_no_edt.isEnabled = false
                 progress_bar.visibility = View.VISIBLE
             } else {
                 activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 progress_bar.visibility = View.INVISIBLE
+                ship_no_edt.isEnabled = true
                 hideKeyboard()
                 setToolbar()
             }
@@ -233,11 +239,6 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
             }
         }
 
-        readerDevice = ReaderDevice.getMXDevice(context)
-        readerDevice.startAvailabilityListening()
-        readerDevice.setReaderDeviceListener(this)
-        readerDevice.connect(this@ProductCoilInFragment)
-
         return coilInDataBinding.root
     }
 
@@ -254,6 +255,7 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
                     adapter.notifyItemChanged(
                         productCoilInViewModel.changePosition.value!!
                     )
+                   coilInDataBinding.recyclerView.scrollToPosition(productCoilInViewModel.changePosition.value!!)
                 }
             } else {
                 adapter.items = emptyList()
@@ -273,63 +275,10 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
         (requireActivity() as MainActivity).toolbar_numer.text =
             productCoilInViewModel.numerator.value.toString()
         (requireActivity() as MainActivity).toolbar_hyphen.text = "/"
+        (requireActivity() as MainActivity).toolbar_denom.setTextColor(Color.RED)
         (requireActivity() as MainActivity).toolbar_denom.text =
             productCoilInViewModel.denomiator.value.toString()
-    }
 
-
-    override fun onConnectionCompleted(p0: ReaderDevice?, p1: Throwable?) {
-        Log.i("beep", "ConnectionCompleted")
-    }
-
-    override fun onAvailabilityChanged(p0: ReaderDevice?) {
-        Log.i("beep", "onAvailabilityChanged")
-    }
-
-    override fun onConnectionStateChanged(p0: ReaderDevice?) {
-        Log.i("beep", p0?.connectionState.toString())
-    }
-
-    override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
-        try {
-            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE)
-                return
-
-            var resultString = results.getResultAt(0).readString!!
-            Log.d("scanTest", resultString)
-            if (resultString.contains("\\000026")) {
-                resultString = resultString.split("\\000026")[1]
-            }
-            productCoilInViewModel._requestNo.value = resultString.toUpperCase(Locale.ROOT)
-            productCoilInViewModel.shipNoRetrieve(productCoilInViewModel._requestNo.value)
-        } catch (e: Exception) {
-            Toast.makeText(context, "읽은값 : ${e.message.toString()}", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("test", "onResume")
-        productCoilInViewModel.screenOrientation()
-        readerDevice.startAvailabilityListening()
-        readerDevice.setReaderDeviceListener(this)
-        readerDevice.connect(this@ProductCoilInFragment)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("test", "onPause")
-        readerDevice.stopAvailabilityListening()
-        readerDevice.setReaderDeviceListener(null)
-        readerDevice.disconnect()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("test", "onDestroy")
-        readerDevice.stopAvailabilityListening()
-        readerDevice.setReaderDeviceListener(null)
-        readerDevice.disconnect()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -341,5 +290,25 @@ class ProductCoilInFragment : Fragment(), ReaderDevice.OnConnectionCompletedList
         }
     }
 
+    override fun onScan(scanResult: String) {
+        if (progress_bar.visibility == View.VISIBLE || scanResult.toCharArray().isEmpty())
+            return
 
+        val resultScan = scanResult.toUpperCase(Locale.ROOT)
+
+        ship_no_edt.setText(resultScan)
+        productCoilInViewModel.shipNoRetrieve(resultScan)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("onResumeCoilIn", "onResumeCoilIn")
+        m3Receiver.register(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("onPauseCoilIn", "onPauseCoilIn")
+        m3Receiver.unRegister()
+    }
 }

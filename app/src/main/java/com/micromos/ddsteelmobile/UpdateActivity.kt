@@ -39,9 +39,9 @@ class UpdateActivity : AppCompatActivity() {
 
                 lifecycleScope.launch(Dispatchers.IO) {
                     val url = if (BuildConfig.DEBUG) {
-                        URL("http://119.205.209.23/DDSTEEL_API/Developer/index.php/version/updateApp")
+                        URL("http://121.171.250.65/DDSTEEL_API/Developer/index.php/version/updateApp")
                     } else {
-                        URL("http://119.205.209.23/DDSTEEL_API/Real/index.php/version/updateApp")
+                        URL("http://121.171.250.65/DDSTEEL_API/Real/index.php/version/updateApp")
                     }
                     val connection = url.openConnection()
                     connection.connect()

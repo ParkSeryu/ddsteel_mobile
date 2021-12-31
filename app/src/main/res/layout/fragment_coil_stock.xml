@@ -25,44 +25,32 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-                <Spinner
-                    android:id="@+id/change_yard_cust_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:spinnerMode="dialog"
-                    android:layout_marginTop="@dimen/default_text_margin"
-                    android:background="@drawable/spinner_background"
-                    android:layout_marginStart="@dimen/default_text_margin"
-                    android:layout_marginEnd="@dimen/default_text_margin"
-                    app:layout_constraintLeft_toRightOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_pos"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_marginStart="@dimen/default_text_margin"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="@dimen/default_text_margin"
                 android:hint="@string/prompt_pos"
                 app:endIconMode="clear_text"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/change_yard_cust_spinner">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.micromos.ddsteelmobile.CustomAutoCompleteTextView
                     android:id="@+id/change_stock_auto_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
+                    android:layout_height="match_parent"
                     android:completionThreshold="0"
                     android:dropDownWidth="match_parent"
-                    android:dropDownHeight="200dp"
+                    android:dropDownHeight="match_parent"
                     android:dropDownVerticalOffset="1dp"
                     android:inputType="textCapCharacters"
+                    android:padding="0dp"
                     android:paddingStart="10dp"
                     android:text="@={viewModel.posCd}"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@id/input_layout_pos"
                     app:layout_constraintLeft_toRightOf="@id/input_layout_pos"
                     app:layout_constraintRight_toRightOf="parent"
@@ -74,22 +62,25 @@
                 android:id="@+id/input_layout_label"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="@dimen/default_text_margin"
                 android:hint="@string/prompt_label_no"
                 android:imeOptions="actionSend"
                 app:endIconMode="clear_text"
                 app:layout_constraintLeft_toLeftOf="@id/input_layout_pos"
-                app:layout_constraintRight_toRightOf="@id/guideline_scan_Button"
+                app:layout_constraintRight_toRightOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@id/input_layout_pos">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/label_no_edt_stock"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:inputType="text|textCapCharacters"
+                    android:padding="0dp"
                     android:singleLine="true"
-                    android:text="@={viewModel.labelNo}" />
+                    android:text="@={viewModel.labelNo}"
+                    android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -99,24 +90,11 @@
                 android:layout_marginEnd="@dimen/default_text_margin"
                 android:onClick="@{() -> viewModel.labelRetrieve()}"
                 android:text="@string/button_retrieve"
+                android:padding="0dp"
                 android:textSize="@dimen/text_view_default_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/recyclerView"
-                app:layout_constraintLeft_toRightOf="@id/guideline_scan_Button"
-                app:layout_constraintRight_toLeftOf="@id/guideline"
-                app:layout_constraintTop_toTopOf="@id/input_layout_label" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnScan"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/default_text_margin"
-                android:onClick="@{() -> viewModel.scanBarCode()}"
-                android:text="@string/button_scan"
-                android:textSize="@dimen/text_view_default_size"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/recyclerView"
-                app:layout_constraintLeft_toRightOf="@id/guideline"
+                app:layout_constraintLeft_toLeftOf="@id/guideline"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/input_layout_label" />
 
@@ -134,19 +112,6 @@
                 app:layout_constraintTop_toBottomOf="@id/input_layout_label"
                 tools:listitem="@layout/card_item_list_stock_update" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.8" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_scan_Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.6" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/progress_bar"
@@ -170,6 +135,13 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -199,7 +171,7 @@
                 app:layout_constraintStart_toStartOf="@id/input_layout_date" />
 
             <TextView
-                android:id="@+id/tv_temp_1"
+                android:id="@+id/tv_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -214,7 +186,7 @@
                 android:id="@+id/input_layout_date"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="@dimen/default_text_margin"
                 android:layout_marginEnd="@dimen/default_text_margin"
                 android:layout_marginBottom="20dp"
@@ -228,9 +200,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/date_edt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:cursorVisible="false"
                     android:focusable="false"
+                    android:textSize="20sp"
+                    android:padding="0dp"
                     android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:onClick="@{() -> viewModel.showDatePickerDialog()}"
@@ -246,12 +220,14 @@
                 android:layout_height="0dp"
                 android:onClick="@{()-> viewModel.btnDateOk()}"
                 android:text="@string/dialog_ok"
+                android:padding="0dp"
                 android:textSize="@dimen/text_view_default_size"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/tv_temp_1"
+                app:layout_constraintBottom_toTopOf="@id/tv_temp"
                 app:layout_constraintLeft_toRightOf="@id/guideline_button"
                 app:layout_constraintRight_toRightOf="@id/guideline_rights"
                 app:layout_constraintTop_toTopOf="@id/input_layout_date" />
+
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_button"

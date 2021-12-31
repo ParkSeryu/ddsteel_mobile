@@ -18,6 +18,6 @@ open class ViewModelBase : ViewModel() {
 
     fun successCall(){
         _isLoading.value = false
-        _clearInputLayout.value = Event(Unit)
+        //_clearInputLayout.value = Event(Unit)
     }
 }

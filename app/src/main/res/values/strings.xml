@@ -117,6 +117,15 @@
     <string name="prompt_no_match_phone_number">올바르지 않은 전화번호입니다.</string>
     <string name="prompt_no_match_mill_no">입고 예정정보가 없는 라벨입니다. \n 확인바랍니다.</string>
     <string name="prompt_not_finished">입고된 라벨이 존재하지 않습니다. \n 종료 하시겠습니까?</string>
+    <string name="prompt_duplicated_label">동일한 MILL_NO 존재하여 처리 불가합니다.</string>
+
+    <string name="prompt_not_label_no_input">라벨번호가 입력되지 않았습니다.</string>
+    <string name="prompt_not_trans_no_input">운송번호 가져오기 에러, 다시 시도해 주세요.</string>
+    <string name="prompt_not_trans_car_no_input">차량번호가 입력되지 않았습니다.</string>
+    <string name="prompt_not_trans_man_input">기사명이 입력되지 않았습니다.</string>
+    <string name="prompt_not_trans_man_phone_input">전화번호가 입력되지 않았습니다.</string>
+
+
     <string name="mill_no_material_in">제품번호 : %s</string>
     <string name="stan_cd_material_in">재질 : %s</string>
     <string name="name_cd_material_in">%s</string>

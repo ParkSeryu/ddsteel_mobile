@@ -20,7 +20,6 @@ interface StockCheckRepository {
     fun sendRequestLabelNo(
         stockDate: String,
         labelNo: String,
-        yardCustCd: String,
         ResultCallback: StockApiResult
     )
 
@@ -28,7 +27,6 @@ interface StockCheckRepository {
         codeCd: String,
         labelNo: String,
         stockDate: String,
-        yardCustCd: String,
         packCls: Int,
         resultCallback: ApiResult
     )
@@ -40,7 +38,6 @@ interface StockCheckRepository {
         user_id: String?,
         labelNo: String,
         codeCd: String,
-        yardCustCd: String,
         resultCallback: ApiResult
     )
 }
@@ -73,20 +70,12 @@ class StockCheckRepositoryImpl : StockCheckRepository {
     override fun sendRequestLabelNo(
         stockDate: String,
         labelNo: String,
-        yardCustCd: String,
         ResultCallback: StockApiResult
     ) {
         api.getLabelNo(stockDate, labelNo).enqueue(object : Callback<GetLabelNo> {
             override fun onResponse(call: Call<GetLabelNo>, response: Response<GetLabelNo>) {
                 if (response.code() == 200) {
-                    if (yardCustCd == response.body()?.yardCustCd.toString()) {
-                        ResultCallback.onResult(
-                            false,
-                            response.body()!!.packCls
-                        ) // 0 => label , 1 => pack
-                    } else {
-                        ResultCallback.onResult(true, response.body()!!.packCls)
-                    }
+                    ResultCallback.onResult(response.body()!!.packCls)
                 } else if (response.code() == 204) {
                     ResultCallback.nullBody()
                 }
@@ -103,11 +92,10 @@ class StockCheckRepositoryImpl : StockCheckRepository {
         codeCd: String,
         labelNo: String,
         stockDate: String,
-        yardCustCd: String,
         packCls: Int,
         resultCallback: ApiResult
     ) {
-        api.updateCoilStock(codeCd, labelNo, stockDate, yardCustCd, packCls)
+        api.updateCoilStock(codeCd, labelNo, stockDate, packCls)
             .enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.code() == 200) {
@@ -120,7 +108,7 @@ class StockCheckRepositoryImpl : StockCheckRepository {
                                     Log.d("testUpdateCardInfo", "${response.body()}")
                                     cardData.value = response.body()
                                     resultCallback.onResult()
-                                }  else resultCallback.nullBody()
+                                } else resultCallback.nullBody()
                             }
 
                             override fun onFailure(call: Call<GetCardInfo>, t: Throwable) {
@@ -143,7 +131,6 @@ class StockCheckRepositoryImpl : StockCheckRepository {
         user_id: String?,
         labelNo: String,
         codeCd: String,
-        yardCustCd: String,
         resultCallback: ApiResult
     ) {
         api.insertCoilStock(
@@ -151,8 +138,7 @@ class StockCheckRepositoryImpl : StockCheckRepository {
             stockDate,
             user_id ?: "empty",
             labelNo,
-            codeCd,
-            yardCustCd
+            codeCd
         ).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 Log.d("testInsert", "$stockDate,$labelNo, $codeCd")

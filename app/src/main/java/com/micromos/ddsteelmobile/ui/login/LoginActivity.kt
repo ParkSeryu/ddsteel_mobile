@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -47,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
         LoginViewModel.loginSuccessEvent.observe(this, Observer
         {
+
             val preferencesID = sharedPreferences.getString("ID", "")
             if (preferencesID != user_id) {
                 editor.putString("ID", user_id)
@@ -55,6 +59,20 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+        })
+
+        LoginViewModel.isLoading.observe(this, Observer {
+            if (it) {
+                this.window?.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                );
+                progress_bar.visibility = View.VISIBLE
+            } else {
+                this.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                progress_bar.visibility = View.INVISIBLE
+                hideKeyboard()
+            }
         })
 
         LoginViewModel.loginDeniedEvent.observe(this, Observer
@@ -112,6 +130,7 @@ class LoginActivity : AppCompatActivity() {
                         }.show()
                 }
             }
+
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 CustomDialog(this@LoginActivity, R.layout.dialog_app_not_connected)
                     .setMessage(R.string.message_not_connected_server)

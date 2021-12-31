@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.cognex.mobile.barcode.sdk.ReadResults
 import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.ddsteelmobile.CustomDialog
+import com.micromos.ddsteelmobile.M3Receiver
 import com.micromos.ddsteelmobile.MainActivity
 import com.micromos.ddsteelmobile.MainActivity.Companion.autoCompleteTextViewCustomPosCd
 import com.micromos.ddsteelmobile.MainActivity.Companion.pos_nm_list
@@ -34,14 +35,14 @@ import kotlinx.android.synthetic.main.fragment_change_pos.*
 import kotlinx.android.synthetic.main.fragment_change_pos.change_stock_auto_tv
 import kotlinx.android.synthetic.main.fragment_change_pos.input_layout
 import kotlinx.android.synthetic.main.fragment_change_pos.progress_bar
+import kotlinx.android.synthetic.main.fragment_material_in.*
 import java.util.*
 
-class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
-    ReaderDevice.ReaderDeviceListener {
+class ProductChangePosFragment : Fragment(), M3Receiver.ScanListener {
 
     private lateinit var productChangePosViewModel: ProductChangePosViewModel
     private lateinit var coilChangePosDataBinding: FragmentChangePosBinding
-    private lateinit var readerDevice: ReaderDevice
+    private val m3Receiver: M3Receiver by lazy { M3Receiver.getInstance() }
 
     companion object {
         fun newInstance() = ProductChangePosFragment()
@@ -199,11 +200,6 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
 
         }
 
-        readerDevice = ReaderDevice.getMXDevice(context)
-        readerDevice.startAvailabilityListening()
-        readerDevice.setReaderDeviceListener(this)
-        readerDevice.connect(this@ProductChangePosFragment)
-
         return coilChangePosDataBinding.root
     }
 
@@ -221,54 +217,26 @@ class ProductChangePosFragment : Fragment(), ReaderDevice.OnConnectionCompletedL
         (requireActivity() as MainActivity).toolbar_denom.text = ""
     }
 
-    override fun onConnectionCompleted(p0: ReaderDevice?, p1: Throwable?) {
-        Log.i("beep", "ConnectionCompleted")
-    }
+    override fun onScan(scanResult: String) {
+        if (progress_bar.visibility == View.VISIBLE || scanResult.toCharArray().isEmpty())
+            return
+        val resultScan = scanResult.toUpperCase(Locale.ROOT)
 
-    override fun onAvailabilityChanged(p0: ReaderDevice?) {
-        Log.i("beep", "onAvailabilityChanged")
-    }
+        label_no_edt_pos.setText(resultScan)
 
-    override fun onConnectionStateChanged(p0: ReaderDevice?) {
-        Log.i("beep", p0?.connectionState.toString())
-    }
-
-    override fun onReadResultReceived(readerDevice: ReaderDevice?, results: ReadResults) {
-        try {
-            if (results.count <= 0 || results.getResultAt(0).readString!!.equals("") || progress_bar.visibility == View.VISIBLE)
-                return
-
-            var resultString = results.getResultAt(0).readString!!
-            Log.d("scanTest", resultString)
-            if (resultString.contains("\\000026")) {
-                resultString = resultString.split("\\000026")[1]
-            }
-            productChangePosViewModel._labelNo.value = resultString.toUpperCase(Locale.ROOT)
-            productChangePosViewModel.retrievePos(productChangePosViewModel._labelNo.value)
-        } catch (e: Exception) {
-            Toast.makeText(context, "읽은값 : ${e.message.toString()}", Toast.LENGTH_LONG).show()
-        }
+        productChangePosViewModel.retrievePos(resultScan)
     }
 
     override fun onResume() {
         super.onResume()
-        readerDevice.startAvailabilityListening()
-        readerDevice.setReaderDeviceListener(this)
-        readerDevice.connect(this@ProductChangePosFragment)
+        Log.d("onResumePosChange", "onResumePosChange")
+        m3Receiver.register(this)
     }
 
     override fun onPause() {
         super.onPause()
-        readerDevice.stopAvailabilityListening()
-        readerDevice.setReaderDeviceListener(null)
-        readerDevice.disconnect()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        readerDevice.stopAvailabilityListening()
-        readerDevice.setReaderDeviceListener(null)
-        readerDevice.disconnect()
+        Log.d("onPausePosChange", "onPausePosChange")
+        m3Receiver.unRegister()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

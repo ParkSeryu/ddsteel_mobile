@@ -37,8 +37,20 @@ class ProductMaterialInViewModel : ViewModelBase() {
 
     var errorCode: Int? = null
 
-    private val _notCompleteInformation = MutableLiveData<Event<Unit>>()
-    val notCompleteInformation: LiveData<Event<Unit>> = _notCompleteInformation
+    private val _notLabelNoInput = MutableLiveData<Event<Unit>>()
+    val notLabelNoInput: LiveData<Event<Unit>> = _notLabelNoInput
+
+    private val _notTransNoInput = MutableLiveData<Event<Unit>>()
+    val notTransNoInput: LiveData<Event<Unit>> = _notTransNoInput
+
+    private val _notTransCarNoInput = MutableLiveData<Event<Unit>>()
+    val notTransCarNoInput: LiveData<Event<Unit>> = _notTransCarNoInput
+
+//    private val _notTransManInput = MutableLiveData<Event<Unit>>()
+//    val notTransManInput: LiveData<Event<Unit>> = _notTransManInput
+//
+//    private val _notTransManPhoneInput = MutableLiveData<Event<Unit>>()
+//    val notTransManPhoneInput: LiveData<Event<Unit>> = _notTransManPhoneInput
 
     private val _focusChangeEvent = MutableLiveData<Event<Unit>>()
     val focusChangeEvent: LiveData<Event<Unit>> = _focusChangeEvent
@@ -46,10 +58,10 @@ class ProductMaterialInViewModel : ViewModelBase() {
     val _labelNo = MutableLiveData<String?>()
     var labelNo: String? = null
     var endFlag: Boolean = true
-    lateinit var transNo: String
+    lateinit var  transNo: String
     val transCarNo = MutableLiveData<String>()
-    val transMan = MutableLiveData<String>()
-    val transManPhone = MutableLiveData<String>()
+    val transMan = MutableLiveData<String?>()
+    val transManPhone = MutableLiveData<String?>()
 
     val transEnabled = MutableLiveData<Boolean>()
     val labelEnabled = MutableLiveData<Boolean>()
@@ -73,15 +85,15 @@ class ProductMaterialInViewModel : ViewModelBase() {
     fun btnLabelIn(_labelNo: String?) {
         labelNo = _labelNo?.trim()
 
-        if (!(labelNo.isNullOrEmpty() || transNo.isEmpty() || transCarNo.value.isNullOrEmpty() || transMan.value.isNullOrEmpty() || transManPhone.value.isNullOrEmpty())) {
+        if (!(labelNo.isNullOrEmpty() || transNo.isEmpty() || transCarNo.value.isNullOrEmpty())) {
             _isLoading.value = true
             repository.labelIn(
                 user_id!!,
                 work_place_cd!!,
                 transNo,
                 transCarNo.value!!,
-                transMan.value!!,
-                transManPhone.value!!,
+                transMan.value,
+                transManPhone.value,
                 labelNo!!,
                 object : ApiResult {
                     override fun onResult() {
@@ -162,7 +174,24 @@ class ProductMaterialInViewModel : ViewModelBase() {
                 }
             )
         } else {
-            _notCompleteInformation.value = Event(Unit)
+            when {
+                labelNo.isNullOrEmpty() -> {
+                    _notLabelNoInput.value = Event(Unit)
+                }
+                transNo.isEmpty() -> {
+                    _notTransNoInput.value = Event(Unit)
+                }
+                transCarNo.value.isNullOrEmpty() -> {
+                    _notTransCarNoInput.value = Event(Unit)
+                }
+//                transMan.value.isNullOrEmpty() -> {
+//                    _notTransManInput.value = Event(Unit)
+//                }
+//                transManPhone.value.isNullOrEmpty() -> {
+//                    _notTransManPhoneInput.value = Event(Unit)
+//                }
+            }
+
         }
     }
 

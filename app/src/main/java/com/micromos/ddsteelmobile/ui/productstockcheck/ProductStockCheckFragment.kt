@@ -49,7 +49,6 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setYardCustSpinner()
         pos_label_input_layout.visibility = View.INVISIBLE
         outer_layout_coil_stock.setOnClickListener { hideKeyboard() }
         recyclerView.setOnClickListener { hideKeyboard() }
@@ -199,14 +198,6 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             label_no_edt_stock.requestFocus()
         })
 
-//        productStockCheckViewModel.onClickScanButton.observe(viewLifecycleOwner, Observer {
-//            val intent = Intent(
-//                context, ScanProductStockCheckActivity::class.java
-//            )
-//            intent.putExtra("stockDate", productStockCheckViewModel.stockDate)
-//            startActivity(intent)
-//        })
-
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (adapter.itemCount == 0) {
                 if (pos_label_input_layout.visibility == View.VISIBLE) {
@@ -250,48 +241,9 @@ class ProductStockCheckFragment : Fragment(), ReaderDevice.OnConnectionCompleted
         (requireActivity() as MainActivity).toolbar_denom.text = ""
     }
 
-    private fun setYardCustSpinner() {
-//        val adapter = context?.let {
-//            ArrayAdapter.createFromResource(
-//                it,
-//                R.array.yard_cust,
-//                android.R.layout.simple_list_item_checked
-//            )
-//        }
-//        change_yard_cust_spinner.adapter = adapter
-//        change_yard_cust_spinner.prompt = "하치장을 선택해주세요."
-//        change_yard_cust_spinner.onItemSelectedListener =
-//            object : AdapterView.OnItemSelectedListener {
-//                override fun onItemSelected(
-//                    parent: AdapterView<*>?,
-//                    view: View?,
-//                    position: Int,
-//                    id: Long
-//                ) {
-//                    when (position) {
-//                        0 -> {
-//                            productStockCheckViewModel.yardCustCd.value = "KP001"
-//                            productStockCheckViewModel.posCd.value = ""
-//                            input_layout_pos.isEnabled = true
-//                        }
-//                        1 -> {
-//                            productStockCheckViewModel.yardCustCd.value = "DY01"
-//                            productStockCheckViewModel.posCd.value = "대웅에스앤티"
-//                            input_layout_pos.isEnabled = false
-//                        }
-//                    }
-//                }
-//                override fun onNothingSelected(parent: AdapterView<*>?) {
-//                    TODO("Not yet implemented")
-//                }
-//            }
-    }
-
     private fun setRecyclerView() {
         adapter = ProductCoilStockAdapter(productStockCheckViewModel, requireContext())
         coilStockDataBinding.recyclerView.adapter = adapter
-
-
 
         productStockCheckViewModel.cardItemListDataUpdate.observe(viewLifecycleOwner, Observer {
             if (it != null) {

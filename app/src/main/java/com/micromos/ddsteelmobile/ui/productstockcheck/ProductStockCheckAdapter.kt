@@ -8,7 +8,7 @@ import com.micromos.ddsteelmobile.databinding.CardItemListStockInsertBinding
 import com.micromos.ddsteelmobile.databinding.CardItemListStockUpdateBinding
 import com.micromos.ddsteelmobile.dto.GetCardInfo
 
-class ProductCoilStockAdapter(val checkViewModel: ProductStockCheckViewModel, val context: Context) :
+class ProductCoilStockAdapter(private val checkViewModel: ProductStockCheckViewModel, val context: Context) :
     RecyclerView.Adapter<ViewHolder>() {
     var item = mutableListOf<GetCardInfo>()
 
@@ -46,10 +46,10 @@ class ProductCoilStockAdapter(val checkViewModel: ProductStockCheckViewModel, va
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (item[position].updateFlag == 1) {
-            return 1 // update
+        return if (item[position].updateFlag == 1) {
+            1 // update
         } else
-            return 2 // insert
+            2 // insert
     }
 }
 

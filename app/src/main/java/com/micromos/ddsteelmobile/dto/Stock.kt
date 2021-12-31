@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class GetLabelNo(
     @SerializedName("LABEL_NO") val labelNo: String,
-    @SerializedName("YARD_CUST_CD") val yardCustCd: String,
     @SerializedName("PACK_CLS") val packCls: Int,
 )
 

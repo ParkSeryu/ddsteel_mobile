@@ -53,6 +53,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNew"
             style="@style/DefaultButtonStyle"
+            android:padding="0dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/default_text_margin"
@@ -155,6 +156,7 @@
             android:id="@+id/btnLabelIn"
             style="@style/DefaultButtonStyle"
             android:layout_width="0dp"
+            android:padding="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/default_text_margin"
             android:enabled="@{viewModel.btnLabelInEnabled}"

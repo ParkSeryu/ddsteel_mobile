@@ -42,6 +42,7 @@ class LoginViewModel : ViewModelBase() {
     }
 
     fun onClickLogin() {
+        _isLoading.value = true
         val id = _id.value ?: ""
         val pw = _password.value ?: ""
         program_id.clear()
@@ -72,6 +73,7 @@ class LoginViewModel : ViewModelBase() {
             work_place_cd = "N9999"
             name = "홍길동"
             work_place_nm = "인천"
+            successCall()
             loginSuccessEvent.call()
         } else {
             api.login(id, pw).enqueue(object : Callback<User> {
@@ -83,14 +85,17 @@ class LoginViewModel : ViewModelBase() {
                         work_place_nm = response.body()?.workPlaceNm
                         program_id.addAll(response.body()?.program!!.split(","))
                         Log.d("programListTest", "$program_id")
+                        successCall()
                         loginSuccessEvent.call()
                     } else if (response.code() == 203) {
+                        successCall()
                         _loginFailedEvent.value = Event(Unit)
                     }
                 }
 
                 override fun onFailure(call: Call<User>, t: Throwable) {
                     Log.d(TAG, t.message.toString())
+                    successCall()
                     _NotConnectedServer.value = Event(Unit)
                 }
             })

@@ -21,8 +21,8 @@ interface MaterialInRepository {
         workPlaceCd: String,
         transNo: String,
         transCarNo: String,
-        transMan: String,
-        transManPhone: String,
+        transMan: String?,
+        transManPhone: String?,
         labelNo: String,
         resultCallback: ApiResult
     )
@@ -67,8 +67,8 @@ class MaterialInRepositoryImpl : MaterialInRepository {
         workPlaceCd: String,
         transNo: String,
         transCarNo: String,
-        transMan: String,
-        transManPhone: String,
+        transMan: String?,
+        transManPhone: String?,
         labelNo: String,
         resultCallback: ApiResult
     ) {

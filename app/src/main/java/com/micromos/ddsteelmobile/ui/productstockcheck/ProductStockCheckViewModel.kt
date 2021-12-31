@@ -1,6 +1,5 @@
 package com.micromos.ddsteelmobile.ui.productstockcheck
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -44,7 +43,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
     val labelNo = MutableLiveData<String?>()
     val inDate = MutableLiveData<String>()
     val posCd = MutableLiveData<String?>()
-    val yardCustCd = MutableLiveData<String>()
 
     lateinit var stockDate: String
     private lateinit var posCdTrim: String
@@ -59,12 +57,9 @@ class ProductStockCheckViewModel : ViewModelBase() {
 
     private val repository = StockCheckRepositoryImpl()
 
-    private val _onClickScanButton = MutableLiveData<Event<Unit>>()
-    val onClickScanButton: LiveData<Event<Unit>> = _onClickScanButton
 
     init {
         getServerTime()
-        isScanFlag.value = false
     }
 
     private fun getServerTime() {
@@ -87,10 +82,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
         })
     }
 
-    fun scanBarCode() {
-        _onClickScanButton.value = Event(Unit)
-    }
-
     fun showDatePickerDialog() {
         _showDatePickerDialogEvent.value = Event(Unit)
     }
@@ -102,10 +93,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
     }
 
     fun labelRetrieve() {
-        Log.d("testViewModel", "${isScanFlag.value}")
-        if(isScanFlag.value == true) return
-        isScanFlag.value = true
-
         posCdTrim = posCd.value?.trim().toString()
         labelNoTrim = labelNo.value?.trim().toString()
         posList.forEach {
@@ -121,23 +108,18 @@ class ProductStockCheckViewModel : ViewModelBase() {
                     repository.sendRequestLabelNo(
                         stockDate,
                         labelNoTrim,
-                        yardCustCd.value!!,
                         object : StockApiResult {
-                            override fun onResult(checkYardCust: Boolean, packCls: Int) {
-                                if (checkYardCust) { // 하치장이 맞지 않으면
-                                    _noYardCustCdMatch.value = Event(Unit)
-                                    successCall()
-                                } else {
-                                    updateCoilStock(packCls)
-                                }
+                            override fun onResult(packCls: Int) {
+                                updateCoilStock(packCls)
                             }
+
                             override fun nullBody() {
                                 insertCoilStock()
                             }
+
                             override fun onFailure() {
                                 noNetWork()
                             }
-
                         })
                 } else {
                     _noLabelNo.value = Event(Unit)
@@ -155,7 +137,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
             codeCd,
             labelNoTrim,
             stockDate,
-            yardCustCd.value!!,
             packCls,
             object : ApiResult {
                 override fun onResult() {
@@ -179,7 +160,6 @@ class ProductStockCheckViewModel : ViewModelBase() {
             user_id,
             labelNoTrim,
             codeCd,
-            yardCustCd.value!!,
             object : ApiResult {
                 override fun onResult() {
                     _cardItemListDataInsert.value = repository.getCardInfo().value
@@ -197,21 +177,18 @@ class ProductStockCheckViewModel : ViewModelBase() {
     }
 
     fun setCardVisibility(stockCls: String): Int {
-
         return if (stockCls == "I") {
             View.GONE
         } else {
             View.VISIBLE
         }
-
     }
 
     fun setText(stockCls: String?, cntCheckFlag: Int): String {
-
         return if (stockCls == "I") {
-            if(cntCheckFlag == 1){
+            if (cntCheckFlag == 1) {
                 "관리자 확인요망!"
-            }else {
+            } else {
                 "신규 업데이트"
             }
         } else {

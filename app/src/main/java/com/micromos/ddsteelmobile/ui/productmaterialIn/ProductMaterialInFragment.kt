@@ -20,24 +20,25 @@ import androidx.lifecycle.ViewModelProvider
 import com.cognex.mobile.barcode.sdk.ReadResults
 import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.ddsteelmobile.CustomDialog
+import com.micromos.ddsteelmobile.M3Receiver
 import com.micromos.ddsteelmobile.MainActivity
 import com.micromos.ddsteelmobile.R
 import com.micromos.ddsteelmobile.databinding.FragmentMaterialInBinding
-import com.micromos.ddsteelmobile.dto.GetMaterialCardInfo
 import com.micromos.ddsteelmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fragment_change_pos.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
 import kotlinx.android.synthetic.main.fragment_material_in.*
 import kotlinx.android.synthetic.main.fragment_material_in.progress_bar
+import java.util.*
 
 
-class ProductMaterialInFragment : Fragment(), ReaderDevice.OnConnectionCompletedListener,
-    ReaderDevice.ReaderDeviceListener {
+class ProductMaterialInFragment : Fragment(), M3Receiver.ScanListener {
 
     private lateinit var productMaterialInViewModel: ProductMaterialInViewModel
     private lateinit var materialCheckDataBinding: FragmentMaterialInBinding
     private lateinit var adapter: ProductMaterialInAdapter
-    private lateinit var readerDevice: ReaderDevice
+    private val m3Receiver: M3Receiver by lazy { M3Receiver.getInstance() }
 
     companion object {
         fun newInstance() = ProductMaterialInFragment()
@@ -49,6 +50,7 @@ class ProductMaterialInFragment : Fragment(), ReaderDevice.OnConnectionCompleted
 
         (requireActivity() as MainActivity).setTextChangedListener(trans_car_no)
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -82,15 +84,57 @@ class ProductMaterialInFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             }
         })
 
-        productMaterialInViewModel.notCompleteInformation.observe(viewLifecycleOwner, Observer {
+
+        productMaterialInViewModel.notLabelNoInput.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_notice)
-                    .setMessage(R.string.prompt_not_complete_in)
+                    .setMessage(R.string.prompt_not_label_no_input)
                     .setPositiveButton(R.string.dialog_ok) {
                     }.show()
             }
         })
+
+        productMaterialInViewModel.notTransNoInput.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_notice)
+                    .setMessage(R.string.prompt_not_trans_no_input)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
+        productMaterialInViewModel.notTransCarNoInput.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_notice)
+                    .setMessage(R.string.prompt_not_trans_car_no_input)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
+//        productMaterialInViewModel.notTransManInput.observe(viewLifecycleOwner, Observer {
+//            context?.let { view ->
+//                CustomDialog(view, R.layout.dialog_incorrect)
+//                    .setTitle(R.string.prompt_notice)
+//                    .setMessage(R.string.prompt_not_trans_man_input)
+//                    .setPositiveButton(R.string.dialog_ok) {
+//                    }.show()
+//            }
+//        })
+//
+//
+//        productMaterialInViewModel.notTransManPhoneInput.observe(viewLifecycleOwner, Observer {
+//            context?.let { view ->
+//                CustomDialog(view, R.layout.dialog_incorrect)
+//                    .setTitle(R.string.prompt_notice)
+//                    .setMessage(R.string.prompt_not_trans_man_phone_input)
+//                    .setPositiveButton(R.string.dialog_ok) {
+//                    }.show()
+//            }
+//        })
 
         productMaterialInViewModel.noMatchLabel.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
@@ -103,14 +147,25 @@ class ProductMaterialInFragment : Fragment(), ReaderDevice.OnConnectionCompleted
         })
 
         productMaterialInViewModel.duplicateLabel.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, "동일한 MILL_NO 존재하여 처리 불가합니다.", Toast.LENGTH_LONG).show()
-        })
-
-        productMaterialInViewModel.commonErrorEvent.observe(viewLifecycleOwner, Observer{
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)
                     .setTitle(R.string.prompt_notice)
-                    .setMessage(String.format(getString(R.string.prompt_common_error), productMaterialInViewModel.errorCode))
+                    .setMessage(R.string.prompt_duplicated_label)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
+        productMaterialInViewModel.commonErrorEvent.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_notice)
+                    .setMessage(
+                        String.format(
+                            getString(R.string.prompt_common_error),
+                            productMaterialInViewModel.errorCode
+                        )
+                    )
                     .setPositiveButton(R.string.dialog_ok) {
                     }.show()
             }
@@ -133,6 +188,7 @@ class ProductMaterialInFragment : Fragment(), ReaderDevice.OnConnectionCompleted
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 );
+
                 progress_bar.visibility = View.VISIBLE
             } else {
                 Log.d("visible", "${productMaterialInViewModel.isLoading.value}")
@@ -186,22 +242,12 @@ class ProductMaterialInFragment : Fragment(), ReaderDevice.OnConnectionCompleted
             }
         }
 
-        readerDevice = ReaderDevice.getMXDevice(context)
-        readerDevice.startAvailabilityListening()
-        readerDevice.setReaderDeviceListener(this)
-        readerDevice.connect(this@ProductMaterialInFragment)
-
         return materialCheckDataBinding.root
     }
 
     private fun setRecyclerView() {
         adapter = ProductMaterialInAdapter(productMaterialInViewModel)
         materialCheckDataBinding.recyclerView.adapter = adapter
-        //var recyclerViewState: Parcelable? = null
-
-        /*productCoilInViewModel.recyclerViewState.observe(viewLifecycleOwner, Observer {
-            recyclerViewSt ate = recyclerView.layoutManager?.onSaveInstanceState()
-        })*/
 
         productMaterialInViewModel.cardInfo.observe(viewLifecycleOwner, Observer {
             if (it != null) {
@@ -230,63 +276,25 @@ class ProductMaterialInFragment : Fragment(), ReaderDevice.OnConnectionCompleted
         (requireActivity() as MainActivity).toolbar_denom.text = ""
     }
 
-    override fun onConnectionCompleted(p0: ReaderDevice?, p1: Throwable?) {
-        Log.i("beep", "ConnectionCompleted")
-    }
+    override fun onScan(scanResult: String) {
+        if (progress_bar.visibility == View.VISIBLE || scanResult.toCharArray().isEmpty())
+            return
 
-    override fun onAvailabilityChanged(p0: ReaderDevice?) {
-        Log.i("beep", "onAvailabilityChanged")
-    }
-
-    override fun onConnectionStateChanged(p0: ReaderDevice?) {
-        Log.i("beep", p0?.connectionState.toString())
-    }
-
-    override fun onReadResultReceived(
-        readerDevice: ReaderDevice?,
-        results: ReadResults
-    ) {
-        try {
-            if (results.count <= 0 || results.getResultAt(0).readString!! == "" || progress_bar.visibility == View.VISIBLE)
-                return
-
-            val resultString = results.getResultAt(0).readString!!
-            Log.d("scanTest", resultString)
-//            if (resultString.contains("\\000026")) {
-//                resultString = resultString.split("\\000026")[1]
-//            }
-//            if (resultString.contains("http")) {
-//                productMaterialInViewModel.labelNoHyundai.value = resultString
-//                productMaterialInViewModel.hyundaiLabelRetrieve(productMaterialInViewModel.labelNoHyundai.value)
-//            } else {
-//                productMaterialInViewModel.labelNoKnp.value = resultString
-//                productMaterialInViewModel.knpLabelRetrieve(productMaterialInViewModel.labelNoKnp.value)
-//            }
-
-        } catch (e: Exception) {
-            Toast.makeText(context, "읽은값 : ${e.message.toString()}", Toast.LENGTH_LONG).show()
-        }
+        val resultScan = scanResult.toUpperCase(Locale.ROOT)
+        label_no.setText(resultScan)
+        productMaterialInViewModel.btnLabelIn(resultScan)
     }
 
     override fun onResume() {
         super.onResume()
-        readerDevice.startAvailabilityListening()
-        readerDevice.setReaderDeviceListener(this)
-        readerDevice.connect(this@ProductMaterialInFragment)
+        Log.d("onResumeMaterialIn", "onResumeMaterialIn")
+        m3Receiver.register(this)
     }
 
     override fun onPause() {
         super.onPause()
-        readerDevice.stopAvailabilityListening()
-        readerDevice.setReaderDeviceListener(null)
-        readerDevice.disconnect()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        readerDevice.stopAvailabilityListening()
-        readerDevice.setReaderDeviceListener(null)
-        readerDevice.disconnect()
+        Log.d("onPauseMaterialIn", "onPauseMaterialIn")
+        m3Receiver.unRegister()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
