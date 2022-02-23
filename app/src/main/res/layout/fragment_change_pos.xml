@@ -117,7 +117,7 @@
                 android:layout_height="50dp"
                 android:completionThreshold="0"
                 android:dropDownWidth="match_parent"
-                android:dropDownHeight="185dp"
+                android:dropDownHeight="140dp"
                 android:dropDownVerticalOffset="1dp"
                 android:inputType="text|textCapCharacters"
                 android:padding="0dp"

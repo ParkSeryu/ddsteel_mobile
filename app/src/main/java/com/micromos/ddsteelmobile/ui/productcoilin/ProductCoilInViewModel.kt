@@ -1,7 +1,6 @@
 package com.micromos.ddsteelmobile.ui.productcoilin
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,8 +19,10 @@ class ProductCoilInViewModel : ViewModelBase() {
     val salesManCd = MutableLiveData<String>()
     val shipType = MutableLiveData<String>()
     val regionCd = MutableLiveData<String>()
+    val remark = MutableLiveData<String>()
     val shipMasterNo = MutableLiveData<String>()
 
+    val showRemarkButtonVisibility = MutableLiveData(View.INVISIBLE)
     val coilInVisibility = MutableLiveData(View.INVISIBLE)
 
     private val _noRetrieve = MutableLiveData<Event<Unit>>()
@@ -56,6 +57,9 @@ class ProductCoilInViewModel : ViewModelBase() {
 
     private val _notInputShipNoEvent = MutableLiveData<Event<Unit>>()
     val notInputShipNoEvent: LiveData<Event<Unit>> = _notInputShipNoEvent
+
+    private val _clickRemarkButtonEvent = MutableLiveData<Event<Unit>>()
+    val clickRemarkButtonEvent : LiveData<Event<Unit>> = _clickRemarkButtonEvent
 
     val _requestNo = MutableLiveData<String?>()
 
@@ -122,6 +126,12 @@ class ProductCoilInViewModel : ViewModelBase() {
                 salesManCd.value = data.value?.salesManNm ?: ""
                 shipType.value = data.value?.shipType ?: ""
                 regionCd.value = data.value?.regionNm ?: ""
+                remark.value = data.value?.remark ?: ""
+                if(remark.value.isNullOrEmpty()){
+                    showRemarkButtonVisibility.value = View.INVISIBLE
+                }else{
+                    showRemarkButtonVisibility.value = View.VISIBLE
+                }
                 coilInVisibility.value = View.VISIBLE
                 getShipOrder(requestNo)
             }
@@ -181,6 +191,8 @@ class ProductCoilInViewModel : ViewModelBase() {
                                 shipOrderList.value!![i].scanDate = scanInfoResult.value!!.scanDate
                                 shipOrderList.value!![i].scanCls = scanInfoResult.value!!.scanCls
                                 shipOrderList.value!![i].scanTime = scanInfoResult.value!!.scanTime
+                                shipOrderList.value!![i].coilNo = scanInfoResult.value!!.coilNo
+                                shipOrderList.value!![i].coilSeq = scanInfoResult.value!!.actlCoilSeq
 
                                 numerator.value = numerator.value?.plus(1)
                                 shipOrderList.value = shipOrderList.value
@@ -240,6 +252,11 @@ class ProductCoilInViewModel : ViewModelBase() {
             _rollbackUpdateEvent.value = Event(Unit)
         }
     }
+
+    fun clickShowRemarkButton(){
+        _clickRemarkButtonEvent.value = Event(Unit)
+    }
+
 
     fun forcedUpdate() {
         _isLoading.value = true

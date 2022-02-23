@@ -70,9 +70,9 @@ class LoginViewModel : ViewModelBase() {
 
         if (BuildConfig.DEBUG) {
             user_id = "test"
-            work_place_cd = "N9999"
+            work_place_cd = "A9999"
             name = "홍길동"
-            work_place_nm = "인천"
+            work_place_nm = "본사"
             successCall()
             loginSuccessEvent.call()
         } else {

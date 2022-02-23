@@ -7,18 +7,10 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!--외부 저장소에서 파일 저장하기 위한 권한-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!--oero 이상에서 foreground 서비스를 위한 권한-->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <!--다운로드 받은 앱을 설치 하기위한 권한-->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-    <!-- apk를 설치하기 위한 권한 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 외부 저장소에서 파일 저장하기 위한 권한 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- oero 이상에서 foreground 서비스를 위한 권한 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- 다운로드 받은 앱을 설치 하기위한 권한 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- apk를 설치하기 위한 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -32,45 +24,39 @@
         tools:replace="android:label">
 
         <activity
-            android:name="com.micromos.ddsteelmobile.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@style/Theme.DDSTEEL.NoActionBar"
-            android:windowSoftInputMode="adjustNothing">
-
-        </activity>
-
+            android:windowSoftInputMode="adjustNothing"></activity>
         <activity
-            android:name="com.micromos.ddsteelmobile.UpdateActivity"
+            android:name=".UpdateActivity"
             android:theme="@style/Theme.DDSTEEL.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
-            android:name="com.micromos.ddsteelmobile.ui.login.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.DDSTEEL.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Scanner 관련 -->
-<!--        <activity-->
-<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductcoilin.ScanProductCoilInActivity"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize" />-->
-<!--        <activity-->
-<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductcoilout.ScanProductCoilOutActivity"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize" />-->
-<!--        <activity-->
-<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductstockcheck.ScanProductStockCheckActivity"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
-<!--            android:windowSoftInputMode="adjustNothing" />-->
-<!--        <activity-->
-<!--            android:name="com.micromos.ddsteelmobile.ui.scanproductchangepos.ScanProductChangePosActivity"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
-<!--            android:windowSoftInputMode="adjustNothing" />-->
-
+        </activity> <!-- Scanner 관련 -->
+        <!-- <activity -->
+        <!-- android:name="com.micromos.ddsteelmobile.ui.scanproductcoilin.ScanProductCoilInActivity" -->
+        <!-- android:configChanges="keyboardHidden|orientation|screenSize" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.micromos.ddsteelmobile.ui.scanproductcoilout.ScanProductCoilOutActivity" -->
+        <!-- android:configChanges="keyboardHidden|orientation|screenSize" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.micromos.ddsteelmobile.ui.scanproductstockcheck.ScanProductStockCheckActivity" -->
+        <!-- android:configChanges="keyboardHidden|orientation|screenSize" -->
+        <!-- android:windowSoftInputMode="adjustNothing" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.micromos.ddsteelmobile.ui.scanproductchangepos.ScanProductChangePosActivity" -->
+        <!-- android:configChanges="keyboardHidden|orientation|screenSize" -->
+        <!-- android:windowSoftInputMode="adjustNothing" /> -->
         <!-- Uri로 데이터를 보내기 위함 -->
         <provider
             android:name="androidx.core.content.FileProvider"

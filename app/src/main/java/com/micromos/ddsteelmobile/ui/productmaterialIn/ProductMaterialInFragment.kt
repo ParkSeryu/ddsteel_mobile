@@ -156,6 +156,16 @@ class ProductMaterialInFragment : Fragment(), M3Receiver.ScanListener {
             }
         })
 
+        productMaterialInViewModel.alreadyFinishEvent.observe(viewLifecycleOwner, Observer {
+            context?.let { view ->
+                CustomDialog(view, R.layout.dialog_incorrect)
+                    .setTitle(R.string.prompt_notice)
+                    .setMessage(R.string.prompt_already_finish)
+                    .setPositiveButton(R.string.dialog_ok) {
+                    }.show()
+            }
+        })
+
         productMaterialInViewModel.commonErrorEvent.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
                 CustomDialog(view, R.layout.dialog_incorrect)

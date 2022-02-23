@@ -29,7 +29,9 @@ interface DDsteelApi {
     ): Call<ResponseBody>
 
     @GET("posChange/get_common_pos_cd")
-    fun getCommonPosCd(): Call<GetCommonPosCdFeed>
+    fun getCommonPosCd(
+        @Query("work_place_cd") workPlaceCd: String,
+    ): Call<GetCommonPosCdFeed>
 
     @GET("posChange/get_label_pos_cd")
     fun getLabelPosCd(
@@ -140,9 +142,9 @@ interface DDsteelApi {
             // "http://192.168.0.168/DDSTEEL_API/Developer/index.php/"
 
             val okHttpClient = OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(httpLoggingInterceptor())
                 .build()
 

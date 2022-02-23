@@ -1,6 +1,5 @@
 package com.micromos.ddsteelmobile.ui.productcoilin
 
-import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -10,15 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.cognex.mobile.barcode.sdk.ReadResults
-import com.cognex.mobile.barcode.sdk.ReaderDevice
 import com.micromos.ddsteelmobile.CustomDialog
 import com.micromos.ddsteelmobile.M3Receiver
 import com.micromos.ddsteelmobile.MainActivity
@@ -27,8 +23,6 @@ import com.micromos.ddsteelmobile.databinding.FragmentCoilInBinding
 import com.micromos.ddsteelmobile.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_coil_in.*
-import kotlinx.android.synthetic.main.fragment_coil_in.progress_bar
-import kotlinx.android.synthetic.main.fragment_coil_stock.*
 import java.util.*
 
 class ProductCoilInFragment : Fragment(), M3Receiver.ScanListener {
@@ -70,9 +64,9 @@ class ProductCoilInFragment : Fragment(), M3Receiver.ScanListener {
 
         setRecyclerView()
 
-        productCoilInViewModel.clearInputLayout.observe(viewLifecycleOwner, Observer {
-            ship_no_edt.setText("")
-        })
+//        productCoilInViewModel.clearInputLayout.observe(viewLifecycleOwner, Observer {
+//            ship_no_edt.setText("")
+//        })
 
         productCoilInViewModel.noRetrieve.observe(viewLifecycleOwner, Observer {
             context?.let { view ->
@@ -102,6 +96,17 @@ class ProductCoilInFragment : Fragment(), M3Receiver.ScanListener {
                     .setMessage(R.string.unexpected_error_pda_in)
                     .setPositiveButton(R.string.dialog_ok) {
                     }.show()
+            }
+        })
+
+        productCoilInViewModel.clickRemarkButtonEvent.observe(viewLifecycleOwner, Observer{
+            context?.let{view ->
+                productCoilInViewModel.remark.value?.let { message ->
+                    CustomDialog(view, R.layout.dialog_default)
+                        .setMessage(message)
+                        .setPositiveButton(R.string.dialog_ok) {
+                        }.show()
+                }
             }
         })
 

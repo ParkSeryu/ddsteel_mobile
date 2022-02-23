@@ -95,16 +95,16 @@ class ProductChangePosFragment : Fragment(), M3Receiver.ScanListener {
             Selection.setSelection(etext, etext.length)
         }
 
-        if (pos_nm_list.size == 0) {
-            context?.let { view ->
-                CustomDialog(view, R.layout.dialog_incorrect)
-                    .setTitle(R.string.prompt_error)
-                    .setMessage(R.string.failed_get_code)
-                    .setPositiveButton(R.string.dialog_ok) {
-                    }.show()
-
-            }
-        }
+//        if (pos_nm_list.size == 0) {
+//            context?.let { view ->
+//                CustomDialog(view, R.layout.dialog_incorrect)
+//                    .setTitle(R.string.prompt_error)
+//                    .setMessage(R.string.failed_get_code)
+//                    .setPositiveButton(R.string.dialog_ok) {
+//                    }.show()
+//
+//            }
+//        }
 
         productChangePosViewModel.noNetWorkConnect.observe(viewLifecycleOwner, Observer {
             context?.let { view ->

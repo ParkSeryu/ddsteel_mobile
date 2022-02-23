@@ -27,6 +27,7 @@ import com.micromos.ddsteelmobile.dto.GetCommonPosCdFeed
 import com.micromos.ddsteelmobile.network.DDsteelApi
 import com.micromos.ddsteelmobile.ui.home.HomeFragment
 import com.micromos.ddsteelmobile.ui.login.LoginViewModel.Companion.name
+import com.micromos.ddsteelmobile.ui.login.LoginViewModel.Companion.work_place_cd
 import com.micromos.ddsteelmobile.ui.login.LoginViewModel.Companion.work_place_nm
 import kotlinx.android.synthetic.main.app_bar_main.*
 import retrofit2.Call
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         m3Receiver = M3Receiver.getInstance()
         toolbar_name.text = "$name($work_place_nm)"
         getCommonPosCd()
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        //window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) //절전해제
         HomeButton.setOnClickListener {
             goHome()
         }
@@ -159,7 +160,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getCommonPosCd() {
-        api.getCommonPosCd().enqueue(object : Callback<GetCommonPosCdFeed> {
+        api.getCommonPosCd(work_place_cd!!).enqueue(object : Callback<GetCommonPosCdFeed> {
             override fun onResponse(
                 call: Call<GetCommonPosCdFeed>,
                 response: Response<GetCommonPosCdFeed>

@@ -16,10 +16,10 @@ class HomeViewModel : ViewModel() {
 
     init {
         val programList = listOf(
+            MenuItem.ProductMaterialIn,
             MenuItem.ProductCoilIn,
-            MenuItem.ProductStockCheck,
             MenuItem.ProductChangePos,
-            MenuItem.ProductMaterialIn
+            MenuItem.ProductStockCheck
         )
 
         val allocationProgramList = mutableListOf<MenuItem>()

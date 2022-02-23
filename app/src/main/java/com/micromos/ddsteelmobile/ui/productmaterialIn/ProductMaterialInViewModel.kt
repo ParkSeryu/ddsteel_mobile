@@ -32,6 +32,9 @@ class ProductMaterialInViewModel : ViewModelBase() {
     private val _duplicateLabel = MutableLiveData<Event<Unit>>()
     val duplicateLabel: LiveData<Event<Unit>> = _duplicateLabel
 
+    private val _alreadyFinishEvent = MutableLiveData<Event<Unit>>()
+    val alreadyFinishEvent: LiveData<Event<Unit>> = _alreadyFinishEvent
+
     private val _commonErrorEvent = MutableLiveData<Event<Unit>>()
     val commonErrorEvent: LiveData<Event<Unit>> = _commonErrorEvent
 
@@ -156,6 +159,10 @@ class ProductMaterialInViewModel : ViewModelBase() {
                                     _commonErrorEvent.value = Event(Unit)
                                     errorCode = 9
                                 }
+                                "10" -> {
+                                    _alreadyFinishEvent.value = Event(Unit)
+
+                                }
                             }
                             successCall()
                         }
@@ -209,6 +216,7 @@ class ProductMaterialInViewModel : ViewModelBase() {
                 btnLabelInEnabled.value = true
                 transCarNo.value = ""
                 transMan.value = ""
+                _labelNo.value = ""
                 endFlag = false
                 Handler().postDelayed(Runnable {
                     //딜레이 후 시작할 코드 작성

@@ -8,6 +8,7 @@ data class GetCustCd(
     @SerializedName("DLV_CUST_NM") val dlvCustNm: String,
     @SerializedName("SALES_MAN_NM") val salesManNm: String,
     @SerializedName("REGION_NM") val regionNm: String,
+    @SerializedName("REMARK") val remark: String,
 )
 
 data class ShipOrderFeed(@SerializedName("DATA") val items: List<ShipOrder>)
@@ -15,8 +16,8 @@ data class ShipOrderFeed(@SerializedName("DATA") val items: List<ShipOrder>)
 data class ShipOrder(
     @SerializedName("SHIP_NO") val shipNo: String,
     @SerializedName("SHIP_SEQ") val shipSeq: String,
-    @SerializedName("COIL_NO") val coilNo: String,
-    @SerializedName("COIL_SEQ") val coilSeq: String,
+    @SerializedName("COIL_NO") var coilNo: String,
+    @SerializedName("COIL_SEQ") var coilSeq: String,
     @SerializedName("NAME_CD") val nameCd: String,
     @SerializedName("NAME_NM") val nameNm: String,
     @SerializedName("TYPE_CD") val typeCd: String,
@@ -37,6 +38,8 @@ data class GetUpdateScanCardInfo(
     @SerializedName("RETURN_RESULT") val returnResult: String,
     @SerializedName("SHIP_NO") val shipNo: String,
     @SerializedName("SHIP_SEQ") val shipSeq: String,
+    @SerializedName("COIL_NO") val coilNo: String,
+    @SerializedName("ACTL_COIL_SEQ") val actlCoilSeq: String,
     @SerializedName("SCAN_DATE") val scanDate: String,
     @SerializedName("SCAN_CLS") val scanCls: String,
     @SerializedName("TIME") val scanTime: String,
